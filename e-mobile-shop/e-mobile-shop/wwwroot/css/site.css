@@ -1,0 +1,148 @@
+﻿a {
+    text-decoration: none;
+}
+
+.bg-black {
+    background-color: black;
+}
+
+.bg-white {
+    background-color: white;
+}
+
+.bg-fed700 {
+    background-color: #fed700;
+}
+
+.nav-item {
+    background: #fed700;
+    width: 90px;
+    height: 50px;
+}
+
+.nav-link {
+    color: black !important;
+    text-align: center;
+    font-size: 11px !important;
+    text-transform: uppercase;
+}
+
+
+
+.nav-item:hover {
+    background-color: #808080 !important;
+}
+
+.tincongnghe {
+
+    padding: 10px 20px 10px 10px;
+    background: #fdd504;
+    line-height: 1.3em;
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    text-transform: uppercase;
+    text-align: center;
+    position: relative;
+}
+
+.tincongnghe a {
+    color: black;
+}
+
+.tincongnghe a:hover {
+    text-decoration: none;
+}
+
+.tincongnghe::after {
+    content: '';
+    width: 0;
+    height: 0;
+    border-right: 12px solid #fff;
+    border-top: 20px solid transparent;
+    border-bottom: 20px solid transparent;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+}
+
+.img-tincongnghe {
+    float: left;
+    width: 100px;
+    height: 57px;
+    margin: 0 10px 0 0;
+}
+
+.news {
+    color: black;
+}
+
+.news:hover {
+    text-decoration: none;
+    color: black;
+}
+
+.news span {
+    font-size: 12px;
+    font-weight: lighter;
+    margin-right: 10px;
+}
+
+.my-owl-item {
+
+    text-align: center;
+    font-size: 12px;
+}
+
+.discount {
+    background-image: linear-gradient(-90deg, #ec1f1f 0%, #ff9c00 100%);
+    border-radius: 10px;
+    padding: 1px 7px;
+    padding-left: 0;
+    padding-right: 10px;
+    color: white;
+    font-size: 11px;
+
+}
+
+.discount:before {
+    content: ' ';
+    display: inline-block;
+    background-size: 50% 50%;
+    color: white;
+    background-image: url('../Image/bolt-solid.svg');
+    width: 20px;
+    height: 20px;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-color: #f13500;
+    border-radius: 50%;
+    vertical-align: middle;
+    position: relative;
+    top: -1px;
+    margin-right: 5px;
+}
+
+
+.navigat {
+    display: block;
+    overflow: hidden;
+
+
+
+}
+
+.navigat h2 {
+    float: left;
+    font-size: 16px;
+    color: #333;
+    font-weight: 600;
+    padding: 14px 10px;
+    text-transform: uppercase;
+}
+
+.navigat div {
+    float: right;
+    overflow: hidden;
+}
