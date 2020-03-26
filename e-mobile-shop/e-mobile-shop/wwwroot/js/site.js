@@ -20,6 +20,9 @@ $(document).ready(
                 1000: {
                     items: 5,
                     dots: true,
+                    nav: true,
+                    navText: ['<i class="fa fa-angle-left" aria-hidden="true"></i>', '<i class="fa fa-angle-right" aria-hidden="true"></i>']
+
                 }
             }
         });
@@ -35,4 +38,26 @@ $(document).ready(
             itemsTablet: [600, 2], //2 items between 600 and 0
             itemsMobile: false // itemsMobile disabled - inherit from itemsTablet option
         });
+
+        var owl2 = $("#owl-demo2");
+        owl2.owlCarousel({
+            responsive: {
+                0: {
+                    items: 2,
+                    dots: false
+                },
+                600: {
+                    items: 4,
+                    dots: false
+                },
+                1000: {
+                    items: 5,
+                    dots: true,
+                    nav: true,
+                    navText: ['<i class="fa fa-angle-left" aria-hidden="true"></i>', '<i class="fa fa-angle-right" aria-hidden="true"></i>']
+                   
+                }
+            }
+        });
+
     });
