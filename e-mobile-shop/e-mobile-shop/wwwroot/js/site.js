@@ -6,6 +6,20 @@
 
 $(document).ready(
     function () {
+
+
+        //var owl = $("#owl-demo");
+
+        //owl.owlCarousel({
+        //    dots: false,
+        //    singleItem: true,
+        //    items: 1,
+        //    URLhashListener: true,
+        //    startPosition: 'URLHash'
+           
+        //});
+
+
         var owl1 = $("#owl-demo1");
         owl1.owlCarousel({
             responsive: {
@@ -27,17 +41,6 @@ $(document).ready(
             }
         });
 
-        var owl = $("#owl-demo");
-
-        owl.owlCarousel({
-            dots: false,
-            pagination: false,
-            items: 5, //10 items above 1000px browser width
-            itemsDesktop: [1000, 5], //5 items between 1000px and 901px
-            itemsDesktopSmall: [900, 3], // betweem 900px and 601px
-            itemsTablet: [600, 2], //2 items between 600 and 0
-            itemsMobile: false // itemsMobile disabled - inherit from itemsTablet option
-        });
 
         var owl2 = $("#owl-demo2");
         owl2.owlCarousel({

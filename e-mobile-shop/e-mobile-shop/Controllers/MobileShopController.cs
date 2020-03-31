@@ -21,6 +21,10 @@ namespace e_mobile_shop.Controllers
             return View();
         }
         
+        public IActionResult DienThoaiDiDong()
+        {
+            return View();
+        }
         
     }
 }

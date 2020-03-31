@@ -2,6 +2,143 @@
     Layout = "~/Views/Shared/_MobileShopLayout.cshtml";
 }
 
+<div class="container    bg-white ">
+    <div class="row mt-1">
+        <div class="col-lg-8 col-12 p-0">
+
+
+            <div id="sync1" class="owl-carousel owl-theme d-none d-lg-block ">
+                @for (int i = 0; i < 5; i++)
+                {
+                    <div class="my-owl-item mt-2" data-hash="@i.ToString()nn">
+                        <img class="d-block w-100" style="width: 100%!important " src="~/Image/800-300-800x300-13.png">
+
+                    </div>
+                }
+
+            </div>
+
+            <div id="sync2" class="owl-carousel owl-theme d-none d-lg-block ">
+                @for (int i = 0; i < 5; i++)
+                {
+                    <div class="my-owl-item" style="font-size: 12px; color: black" id="@i.ToString()btn" href="#@i.ToString()nn">
+                        <div> Lap top ưu đãi </div>
+                        <div> Giảm ngay 5 triệu </div>
+                    </div>
+                }
+            </div>
+
+            <script>
+                $(document).ready(function () {
+
+                    var sync1 = $("#sync1");
+                    var sync2 = $("#sync2");
+                    var slidesPerPage = 5; //globaly define number of elements per page
+                    var syncedSecondary = true;
+
+                    sync1.owlCarousel({
+                        items: 1,
+                        slideSpeed: 2000,
+                        nav: true,
+                        autoplay: true,
+                        dots: false,
+                        loop: true,
+                        responsiveRefreshRate: 200,
+                        navText: ['<i class="fa fa-angle-left" style="color:black;" aria-hidden="true"></i>', '<i class="fa fa-angle-right" style="color:black;" aria-hidden="true"></i>'],
+                    }).on('changed.owl.carousel', syncPosition);
+
+                    sync2
+                        .on('initialized.owl.carousel', function () {
+                            sync2.find(".owl-item").eq(0).addClass("current");
+                        })
+                        .owlCarousel({
+                            items: slidesPerPage,
+                            dots: true,
+                            nav: true,
+                            smartSpeed: 200,
+                            slideSpeed: 500,
+                            slideBy: slidesPerPage, //alternatively you can slide by 1, this way the active slide will stick to the first item in the second carousel
+                            responsiveRefreshRate: 100
+                        }).on('changed.owl.carousel', syncPosition2);
+
+                    function syncPosition(el) {
+                        //if you set loop to false, you have to restore this next line
+                        //var current = el.item.index;
+
+                        //if you disable loop you have to comment this block
+                        var count = el.item.count - 1;
+                        var current = Math.round(el.item.index - (el.item.count / 2) - .5);
+
+                        if (current < 0) {
+                            current = count;
+                        }
+                        if (current > count) {
+                            current = 0;
+                        }
+
+                        //end block
+
+                        sync2
+                            .find(".owl-item")
+                            .removeClass("current")
+                            .eq(current)
+                            .addClass("current");
+                        var onscreen = sync2.find('.owl-item.active').length - 1;
+                        var start = sync2.find('.owl-item.active').first().index();
+                        var end = sync2.find('.owl-item.active').last().index();
+
+                        if (current > end) {
+                            sync2.data('owl.carousel').to(current, 100, true);
+                        }
+                        if (current < start) {
+                            sync2.data('owl.carousel').to(current - onscreen, 100, true);
+                        }
+                    }
+
+                    function syncPosition2(el) {
+                        if (syncedSecondary) {
+                            var number = el.item.index;
+                            sync1.data('owl.carousel').to(number, 100, true);
+                        }
+                    }
+
+                    sync2.on("click", ".owl-item", function (e) {
+                        e.preventDefault();
+                        var number = $(this).index();
+                        sync1.data('owl.carousel').to(number, 300, true);
+                    });
+                });
+            </script>
+        </div>
+        <div class="col-4 pl-2 d-none d-lg-block   ">
+            <div>
+                <h2 class="tincongnghe">
+                    <a class="" href="#">Tin công nghệ </a>
+                </h2>
+
+            </div>
+
+
+            <div class=" pl-0">
+                <a class="news" href="/tin-tuc/huawei-nova-7i-len-ke-vao-cuoi-thang-3-nay-1242479">
+                    <img class="img-tincongnghe" width="100" height="70"
+                         src="https://cdn.tgdd.vn/Files/2020/03/16/1242479/huaweinova7i-12-_2048x1152-100x100.jpg"
+                         alt="Bạn biết gì chưa: Huawei Nova 7i sẽ lên kệ vào cuối tháng 3 này, nhận quà hấp dẫn kèm trả góp 0%">
+                    <h3 style="font-size:14px;">
+                        Bạn biết gì chưa: Huawei Nova 7i sẽ lên kệ vào cuối tháng 3 này, nhận
+                        quà hấp dẫn kèm trả góp 0%
+                    </h3>
+                    <span>12 phút trước</span>
+                </a>
+            </div>
+            <div class="twobanner pt-2">
+                <img src="~/Image/iphone-7plus-ip-398-110-398x110.png" class="w-100" alt="" />
+                <img src="~/Image/398-110-398x110-3.png" class="w-100" alt="" />
+
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="container bg-white p-0 pt-1 pb-1">
     <img src="~/Image/1200-75-1200x75.gif" class="w-100" />

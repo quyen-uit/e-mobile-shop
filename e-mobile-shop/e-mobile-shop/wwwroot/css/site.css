@@ -1,4 +1,6 @@
-﻿a:hover {
+﻿
+
+a:hover {
     text-decoration: none;
 }
 
@@ -206,3 +208,122 @@
      text-decoration: none;
      color: black;
  }
+
+.logo-image{
+    
+}
+
+.btn-dropdown-filter {
+    font-size: 13px;
+    border-radius: 0px;
+    background: #FFFFFF;
+}
+
+.dropdown-item {
+    font-size: 13px;
+}
+.dropdown-menu{
+    border-radius: 0;
+}
+
+.page-link {
+    position: relative;
+    display: block;
+    padding: .5rem .75rem;
+    margin-left: -1px;
+    line-height: 1.25;
+    color: #333;
+    background-color: #fff;
+    border: 1px solid black;
+}
+    .page-link:hover {
+        position: relative;
+        display: block;
+        padding: .5rem .75rem;
+        margin-left: -1px;
+        line-height: 1.25;
+        color: #333;
+        background-color: #fff;
+        border: 1px solid black;
+    }
+.page-item.active .page-link {
+    z-index: 1;
+    color: black;
+    background-color: #E9ECEF;
+    border-color: #333;
+}
+
+.btn-active:active {
+    font-weight:bold;
+}
+#sync2 .current {
+    font-weight: bold;
+}
+
+#sync1 .owl-next {
+    top: 40% !important;
+    position: absolute;
+    right: 0;
+    margin: 0;
+    border-radius: 5px 0 0 5px;
+    background: transparent;
+    
+    width: 34px;
+    height: 50px;
+    text-align: center;
+    font-size: 37px;
+    color: #999;
+    font-family: -webkit-body;
+    box-shadow: 0 0 4px 2px rgba(0,0,0,0.15);
+}
+
+#sync1 .owl-next:hover {
+    transition: 0.2s;
+    top: 40% !important;
+    position: absolute;
+    right: 0;
+    margin: 0;
+    border-radius: 5px 0 0 5px;
+    background: #fff;
+    width: 34px;
+    height: 50px;
+    text-align: center;
+    font-size: 37px;
+    color: #999;
+    font-family: -webkit-body;
+    box-shadow: 0 0 4px 2px rgba(0,0,0,0.15);
+}
+
+#sync1 .owl-prev {
+    top: 40% !important;
+    position: absolute;
+    left: 0;
+    margin: 0;
+    border-radius: 0 5px 5px 0;
+    background: transparent;
+    width: 34px;
+    height: 50px;
+    text-align: center;
+    font-size: 37px;
+    color: #999;
+    font-family: -webkit-body;
+    box-shadow: 0 0 4px 2px rgba(0,0,0,0.15);
+}
+#sync1 .owl-prev:hover {
+    transition: 0.2s;
+    top: 40% !important;
+    position: absolute;
+    right: 0;
+    margin: 0;
+    border-radius: 5px 0 0 5px;
+    background: #fff;
+    width: 34px;
+    height: 50px;
+    text-align: center;
+    font-size: 37px;
+    color: #999;
+    font-family: -webkit-body;
+    box-shadow: 0 0 4px 2px rgba(0,0,0,0.15);
+}
+
+ 
