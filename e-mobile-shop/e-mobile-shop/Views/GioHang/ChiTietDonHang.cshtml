@@ -1,0 +1,59 @@
+﻿@model List<e_mobile_shop.Models.ChiTietDonHang>
+
+@{
+    ViewData["Title"] = "ChiTietDonHang";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>ChiTietDonHang</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Mã đơn hàng 
+            </th>
+            <th>
+               Mã sản phẩm 
+            </th>
+            <th>
+                Số lượng 
+            </th>
+            <th>
+                Thành tiền 
+            </th>
+            <th>
+               Mã ctdh
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaDh)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaSp)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SoLuong)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ThanhTien)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaCtdh)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

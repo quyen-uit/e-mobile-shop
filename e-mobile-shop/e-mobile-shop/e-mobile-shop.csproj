@@ -1,20 +1,40 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <UserSecretsId>aspnet-e_mobile_shop-07F3035E-EF09-4111-B898-E0C5A5AAD9F4</UserSecretsId>
     <RootNamespace>e_mobile_shop</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Migrations\20200410115808_intial.cs" />
+    <Compile Remove="Migrations\20200410115808_intial.Designer.cs" />
+    <Compile Remove="Migrations\20200410120434_delete_username.cs" />
+    <Compile Remove="Migrations\20200410120434_delete_username.Designer.cs" />
+  </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.1" />
+    <None Include="wwwroot\ProductImages\1_9_3_1.webp" />
+    <None Include="wwwroot\ProductImages\41c944907a80a6702c36de63502dcbb0.jpg_200x200q80.jpg_.webp" />
+    <None Include="wwwroot\ProductImages\ae-galaxy-tab-a-t295-sm-t295nzsaxsg-frontsilver-172640354.webp" />
+    <None Include="wwwroot\ProductImages\ca-galaxy-tab-a-2019-101-sm-t510nzkaxac-frontblack-157801267.webp" />
+    <None Include="wwwroot\ProductImages\HTB1xfu4aInrK1RkHFrdq6xCoFXab.webp" />
+    <None Include="wwwroot\ProductImages\mini_white_cable_c__12_3f363333695945acbdc7f1d905676a94_medium.webp" />
+    <None Include="wwwroot\ProductImages\sg-galaxy-taba-2019-8-sm-t295nzkaxsp-frontblack-175174967.webp" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.2.7" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
   </ItemGroup>
+
+
 
 </Project>

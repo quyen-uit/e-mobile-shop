@@ -1,0 +1,239 @@
+﻿
+@{
+    ViewData["Title"] = "SanPham";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model SanPham
+
+
+
+<!-- Single Page -->
+<div class="banner-bootom-w3-agileits py-5">
+    <div class="container py-xl-4 py-lg-2 border">
+        <!-- tittle heading -->
+        <h3 class="tittle-w3l  mb-lg-5 mb-sm-4 mb-3">
+            Chi tiết sản phẩm
+        </h3>
+        <!-- //tittle heading -->
+        <div class="row">
+            <div class="col-lg-5 col-md-8 single-right-left ">
+                <div class="grid images_3_of_2">
+                    <div class="flexslider">
+                        <ul class="slides">
+
+                            <li data-thumb="../../ProductImages/@DataAccess.GetAnhSanPham(Model.MaSp).Anh1">
+                                <div class="thumb-image">
+                                    <img src="~/ProductImages/@DataAccess.GetAnhSanPham(Model.MaSp).Anh1" id="" data-imagezoom="true" class="img-fluid w-100" alt="2">
+                                </div>
+                            </li>
+
+                            <li data-thumb="../../ProductImages/@DataAccess.GetAnhSanPham(Model.MaSp).Anh2">
+                                <div class="thumb-image">
+                                    <img src="~/ProductImages/@DataAccess.GetAnhSanPham(Model.MaSp).Anh2" id="" data-imagezoom="true" class="img-fluid w-100" alt="2">
+                                </div>
+                            </li>
+
+
+                            <li data-thumb="../../ProductImages/@DataAccess.GetAnhSanPham(Model.MaSp).Anh3">
+                                <div class="thumb-image">
+                                    <img src="~/ProductImages/@DataAccess.GetAnhSanPham(Model.MaSp).Anh3" id="" data-imagezoom="true" class="img-fluid w-100" alt="2">
+                                </div>
+                            </li>
+                        </ul>
+
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-7 single-right-left simpleCart_shelfItem">
+                <h3 class="mb-3">@Model.TenSp</h3>
+                <p class="mb-3">
+                    <span class="item_price">@Model.GiaGoc<sup>đ</sup></span>
+                    <del class="mx-2 font-weight-light">@Model.GiaTien<sup>đ</sup></del>
+                </p>
+                <div class="single-infoagile">
+                    <ul>
+                        <li class="mb-3">
+                            <span style="text-transform: uppercase">Hãng sản xuất: @Model.HangSx </span>
+                        </li>
+                        <li class="mb-3">
+                            Còn
+                            <span class="item_price">@Model.SoLuong</span> sản phẩm
+                        </li>
+
+                        <li class="mb-3">
+                            Đã có
+                            <span class="item_price">@Model.SoLuotXemSp</span> lượt xem sản phẩm
+                        </li>
+                    </ul>
+                </div>
+                <br />
+
+                <div class="product-single-w3l">
+                    <br />
+
+                    <ul>
+                        @foreach (var item in DataAccess.GetThongSoKiThuat(Model.MaSp))
+                        {
+                            <li class="mb-1">
+
+                                <span style="text-transform:uppercase">@item.ThuocTinh</span>  : <span style="text-transform:uppercase">@item.GiaTri</span>
+                            </li>
+                        }
+
+
+                    </ul>
+                    <p class="my-sm-4 my-3">
+                        <i class="fas fa-retweet mr-3"></i>Net banking & Credit/ Debit/ ATM card
+                    </p>
+                </div>
+                <div class="occasion-cart">
+                    <div class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out">
+                        <form asp-action="AddToCartSession" asp-controller="GioHang" method="post">
+                            <fieldset>
+                                <div>
+                                    Số lượng
+                                    <div class="input-group">
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default btn-number" disabled="disabled" data-type="minus" data-field="quant[1]">
+                                                <i class="fas fa-minus"></i>
+                                            </button>
+                                        </span>
+                                        <input type="text" size="1" name="quant[1]" id="up_down" class="form-control input-number" value="1" min="1" max="10">
+
+
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default btn-number" data-type="plus" data-field="quant[1]">
+                                                <i class="fas fa-plus"></i>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div><input type="hidden" name="SanPham" value="@Model.MaSp" /></div>
+                                <input type="hidden" name="SoLuong" id="SoLuong" value="1" />
+                                <input type="submit" name="submit" value="Thêm vào giỏ hàng" class="button" />
+                            </fieldset>
+                        </form>
+                    </div>
+
+                </div>
+                @*<a class="btn btn-primary" asp-controller="GioHang" asp-action="AddToCartSession" asp-route-id="@Model.MaSp"> Thêm vô giỏ  </a>*@
+
+            </div>
+        </div>
+
+        <h3 class="tittle-w3l  mb-lg-5 mb-sm-4 mb-3">
+            Bình luận
+        </h3>
+        <ul class="comment-section border " style="width: 100%">
+
+            <li class="comment user-comment">
+
+                <div class="info">
+                    <a href="#">Anie Silverston</a>
+                    <span>4 hours ago</span>
+                </div>
+
+                <a class="avatar" href="#">
+                    <img src="~/images/avatar_user_1.jpg" width="35" alt="Profile Avatar" title="Anie Silverston" />
+                </a>
+
+                <p>Suspendisse gravida sem?</p>
+
+            </li>
+            <li class="comment user-comment">
+
+                <div class="info">
+                    <a href="#">Anie Silverston</a>
+                    <span>4 hours ago</span>
+                </div>
+
+                <a class="avatar" href="#">
+                    <img src="~/images/avatar_user_1.jpg" width="35" alt="Profile Avatar" title="Anie Silverston" />
+                </a>
+
+                <p>Suspendisse gravida sem?</p>
+
+            </li>
+            <li class="comment user-comment">
+
+                <div class="info">
+                    <a href="#">Anie Silverston</a>
+                    <span>4 hours ago</span>
+                </div>
+
+                <a class="avatar" href="#">
+                    <img src="~/images/avatar_user_1.jpg" width="35" alt="Profile Avatar" title="Anie Silverston" />
+                </a>
+
+                <p>Suspendisse gravida sem?</p>
+
+            </li>
+
+            <li class="comment author-comment">
+
+                <div class="info">
+                    <a href="#">Jack Smith</a>
+                    <span>3 hours ago</span>
+                </div>
+
+                <a class="avatar" href="#">
+                    <img src="~/images/avatar_author.jpg" width="35" alt="Profile Avatar" title="Jack Smith" />
+                </a>
+
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse gravida sem sit amet molestie portitor.</p>
+
+            </li>
+
+            <li class="comment user-comment">
+
+                <div class="info">
+                    <a href="#">Bradley Jones</a>
+                    <span>1 hour ago</span>
+                </div>
+
+                <a class="avatar" href="#">
+                    <img src="~/images/avatar_user_2.jpg" width="35" alt="Profile Avatar" title="Bradley Jones" />
+                </a>
+
+                <p>Suspendisse gravida sem sit amet molestie portitor?</p>
+
+            </li>
+
+            <li class="comment author-comment">
+
+                <div class="info">
+                    <a href="#">Jack Smith</a>
+                    <span>1 hour ago</span>
+                </div>
+
+                <a class="avatar" href="#">
+                    <img src="~/images/avatar_author.jpg" width="35" alt="Profile Avatar" title="Jack Smith" />
+                </a>
+
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisee gravida sem sit amet molestie porttitor.</p>
+
+            </li>
+
+            <li class="write-new">
+
+                <form action="#" method="post">
+
+                    <textarea placeholder="Write your comment here" name="comment"></textarea>
+
+                    <div>
+                        <img src="~/images/avatar_user_2.jpg" width="35" alt="Profile of Bradley Jones" title="Bradley Jones" />
+                        <button type="submit">Submit</button>
+                    </div>
+
+                </form>
+
+            </li>
+
+        </ul>
+
+    </div>
+</div>
+<!-- //Single Page -->

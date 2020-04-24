@@ -1,0 +1,93 @@
+﻿
+@{
+    ViewData["Title"] = "XemGioHang";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    System.Globalization.CultureInfo culture = new System.Globalization.CultureInfo("vi-VN");
+}
+@using Microsoft.AspNetCore.Identity
+@using e_mobile_shop.Areas.Identity.Data
+
+@inject UserManager<AppUser> UserManager
+@inject SignInManager<AppUser> SignInManager
+
+
+<style>
+    td, th {
+        text-align: center;
+    }
+
+    .row {
+        padding: 0;
+        margin: 0;
+    }
+
+    .col-2 {
+        text-align: center;
+    }
+
+    .col-5 {
+        text-align: left;
+    }
+</style>
+
+<h3 class="tittle-w3l text-center mb-lg-5 mb-sm-4 mb-2 mt-2">
+    <span>G</span>iỏ hàng
+
+</h3>
+<div class="container p-0">
+    <div class="row pt-1">
+        <div class="col-md-8 col-12 p-0 ">
+            @for (int i = 0; i < ViewBag.GioHang.Count; i++)
+            {
+                <div class="row border m-1 ">
+                    <div class="col-3 " style=" margin:auto; text-align:center">
+                        <img src=@Url.Content("~/ProductAvatar/" + @DataAccess.GetSanPham(ViewBag.GioHang[i].MaSp).AnhDaiDien) style="max-width:70px; max-height: 70px" />
+                    </div>
+                    <div class="col-5 ">
+                        <div class="p-2"> <strong>   @DataAccess.GetSanPham(ViewBag.GioHang[i].MaSp).TenSp </strong> </div>
+                        <div class="p-2">
+                            Số lượng: <span><input disabled size="1" value="@ViewBag.GioHang[i].SoLuong" /> </span>
+                        </div>
+                    </div>
+                    <div class="col-4  d-flex justify-content-around flex-column" style="text-align:right">
+                        <div class="p-2">
+                            <strong style="font-size: 13px">  @ViewBag.GioHang[i].ThanhTien</strong>
+                        </div>
+                        <div class="p-2 d-flex  justify-content-between" style="font-size: 12px">
+                            <a class="" asp-action="Remove" asp-controller="GioHang" asp-route-id="i">Cập nhật</a>
+                            <a class="" asp-action="Remove" asp-controller="GioHang" asp-route-id="i">Xóa</a>
+                        </div>
+
+                    </div>
+                </div>
+
+            }
+        </div>
+        <div class="col-md-4 col-12 border">
+            <div class="row p-2 m-2 " style=" border-bottom: 1px dashed black">
+                <div class="col-6">
+                    Tổng cộng
+                </div>
+                <div class="col-6">
+                    <span style="color:blue">  @ViewBag.ThanhTien </span>
+                </div>
+                <div class="col-6">
+                    Giảm giá
+                </div>
+                <div class="col-6">
+                    <span style="color:black">0</span>
+                </div>
+                <div class="col-6">
+                    Cần thanh toán
+                </div>
+                <div class="col-6">
+                    <strong style="color:red"> @ViewBag.ThanhTien VNĐ </strong>
+                </div>
+            </div>
+            @await Component.InvokeAsync("CheckoutInfo", new { Id = UserManager.GetUserId(User) })
+        </div>
+    </div>
+</div>
+
+
+

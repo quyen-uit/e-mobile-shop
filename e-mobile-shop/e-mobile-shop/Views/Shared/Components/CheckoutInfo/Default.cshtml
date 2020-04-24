@@ -1,0 +1,73 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using e_mobile_shop.Areas.Identity.Data
+
+@inject UserManager<AppUser> UserManager
+@inject SignInManager<AppUser> SignInManager
+@model List<AspNetUsers>
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <div>
+        <div class="row ">
+            <div class="col-12 p-0 m-0">
+                <input placeholder="Nhập mã giảm giá" type="text" style="width: 100%" class="m-2 p-2" />
+            </div>
+            <div class="col-12 row  ">
+                <div class="col-12 text-center "> Nhập thông tin khách hàng </div>
+                <form class="col-12 row  m-2 border" asp-controller="GioHang" asp-action="CheckOut" method="post">
+                    <div class="col-6 p-1 ">
+                        <input disabled style="width: 100%"  value="@Model[0].HoTen" />
+                    </div>
+                    <div class="col-6 p-1 ">
+                        <input disabled style="width: 100%" placeholder="Điện thoại " value="@Model[0].PhoneNumber" />
+                    </div>
+                    <div class="col-12 p-1 pt-2">
+                        <input disabled style="width: 100%" name="DiaChi" placeholder="Địa chỉ giao hàng " value="@Model[0].DiaChi" />
+                    </div>
+                    <div class="col-12 p-1 pt-2">
+                        <input style="width: 100%" name="GhiChu" placeholder="Yêu cầu khác  " />
+                    </div>
+                    <input type="text" value="@Model[0].Id" name="Id" />
+                    <input type="text" value="@ViewBag.ThanhTien" name="ThanhTien" />
+                    <button type="submit" class=" col-12 btn btn-block btn-success m-0 mt-2" style="border-radius:0; color: white"> Thanh toán  </button>
+                </form>
+
+            </div>
+            @*<div class="col-12 text-center "> hoặc </div>
+            <a class=" col-12 btn btn-block btn-warning m-0 " style="border-radius:0"> Đăng nhập để lấy thông tin </a>
+            <a class=" col-12 btn btn-block btn-success m-0 mt-2" style="border-radius:0; color: white"> Thanh toán  </a>*@
+        </div>
+    </div>
+}
+else
+{
+<div>
+    <div class="row ">
+        <div class="col-12 p-0 m-0">
+            <input placeholder="Nhập mã giảm giá" type="text" style="width: 100%" class="m-2 p-2" />
+        </div>
+        <div class="col-12 row  ">
+            <div class="col-12 text-center "> Nhập thông tin khách hàng </div>
+            <form class="col-12 row  m-2 border" asp-controller="GioHang" asp-action="CheckOut" method="post">
+                <div class="col-6 p-1 ">
+                    <input style="width: 100%" placeholder="Họ và tên" />
+                </div>
+                <div class="col-6 p-1 ">
+                    <input style="width: 100%" placeholder="Điện thoại " />
+                </div>
+                <div class="col-12 p-1 pt-2">
+                    <input style="width: 100%" placeholder="Địa chỉ giao hàng " />
+                </div>
+                <div class="col-12 p-1 pt-2">
+                    <input style="width: 100%" placeholder="Yêu cầu khác  " />
+                </div>
+                <button type="submit" class=" col-12 btn btn-block btn-success m-0 mt-2" style="border-radius:0; color: white"> Thanh toán  </button>
+            </form>
+
+        </div>
+        <div class="col-12 text-center "> hoặc </div>
+        <a class=" col-12 btn btn-block btn-warning m-0 " style="border-radius:0"> Đăng nhập để lấy thông tin </a>
+       
+    </div>
+</div>
+}

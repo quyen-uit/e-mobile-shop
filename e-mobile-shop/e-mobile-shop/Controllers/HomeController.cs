@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using e_mobile_shop.Models;
+using e_mobile_shop.Areas.Identity.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace e_mobile_shop.Controllers
 {
@@ -20,7 +22,7 @@ namespace e_mobile_shop.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return View(DataAccess.ViewSanPham());
         }
 
         public IActionResult Privacy()
@@ -33,5 +35,7 @@ namespace e_mobile_shop.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+      
     }
 }

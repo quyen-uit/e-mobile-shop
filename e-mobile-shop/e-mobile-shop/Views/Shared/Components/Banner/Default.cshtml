@@ -1,0 +1,37 @@
+﻿@model List<BannerKhuyenMai>
+
+
+<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+    <ol class="carousel-indicators">
+        <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+        @for (int i = 1; i < Model.Count; i++)
+        {
+            <li data-target="#carouselExampleIndicators" data-slide-to="i"></li>
+        }
+
+
+    </ol>
+    <div class="carousel-inner">
+        <a class="carousel-item active" asp-controller="SanPham" asp-action="SanPham" asp-route-id="@Model[0].MaSp">
+
+            <img class="d-block w-100" src="~/Banner/@Model[0].AnhDaiDien" alt="First slide">
+
+        </a>
+        @for (int i = 1; i < Model.Count; i++)
+        {
+            <a class="carousel-item" asp-controller="SanPham" asp-action="SanPham" asp-route-id="@Model[i].MaSp">
+                <img class="d-block w-100" src="~/Banner/@Model[i].AnhDaiDien" alt="Second slide">
+            </a>
+        }
+
+
+    </div>
+    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+    </a>
+</div>
