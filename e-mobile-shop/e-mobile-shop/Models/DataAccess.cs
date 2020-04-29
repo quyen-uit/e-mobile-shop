@@ -50,5 +50,14 @@ namespace e_mobile_shop.Models
         {
             return context.AnhSanPham.Where(x => x.MaSp == maSp).SingleOrDefault();
         }
+
+        public static DonHang GetDonHang(string maDh)
+        {
+            return context.DonHang.Find(maDh);
+        }
+        public static AspNetUsers GetUser(string userId)
+        {
+            return context.AspNetUsers.Find(userId);
+        }
     }
 }
