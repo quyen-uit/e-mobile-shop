@@ -12,7 +12,7 @@ namespace e_mobile_shop.Models
 
         public string MaDh { get; set; }
         public string MaKh { get; set; }
-        public double? PhiVanChuyen { get; set; }
+        public decimal? PhiVanChuyen { get; set; }
         public string PtgiaoDich { get; set; }
         public DateTime? NgayDatMua { get; set; }
         public int? TinhTrangDh { get; set; }

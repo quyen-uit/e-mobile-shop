@@ -70,7 +70,7 @@ namespace e_mobile_shop
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Admin}/{action=QuanLyDienThoai}/{id?}");
                 endpoints.MapRazorPages();
             });
         }

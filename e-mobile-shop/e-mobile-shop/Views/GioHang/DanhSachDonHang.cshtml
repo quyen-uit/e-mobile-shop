@@ -5,94 +5,78 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<style>
-    td, th {
-        text-align: center;
-    }
+<h1>DanhSachDonHang</h1>
 
-    .s {
-        font-size: 20px;
-        padding: 10px;
-    }
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.MaDh)
+            </th>
 
-    .tooltip {
-        position: relative;
-        display: inline-block;
-        border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
-    }
+            <th>
+                @Html.DisplayNameFor(model => model.PhiVanChuyen)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PtgiaoDich)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NgayDatMua)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TinhTrangDh)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Tongtien)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ghichu)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Diachi)
+            </th>
 
-        /* Tooltip text */
-        .tooltip .tooltiptext {
-            visibility: hidden;
-            width: 120px;
-            background-color: black;
-            color: #fff;
-            text-align: center;
-            padding: 5px 0;
-            border-radius: 6px;
-            /* Position the tooltip text - see examples below! */
-            position: absolute;
-            z-index: 1;
-        }
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaDh)
+            </td>
 
-        /* Show the tooltip text when you mouse over the tooltip container */
-        .tooltip:hover .tooltiptext {
-            visibility: visible;
-        }
-</style>
+            <td>
+                @Html.DisplayFor(modelItem => item.PhiVanChuyen)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PtgiaoDich)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NgayDatMua)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TinhTrangDh)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Tongtien)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ghichu)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Diachi)
+            </td>
 
-<div>
-    <h3 class="tittle-w3l text-center mb-lg-5 mb-sm-4 mb-2 mt-2">
-        <span>D</span>anh sách đơn hàng
-    </h3>
-    <div class="container">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>
-                        Mã đơn hàng
-                    </th>
-
-                    <th>
-                        Giá trị đơn hàng
-                    </th>
-
-                    <th>
-                        Tình trạng đơn hàng
-                    </th>
-                    <th>
-                        Ngày đặt hàng
-                    </th>
-
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.MaDh)
-                        </td>
-                        <td>
-                            @(item.PhiVanChuyen + item.Tongtien)
-                        </td>
-
-                        <td>
-                            @Html.DisplayFor(modelItem => item.TinhTrangDh)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.NgayDatMua)
-                        </td>
-                        <td>
-                            <a ata-toggle="tooltip" data-placement="left" title="Chi tiết " asp-controller="GioHang" asp-action="ChiTietDonHang" asp-route-id="@item.MaDh">
-                                <i class="s fas fa-info-circle"></i>
-                            </a>
-                            <a data-toggle="tooltip" data-placement="top" title="Hủy "><i class=" s fas fa-trash-alt"></i></a>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-</div>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                <a asp-controller="GioHang" asp-action="ChiTietDonHang" asp-route-id="@item.MaDh">Chi tiết </a>
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
