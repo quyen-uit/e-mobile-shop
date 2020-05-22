@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using e_mobile_shop.Data;
+using e_mobile_shop.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -32,12 +33,12 @@ namespace e_mobile_shop
             services.AddDbContext<eShopDbContext>(options =>
                     options.UseSqlServer(
                         Configuration.GetConnectionString("eShopDbContextConnection")));
-
+            
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddSession();
             services.Configure<IdentityOptions>(options =>
             {
-                // Default Password settings.
+                // Default Password settingseShopDbContext
                 options.Password.RequireDigit = false;
                 options.Password.RequireLowercase = false;
                 options.Password.RequireNonAlphanumeric = false;
@@ -70,7 +71,7 @@ namespace e_mobile_shop
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Admin}/{action=QuanLyDienThoai}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
         }

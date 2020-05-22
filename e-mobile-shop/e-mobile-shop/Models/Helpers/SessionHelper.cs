@@ -23,5 +23,7 @@ namespace e_mobile_shop.Models.Helpers
         {
             session.Clear();
         }
+
+       
     }
 }

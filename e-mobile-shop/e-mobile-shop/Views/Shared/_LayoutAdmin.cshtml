@@ -13,6 +13,10 @@
     <link href="~/Admin/css/bootstrap.min.css" rel="stylesheet">
     <link href="~/Admin/font-awesome/css/font-awesome.css" rel="stylesheet">
 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="~/js/jquery.czMore-latest.js"></script>
     <!-- Page-Level Plugin CSS - Dashboard -->
     <link href="~/Admin/css/plugins/morris/morris-0.4.3.min.css" rel="stylesheet">
     <link href="~/Admin/css/plugins/timeline/timeline.css" rel="stylesheet">
@@ -27,6 +31,7 @@
 <body>
 
     <div id="wrapper">
+
 
         <nav class="navbar navbar-default navbar-fixed-top" role="navigation" style="margin-bottom: 0">
             <div class="navbar-header">
@@ -272,17 +277,19 @@
                             <a href="#"><i class="fa fa-wrench fa-fw"></i>Quản lý<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level collapse" style="height: auto;">
                                 <li>
-                                    <a href="@Url.Action("QuanLyDienThoai","Admin")">Điện thoại</a>
+                                    <a asp-action="QuanLy" asp-controller="Admin" asp-route-id="15674">Điện thoại</a>
                                 </li>
                                 <li>
-                                    <a href="#">Laptop</a>
-                                </li>
-
-                                <li>
-                                    <a href="#">Tablet</a>
+                                    <a asp-action="QuanLy" asp-controller="Admin" asp-route-id="89742">Laptop</a>
                                 </li>
                                 <li>
-                                    <a href="#">Tin tức, khuyến mãi</a>
+                                    <a asp-action="QuanLy" asp-controller="Admin" asp-route-id="87356">Tablet</a>
+                                </li>
+                                <li>
+                                    <a asp-action="QuanLy" asp-controller="Admin" asp-route-id="00000">Phụ kiện</a>
+                                </li>
+                                <li>
+                                    <a asp-action="TestDynamic" asp-controller="Admin"> Test dymanic</a>
                                 </li>
                             </ul>
 
@@ -326,6 +333,7 @@
 
     </div>
     <script src="~/Admin/js/jquery-1.10.2.js"></script>
+    <script src="~/js/jquery-2.2.3.min.js"></script>
     <script src="~/Admin/js/bootstrap.min.js"></script>
     <script src="~/Admin/js/plugins/metisMenu/jquery.metisMenu.js"></script>
     <!-- SB Admin Scripts - Include with every page -->
@@ -337,7 +345,7 @@
     <script src="~/Admin/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 
-        <!-- Page level plugins -->
+    <!-- Page level plugins -->
     <script src="~/Admin/js/plugins/dataTables/jquery.dataTables.js"></script>
     <script src="~/Admin/js/plugins/dataTables/dataTables.bootstrap.js"></script>
 
@@ -347,9 +355,7 @@
 
     <!-- Page level custom scripts -->
     <script src="~/Admin/js/demo/datatables-demo.js"></script>
-
-
-
+    
 </body>
 
 </html>

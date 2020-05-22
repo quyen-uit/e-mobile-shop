@@ -1,4 +1,9 @@
-﻿<!DOCTYPE html>
+﻿@{
+
+   
+
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -55,11 +60,7 @@
                         <!-- header lists -->
                         <ul>
 
-                            <li class="text-center border-right text-white">
-                                <a asp-action="DanhSachDonHang" asp-controller="GioHang" class="text-white">
-                                    <i class="fas fa-truck mr-2"></i>Danh sách đơn hàng
-                                </a>
-                            </li>
+
                             <li class="text-center border-right text-white">
                                 <i class="fas fa-phone mr-2"></i> 0988776599
                             </li>
@@ -104,7 +105,9 @@
                             <!-- cart details -->
                             <div class="col-2 top_nav_right text-center mt-sm-0 mt-2">
                                 <a class="btn w3view-cart" asp-controller="GioHang" asp-action="XemGioHang" name="submit" value="">
+
                                     <i style="font-size: 30px" class="fas fa-cart-arrow-down"></i>
+                                    @DataAccess.soCtdh
                                 </a>
 
                             </div>
@@ -122,18 +125,18 @@
                 <nav class="navbar navbar-expand-lg navbar-light bg-light">
                     <div class="agileits-navi_search">
                         <form action="#" method="post">
-                            <select id="agileinfo-nav_search" name="agileinfo_search" class="border" required="">
-                                <option value="">Danh mục Sản phẩm</option>
-                                @foreach (var item in DataAccess.ReadLoaiSp())
-                                {
-                                    <option value=@item.MaLoai>
-                                        <a asp-action="SanPham" asp-controller="SanPham" asp-route-id="@item.MaLoai">
-                                            @item.TenLoai
+                            <div id="agileinfo-nav_search" name="agileinfo_search" class="border dropdown p-1" required="">
+                                <button style="font-size:15px;" class="btn dropdown-toggle" type="button" data-toggle="dropdown" id="drmn" value="">Danh mục Sản phẩm</button>
+                                <div class="dropdown-menu" style="width:100%; border-radius:0px; background-color:#F8F9FA" aria-labeledby="drmn">
+                                    @foreach (var item in DataAccess.ReadLoaiSp())
+                                    {
+                                        <a type="button" style="text-align:left; border-radius:0px;" class="btn btn-block p-0 " asp-action="DanhSach" asp-controller="SanPham" asp-route-id="@item.MaLoai">
+                                            <p style="color:black" class="p-2">@item.TenLoai</p>
                                         </a>
-                                    </option>
-                                }
+                                    }
+                                </div>
 
-                            </select>
+                            </div>
                         </form>
                     </div>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -174,6 +177,17 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="contact.html">Về chúng tôi </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-action="Index" asp-controller="Admin">Admin </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" asp-action="TestPage" asp-controller="Home">TestPage </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" asp-action="testPaging" asp-controller="Home">TestPaging </a>
                             </li>
                         </ul>
                     </div>
@@ -260,7 +274,9 @@
                             <li class="mb-3">
                                 <a href="product.html">Tin tức</a>
                             </li>
-
+                            <li class="mb-3">
+                                <a href="product.html">Tin tức</a>
+                            </li>
                         </ul>
                     </div>
                     <!-- //footer categories -->

@@ -8,15 +8,26 @@ namespace e_mobile_shop.Models
 {
     public class DataAccess
     {
+        public static int soCtdh =0;
         public static ClientDbContext context = new ClientDbContext();
         public static List<AspNetUsers> ViewSanPham()
         {
             return context.AspNetUsers.ToList();
-          
+
         }
         public static List<LoaiSp> ReadLoaiSp()
         {
-            return context.LoaiSp.ToList();
+            List<LoaiSp> result = new List<LoaiSp>();
+            result.Add(context.LoaiSp.Find("00000"));
+
+            foreach (var item in context.LoaiSp.ToList())
+            {
+                if(item.TenLoai!="Phụ Kiện")
+                {
+                    result.Add(item);
+                }
+            }
+            return result;
         }
 
         public static List<SanPham> ReadSanPham(string loaiSp)
@@ -39,7 +50,7 @@ namespace e_mobile_shop.Models
 
         public static SanPham GetSanPham(string Id)
         {
-                return context.SanPham.Find(Id);
+            return context.SanPham.Find(Id);
         }
 
         public static List<ThongSoKiThuat> GetThongSoKiThuat(string maSp)
@@ -51,6 +62,13 @@ namespace e_mobile_shop.Models
             return context.AnhSanPham.Where(x => x.MaSp == maSp).SingleOrDefault();
         }
 
-        
+        public static DonHang GetDonHang(string maDh)
+        {
+            return context.DonHang.Find(maDh);
+        }
+        public static AspNetUsers GetUser(string userId)
+        {
+            return context.AspNetUsers.Find(userId);
+        }
     }
 }

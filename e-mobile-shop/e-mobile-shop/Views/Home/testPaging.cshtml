@@ -1,0 +1,388 @@
+﻿
+@{
+    ViewData["Title"] = "testPaging";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+@using e_mobile_shop.Models.Helpers;
+
+@model PaginatedList<SanPham>
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+<style>
+
+    .text-type-sp:hover{
+        color:blue !important;
+    }
+    
+</style>
+<div>
+    <a>@ViewData["CurrentSort"] </a>
+    <a> @ViewData["CurrentFilter"]</a>
+    <a>@ViewData["LoaiSp"]</a>
+</div>
+<!-- top Products -->
+<div class="ads-grid py-sm-1 py-4">
+    <div class="container-fluid py-xl-4 py-lg-2">
+        <!-- tittle heading -->
+        <!-- //tittle heading -->
+
+        <div class="row">
+
+            <!-- product left -->
+            <div class="agileinfo-ads-display col-lg-9">
+
+                <div class="wrapper">
+                    <!-- first section -->
+                    <div class="product-sec1 px-0   mb-4 ">
+                        <div class="row m-0">
+                            @foreach (var item in Model)
+                            {
+                                <div class="col-md-3 col-6 product-men pt-5 border">
+                                    <div class="men-pro-item simpleCart_shelfItem  d-flex justify-content-between flex-column " style="height: 100%">
+                                        <div class="men-thumb-item text-center">
+                                            <img src=@Url.Content("~/ProductAvatar/" + item.AnhDaiDien) alt="" class="d-block w-100 p-4">
+                                            <div class="men-cart-pro">
+                                                <div class="inner-men-cart-pro">
+                                                    <a asp-controller="SanPham" asp-action="SanPham" asp-route-id="@item.MaSp" class="link-product-add-cart">Quick View</a>
+                                                </div>
+                                            </div>
+
+                                            @if (item.Ishot == true)
+                                            {
+                                                <span class="product-new-top" style="background-color:red;">Hot</span>
+                                            }
+                                            else if (item.Isnew == true)
+                                            {
+                                                <span class="product-new-top" style="background-color:green;">New</span>
+                                            }
+
+
+                                        </div>
+                                        <div class="item-info-product text-center border-top mt-4">
+                                            <h4 class="pt-1">
+                                                <a href="single.html">@item.TenSp</a>
+                                            </h4>
+                                            <div class="info-product-price my-2">
+                                                <span class="item_price">@item.GiaGoc<sup>đ</sup></span>
+                                                <del>@item.GiaTien<sup>đ</sup></del>
+                                            </div>
+                                            <div class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out">
+                                                <form action="#" method="post">
+                                                    <fieldset>
+                                                        <input type="hidden" name="cmd" value="_cart" />
+                                                        <input type="hidden" name="add" value="1" />
+                                                        <input type="hidden" name="business" value=" " />
+                                                        <input type="hidden" name="item_name" value="Samsung Galaxy J7" />
+                                                        <input type="hidden" name="amount" value="200.00" />
+                                                        <input type="hidden" name="discount_amount" value="1.00" />
+                                                        <input type="hidden" name="currency_code" value="USD" />
+                                                        <input type="hidden" name="return" value=" " />
+                                                        <input type="hidden" name="cancel_return" value=" " />
+                                                    </fieldset>
+                                                </form>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
+
+                        </div>
+                    </div>
+                    <div class="d-flex">
+                        <a asp-action="testPaging"
+                           asp-route-sortOrder="@ViewData["CurrentSort"]"
+                           asp-route-pageNumber="@(Model.PageIndex - 1)"
+                           asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                           class="btn btn-outline-primary m-1 @prevDisabled" style="width:50%;border-radius:0px">
+                            <i class="fas fa-backward"></i>  Trang trước
+                        </a>
+                        <a asp-action="testPaging"
+                           asp-route-sortOrder="@ViewData["CurrentSort"]"
+                           asp-route-pageNumber="@(Model.PageIndex + 1)"
+                           asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                           class="btn btn-outline-primary m-1 @nextDisabled" style="width:50%; border-radius:0px;">
+                            Trang sau <i class="fas fa-forward"></i>
+                        </a>
+                    </div>
+                    <!-- //first section -->
+
+                </div>
+            </div>
+            <!-- //product left -->
+            <div class="col-lg-3 mt-lg-0 mt-4 p-lg-0">
+
+                <div class="side-bar p-sm-4 p-3">
+                    <div class="d-flex">
+                        <a asp-action="testPaging"
+                           asp-route-sortOrder="@ViewData["CurrentSort"]"
+                           asp-route-pageNumber="@(Model.PageIndex - 1)"
+                           asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                           class="btn btn-outline-primary m-1 @prevDisabled" style="width:50%;border-radius:0px">
+                            <i class="fas fa-backward"></i>  Trang trước
+                        </a>
+                        <a asp-action="testPaging"
+                           asp-route-sortOrder="@ViewData["CurrentSort"]"
+                           asp-route-pageNumber="@(Model.PageIndex + 1)"
+                           asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                           class="btn btn-outline-primary m-1 @nextDisabled" style="width:50%; border-radius:0px;">
+                            Trang sau <i class="fas fa-forward"></i>
+                        </a>
+                    </div>
+                    <br />
+                    <div class="search-hotel border-bottom py-2">
+                        <h3 class="agileits-sear-head mb-3 text-center">Bộ lọc tìm kiếm </h3>
+
+                        <div class="dropdown show">
+                            <a class="btn btn-secondary btn-block dropdown-toggle"
+                               style="background-color:#F45C5D; border-radius:0px; border:none;"
+                               href="#" role="button"
+                               id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Chọn mức giá
+                            </a>
+
+                            <div class="dropdown-menu" style="width:100%" aria-labelledby="dropdownMenuLink">
+                                <a class="dropdown-item" asp-route-giaTien="0&1">Dưới 1</a>
+                                <a class="dropdown-item" asp-route-giaTien="1&1000000">1 - 1 triệu</a>
+                                <a class="dropdown-item" asp-route-giaTien="1000000&10000000">1-10 triệu</a>
+                            </div>
+                        </div>
+                        <br />
+                        <p class="text-center"> hoặc </p>
+
+                        <br />
+                        <form asp-action="testPaging" method="get">
+                            <div class="form-actions no-color">
+                                <div class="d-flex" style="font-size: 15px; margin:5px;">
+                                    <div class="p-2 pl-0"> Nhập giá tiền </div>
+                                    <input class="p-2" style="font-size:10px;" type="text" name="giaTien" value="@ViewData["CurrentFilter"]" />
+                                    <button class="ml-1 p-2" style="background:#F45C5D; border: none" type="submit" value=""> Tìm kiếm </button>
+
+                                </div>
+                            </div>
+                        </form>
+
+                        <br />
+                        <div class="dropdown show">
+                            <a class="btn btn-secondary btn-block dropdown-toggle"
+                               style="background-color:#F45C5D; border-radius:0px; border:none;"
+                               href="#" role="button"
+                               id="dropdownMenuLink1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Sắp xếp kết quả
+                            </a>
+
+                            <div class="dropdown-menu" style="width:100%" aria-labelledby="dropdownMenuLink1">
+                                <a class="dropdown-item"
+                                   asp-action="testPaging"
+                                   asp-route-loaiSp="@ViewData["LoaiSp"]"
+                                   asp-route-sortOrder="high_first"
+                                   asp-route-currentFilter="@ViewData["CurrentFilter"]">Giá cao đến thấp</a>
+
+                                <a class="dropdown-item"
+                                   asp-action="testPaging"
+                                   asp-route-loaiSp="@ViewData["LoaiSp"]"
+                                   asp-route-sortOrder="low_first"
+                                   asp-route-currentFilter="@ViewData["CurrentFilter"]">Giá thấp đến cao</a>
+                            </div>
+                        </div>
+
+
+                        <div class="left-side py-2 border mt-5">
+                            <h3 class="text-center" style="color:black; font-weight:bold;" > Chọn loại sản phẩm </h3>
+                            <div>
+                                @foreach (var item in DataAccess.ReadLoaiSp())
+                                {
+                                    <a type="button text-type-sp" style="text-align:left; border-radius:0px;"
+                                       asp-action="testPaging"
+                                       asp-controller="Home"
+                                       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                                       asp-route-loaiSp="@item.MaLoai"
+                                       asp-route-sortOrder="@ViewData["CurrentSort"]">
+
+                                        <p  class="pl-3 ten-loai-sp"><span style="font-size:10px;" class="fas fa-circle"></span> @item.TenLoai</p>
+                                    </a>
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- ram -->
+                    <div class="left-side border-bottom py-2">
+                        <h3 class="agileits-sear-head mb-3">Ram</h3>
+                        <ul>
+                            <li>
+                                <input type="checkbox" class="checked">
+                                <span class="span">Less than 512 MB</span>
+                            </li>
+                            <li>
+                                <input type="checkbox" class="checked">
+                                <span class="span">512 MB - 1 GB</span>
+                            </li>
+                            <li>
+                                <input type="checkbox" class="checked">
+                                <span class="span">1 GB</span>
+                            </li>
+                            <li>
+                                <input type="checkbox" class="checked">
+                                <span class="span">2 GB</span>
+                            </li>
+                            <li>
+                                <input type="checkbox" class="checked">
+                                <span class="span">3 GB</span>
+                            </li>
+                            <li>
+                                <input type="checkbox" class="checked">
+                                <span class="span">5 GB</span>
+                            </li>
+                            <li>
+                                <input type="checkbox" class="checked">
+                                <span class="span">6 GB</span>
+                            </li>
+                            <li>
+                                <input type="checkbox" class="checked">
+                                <span class="span">6 GB & Above</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- //ram -->
+                    <!-- price -->
+                    <div class="range border-bottom py-2">
+                        <h3 class="agileits-sear-head mb-3">Price</h3>
+                        <div class="w3l-range">
+                            <ul>
+                                <li>
+                                    <a href="#">Under $1,000</a>
+                                </li>
+                                <li class="my-1">
+                                    <a href="#">$1,000 - $5,000</a>
+                                </li>
+                                <li>
+                                    <a href="#">$5,000 - $10,000</a>
+                                </li>
+                                <li class="my-1">
+                                    <a href="#">$10,000 - $20,000</a>
+                                </li>
+                                <li>
+                                    <a href="#">$20,000 $30,000</a>
+                                </li>
+                                <li class="mt-1">
+                                    <a href="#">Over $30,000</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- //price -->
+                    <!-- discounts -->
+                    <div class="left-side border-bottom py-2">
+                        <h3 class="agileits-sear-head mb-3">Discount</h3>
+                        <ul>
+                            <li>
+                                <input type="checkbox" class="checked">
+                                <span class="span">5% or More</span>
+                            </li>
+                            <li>
+                                <input type="checkbox" class="checked">
+                                <span class="span">10% or More</span>
+                            </li>
+                            <li>
+                                <input type="checkbox" class="checked">
+                                <span class="span">20% or More</span>
+                            </li>
+                            <li>
+                                <input type="checkbox" class="checked">
+                                <span class="span">30% or More</span>
+                            </li>
+                            <li>
+                                <input type="checkbox" class="checked">
+                                <span class="span">50% or More</span>
+                            </li>
+                            <li>
+                                <input type="checkbox" class="checked">
+                                <span class="span">60% or More</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- //discounts -->
+                    <!-- offers -->
+                    <div class="left-side border-bottom py-2">
+                        <h3 class="agileits-sear-head mb-3">Offers</h3>
+                        <ul>
+                            <li>
+                                <input type="checkbox" class="checked">
+                                <span class="span">Exchange Offer</span>
+                            </li>
+                            <li>
+                                <input type="checkbox" class="checked">
+                                <span class="span">No Cost EMI</span>
+                            </li>
+                            <li>
+                                <input type="checkbox" class="checked">
+                                <span class="span">Special Price</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- //offers -->
+                    <!-- delivery -->
+                    <div class="left-side border-bottom py-2">
+                        <h3 class="agileits-sear-head mb-3">Cash On Delivery</h3>
+                        <ul>
+                            <li>
+                                <input type="checkbox" class="checked">
+                                <span class="span">Eligible for Cash On Delivery</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- //delivery -->
+                    <!-- arrivals -->
+                    <div class="left-side border-bottom py-2">
+                        <h3 class="agileits-sear-head mb-3">New Arrivals</h3>
+                        <ul>
+                            <li>
+                                <input type="checkbox" class="checked">
+                                <span class="span">Last 30 days</span>
+                            </li>
+                            <li>
+                                <input type="checkbox" class="checked">
+                                <span class="span">Last 90 days</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="left-side py-2">
+                        <h3 class="agileits-sear-head mb-3">Availability</h3>
+                        <ul>
+                            <li>
+                                <input type="checkbox" class="checked">
+                                <span class="span">Exclude Out of Stock</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- //arrivals -->
+                </div>
+                <!-- //product right -->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- //top products -->
+
+
+
+<a asp-action="testPaging"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-action="testPaging"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>
+

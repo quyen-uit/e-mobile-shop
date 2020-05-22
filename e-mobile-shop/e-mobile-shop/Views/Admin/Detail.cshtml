@@ -1,0 +1,142 @@
+﻿@model e_mobile_shop.Models.SanPham
+
+@{
+    ViewData["Title"] = "Detail";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<style>
+    input {
+        pointer-events: none;
+        border-radius: 0px !important;
+    }
+    td{
+        padding:5px;
+    }
+  .form-control{
+     color: black;
+      border:none;
+      
+      background-color: lightgray;
+  }
+</style>
+<h1>Thông tin chi tiết</h1>
+
+<div>
+    <div class="panel panel-default">
+
+        <div class="panel-body">
+            <form enctype="multipart/form-data" role="form" asp-action="ChinhSua" asp-controller="Admin" method="post">
+                <div class="form-group">
+                    <label asp-for="@Model.TenSp">Tên sản phẩm</label>
+                    <input class="form-control" asp-for="@Model.TenSp" name="TenSp">
+                    <input type="hidden" name="Id" value="@Model.MaSp" />
+                    <span asp-validation-for="@Model.TenSp"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.LoaiSp"> Loại sản phẩm </label>
+
+                    <input class="form-control" asp-for="@Model.LoaiSp" type="text" id="textType" />
+
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.HangSx">Hãng sản xuất</label>
+                    <input asp-for="@Model.HangSx" class="form-control" maxlength="5">
+                    <span asp-validation-for="@Model.HangSx"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.XuatXu">Xuất xứ</label>
+                    <input class="form-control" asp-for="@Model.XuatXu">
+                    <span asp-validation-for="@Model.XuatXu"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.SoLuong">Số lượng</label>
+                    <input asp-for="@Model.SoLuong" class="form-control">
+                    <span asp-validation-for="@Model.SoLuong"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="@Model.GiaGoc">Giá gốc</label>
+                    <input type="number" asp-for="@Model.GiaGoc" class="form-control">
+                    <span asp-validation-for="@Model.GiaGoc"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.GiaTien">Giá bán</label>
+                    <input type="number" asp-for="@Model.GiaTien" class="form-control">
+                    <span asp-validation-for="@Model.GiaTien"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.AnhDaiDien">Ảnh đại diện</label>
+                    <div class="row"><img src=@Url.Content("~/ProductAvatar/" +Model.AnhDaiDien ) width="150" height="150" /></div>
+                </div>
+
+
+                <div class="form-group">
+                    <label class="pt-5"> Ảnh mô tả </label>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <img src=@Url.Content("~/ProductImages/" +DataAccess.GetAnhSanPham(Model.MaSp).Anh1) width="150" height="150" />
+                        </div>
+                        <div class="col-lg-4">
+                            <img src=@Url.Content("~/ProductImages/" +DataAccess.GetAnhSanPham(Model.MaSp).Anh2) width="150" height="150" />
+                        </div>
+                        <div class="col-lg-4">
+                            <img src=@Url.Content("~/ProductImages/" +DataAccess.GetAnhSanPham(Model.MaSp).Anh3) width="150" height="150" />
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    <label>Mô tả</label>
+                    <textarea class="form-control" rows="3" asp-for="@Model.MoTa"></textarea>
+                    <script>
+                        CKEDITOR.replace('MoTa');
+                    </script>
+                </div>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                    Xem chi tiết cấu hình 
+                </button>
+                <br />
+                <button type="submit" name="submit" class="btn btn-default">Submit Button</button>
+                <button type="reset" class="btn btn-default">Reset Button</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    <a asp-action="Index">Back to List</a>
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" >
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title" id="exampleModalLabel">Chi tiết cấu hình</h3>
+
+            </div>
+            <div style="padding: 10px;">
+                <table class="modal-body" border="1" style=" width:100%;">
+                    @foreach (var item1 in DataAccess.GetThongSoKiThuat(Model.MaSp))
+                    {
+                        <tr class="mb-1 ">
+
+                            <td style="text-transform:uppercase">@item1.ThuocTinh</td>
+                            <td style="text-transform:uppercase">@item1.GiaTri</td>
+                        </tr>
+                    }
+
+                </table>
+            </div>
+
+
+            <div class="modal-footer">
+                <button style="border-radius:0px;" type="button" class="btn btn-primary" data-dismiss="modal">Đóng </button>
+            </div>
+        </div>
+    </div>
+</div>

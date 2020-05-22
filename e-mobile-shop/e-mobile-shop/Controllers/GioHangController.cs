@@ -33,6 +33,7 @@ namespace e_mobile_shop.Controllers
             ViewBag.ThanhTien = s;
             ViewBag.GioHang = giohang;
             ViewBag.Added = 0;
+            
             return View();
         }
 
@@ -67,6 +68,7 @@ namespace e_mobile_shop.Controllers
 
                 ViewBag.Added = 1;
                 SessionHelper.SetObjectAsJson(HttpContext.Session, "GioHang", gh);
+                DataAccess.soCtdh = gh.Count();
                 return RedirectToAction("SanPham", "SanPham", new { Id = ctdh1.MaSp });
             }
             else
@@ -82,7 +84,7 @@ namespace e_mobile_shop.Controllers
                 else
                 {
                     gh.Add(ctdh1);
-
+                    DataAccess.soCtdh = gh.Count();
                 }
                 ViewBag.Added = 1;
                 SessionHelper.SetObjectAsJson(HttpContext.Session, "GioHang", gh);
@@ -95,6 +97,7 @@ namespace e_mobile_shop.Controllers
             List<ChiTietDonHang> gh = SessionHelper.GetObjectFromJson<List<ChiTietDonHang>>(HttpContext.Session, "GioHang");
             gh.RemoveAt(id);
             SessionHelper.SetObjectAsJson(HttpContext.Session, "GioHang", gh);
+            DataAccess.soCtdh--;
             return RedirectToAction("XemGioHang", "GioHang");
         }
 
@@ -122,18 +125,23 @@ namespace e_mobile_shop.Controllers
                 DataAccess.context.SaveChanges();
             }
             SessionHelper.DeleteAllSession(HttpContext.Session);
-            return RedirectToAction("DanhSachDonHang", "GioHang");
+            DataAccess.soCtdh = 0;
+            return RedirectToAction("ChiTietDonHang", "GioHang", new { id = dh.MaDh }).WithSuccess("Đặt hàng thành công","");
+          
         }
         [Authorize]
-        public IActionResult DanhSachDonHang()
+        public IActionResult DanhSachDonHang(string id)
         {
-            return View(DataAccess.context.DonHang.ToList());
+
+            return View(DataAccess.context.DonHang.Where(x => x.MaKh == id).ToList());
         }
 
         [Authorize]
         public IActionResult ChiTietDonHang(string id)
         {
-            return View(DataAccess.context.ChiTietDonHang.Where(x => x.MaDh == id).ToList());
+            if (id != null)
+                return View(DataAccess.context.ChiTietDonHang.Where(x => x.MaDh == id).ToList());
+            else return RedirectToAction("Index", "Home");
         }
     }
 }

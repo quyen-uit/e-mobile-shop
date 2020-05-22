@@ -20,7 +20,7 @@ namespace e_mobile_shop.Areas.Identity
                     options.UseSqlServer(
                         context.Configuration.GetConnectionString("eShopDbContextConnection")));
 
-                services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = true).AddRoles<IdentityRole>()
                     .AddEntityFrameworkStores<eShopDbContext>();
             });
         }

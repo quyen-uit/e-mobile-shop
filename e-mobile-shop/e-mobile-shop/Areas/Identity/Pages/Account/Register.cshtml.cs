@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using e_mobile_shop.Models;
 
 namespace e_mobile_shop.Areas.Identity.Pages.Account
 {
@@ -119,7 +120,13 @@ namespace e_mobile_shop.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
-
+                    AspNetUserRoles userrole = new AspNetUserRoles()
+                    {
+                        RoleId = DataAccess.context.AspNetRoles.Where(x => x.Name == "Khách hàng").FirstOrDefault().Id,
+                        UserId = user.Id
+                    };
+                     DataAccess.context.AspNetUserRoles.Add(userrole);
+                    DataAccess.context.SaveChanges();
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     var callbackUrl = Url.Page(

@@ -24,6 +24,9 @@ namespace e_mobile_shop.Controllers
             return View(DataAccess.ReadSanPham(Id));
         }
 
+        //public IActionResult SanPhamFilter(string param1, string param2)
+        //{
 
+        //}
     }
 }
