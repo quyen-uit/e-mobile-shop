@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewData["Title"] = "testPaging";
+    ViewData["Title"] = "Filter";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
 }
@@ -10,15 +10,46 @@
 @{
     var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
     var nextDisabled = !Model.HasNextPage ? "disabled" : "";
-}
-<style>
 
-    .text-type-sp:hover{
-        color:blue !important;
+    var currentUp = "";
+    var currentDown = "";
+
+    if (ViewData["SortByPrice"].ToString() == "")
+    {
+        currentUp = "";
+        currentDown = "";
     }
-    
-</style>
+    else if (ViewData["SortByPrice"].ToString() == "low_first")
+    {
+        currentUp = "";
+        currentDown = "active-selected";
+    }
+    else if (ViewData["SortByPrice"].ToString() == "high_first")
+    {
+        currentUp = "active-selected";
+        currentDown = "";
+    }
+}
+    <style>
+
+    .text-type-sp:hover {
+        color: blue !important;
+    }
+    .active-selected {
+        background-color: #0879C9;
+        color:white;
+    }
+        .loaisp-@ViewData["LoaiSp"] {
+            background-color: #0879C9;
+            color: white;
+        }
+        .selected-@ViewData["CurrentFilter"] {
+            background-color: #0879C9;
+            color: white;
+        }
+    </style>
 <div>
+    <a> @ViewData["SortByPrice"]</a>
     <a>@ViewData["CurrentSort"] </a>
     <a> @ViewData["CurrentFilter"]</a>
     <a>@ViewData["LoaiSp"]</a>
@@ -94,14 +125,14 @@
                         </div>
                     </div>
                     <div class="d-flex">
-                        <a asp-action="testPaging"
+                        <a asp-action="Filter"
                            asp-route-sortOrder="@ViewData["CurrentSort"]"
                            asp-route-pageNumber="@(Model.PageIndex - 1)"
                            asp-route-currentFilter="@ViewData["CurrentFilter"]"
                            class="btn btn-outline-primary m-1 @prevDisabled" style="width:50%;border-radius:0px">
                             <i class="fas fa-backward"></i>  Trang trước
                         </a>
-                        <a asp-action="testPaging"
+                        <a asp-action="Filter"
                            asp-route-sortOrder="@ViewData["CurrentSort"]"
                            asp-route-pageNumber="@(Model.PageIndex + 1)"
                            asp-route-currentFilter="@ViewData["CurrentFilter"]"
@@ -118,14 +149,14 @@
 
                 <div class="side-bar p-sm-4 p-3">
                     <div class="d-flex">
-                        <a asp-action="testPaging"
+                        <a asp-action="Filter"
                            asp-route-sortOrder="@ViewData["CurrentSort"]"
                            asp-route-pageNumber="@(Model.PageIndex - 1)"
                            asp-route-currentFilter="@ViewData["CurrentFilter"]"
                            class="btn btn-outline-primary m-1 @prevDisabled" style="width:50%;border-radius:0px">
                             <i class="fas fa-backward"></i>  Trang trước
                         </a>
-                        <a asp-action="testPaging"
+                        <a asp-action="Filter"
                            asp-route-sortOrder="@ViewData["CurrentSort"]"
                            asp-route-pageNumber="@(Model.PageIndex + 1)"
                            asp-route-currentFilter="@ViewData["CurrentFilter"]"
@@ -135,27 +166,34 @@
                     </div>
                     <br />
                     <div class="search-hotel border-bottom py-2">
-                        <h3 class="agileits-sear-head mb-3 text-center">Bộ lọc tìm kiếm </h3>
+                        <h3 class="agileits-sear-head mb-3 text-center">Chọn mức giá </h3>
 
-                        <div class="dropdown show">
-                            <a class="btn btn-secondary btn-block dropdown-toggle"
-                               style="background-color:#F45C5D; border-radius:0px; border:none;"
-                               href="#" role="button"
-                               id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Chọn mức giá
-                            </a>
 
-                            <div class="dropdown-menu" style="width:100%" aria-labelledby="dropdownMenuLink">
-                                <a class="dropdown-item" asp-route-giaTien="0&1">Dưới 1</a>
-                                <a class="dropdown-item" asp-route-giaTien="1&1000000">1 - 1 triệu</a>
-                                <a class="dropdown-item" asp-route-giaTien="1000000&10000000">1-10 triệu</a>
-                            </div>
+                        <div class="" style="width:100%; font-weight:bold" aria-labelledby="dropdownMenuLink">
+                            @for (int i = 0; i < 9; i= i+2)
+                            {
+                                
+                                    <a class="btn btn-block btn-outline-secondary radius-0 selected-@(i*1000000)-@((i+2)*1000000)"
+                                       asp-route-loaiSp="@ViewData["LoaiSp"]"
+                                       asp-route-giaTien="@(i*1000000)-@((i+2)*1000000)">Từ @(i) đến @((i+2)) triệu</a>
+                                
+                            }
+                            @*<a class="btn btn-block btn-outline-secondary radius-0 selected-0-2000000"
+                               asp-route-loaiSp="@ViewData["LoaiSp"]"
+                               asp-route-giaTien="0-2000000">Dưới 2 triệu</a>
+                            <a class="btn btn-block btn-outline-secondary radius-0 selected-2000000-7000000"
+                               asp-route-loaiSp="@ViewData["LoaiSp"]"
+                               asp-route-giaTien="2000000-7000000">Từ 2 - 7 triệu</a>
+                            <a class="btn btn-block btn-outline-secondary radius-0 selected-7000000-12000000"
+                               asp-route-loaiSp="@ViewData["LoaiSp"]"
+                               asp-route-giaTien="7000000-12000000">Từ 7 - 12 triệu</a>
+                            <a class="btn btn-block btn-outline-secondary radius-0 selected-12000000-100000000"
+                               asp-route-loaiSp="@ViewData["LoaiSp"]"
+                               asp-route-giaTien="12000000-100000000">Trên 12 triệu</a>*@
                         </div>
                         <br />
-                        <p class="text-center"> hoặc </p>
 
-                        <br />
-                        <form asp-action="testPaging" method="get">
+                        <form style="display:none" asp-action="Filter" method="get">
                             <div class="form-actions no-color">
                                 <div class="d-flex" style="font-size: 15px; margin:5px;">
                                     <div class="p-2 pl-0"> Nhập giá tiền </div>
@@ -167,43 +205,37 @@
                         </form>
 
                         <br />
-                        <div class="dropdown show">
-                            <a class="btn btn-secondary btn-block dropdown-toggle"
-                               style="background-color:#F45C5D; border-radius:0px; border:none;"
-                               href="#" role="button"
-                               id="dropdownMenuLink1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Sắp xếp kết quả
-                            </a>
 
-                            <div class="dropdown-menu" style="width:100%" aria-labelledby="dropdownMenuLink1">
-                                <a class="dropdown-item"
-                                   asp-action="testPaging"
-                                   asp-route-loaiSp="@ViewData["LoaiSp"]"
-                                   asp-route-sortOrder="high_first"
-                                   asp-route-currentFilter="@ViewData["CurrentFilter"]">Giá cao đến thấp</a>
+                        <div class="d-flex ">
+                            <a class="dropdown-item border p-2 m-2 @currentUp"
+                               asp-action="Filter"
+                               asp-route-loaiSp="@ViewData["LoaiSp"]"
+                               asp-route-sortOrder="high_first"
+                               asp-route-currentFilter="@ViewData["CurrentFilter"]"><i class="fas fa-arrow-down"></i> Giá cao đến thấp</a>
 
-                                <a class="dropdown-item"
-                                   asp-action="testPaging"
-                                   asp-route-loaiSp="@ViewData["LoaiSp"]"
-                                   asp-route-sortOrder="low_first"
-                                   asp-route-currentFilter="@ViewData["CurrentFilter"]">Giá thấp đến cao</a>
-                            </div>
+                            <a class="dropdown-item border p-2 m-2 @currentDown"
+                               asp-action="Filter"
+                               asp-route-loaiSp="@ViewData["LoaiSp"]"
+                               asp-route-sortOrder="low_first"
+                               asp-route-currentFilter="@ViewData["CurrentFilter"]"><i class="fas fa-arrow-up"></i> Giá thấp đến cao</a>
                         </div>
 
 
+
+
                         <div class="left-side py-2 border mt-5">
-                            <h3 class="text-center" style="color:black; font-weight:bold;" > Chọn loại sản phẩm </h3>
+                            <h3 class="text-center" style="color:black; font-weight:bold;"> Chọn loại sản phẩm </h3>
                             <div>
                                 @foreach (var item in DataAccess.ReadLoaiSp())
                                 {
                                     <a type="button text-type-sp" style="text-align:left; border-radius:0px;"
-                                       asp-action="testPaging"
+                                       asp-action="Filter"
                                        asp-controller="Home"
                                        asp-route-currentFilter="@ViewData["CurrentFilter"]"
                                        asp-route-loaiSp="@item.MaLoai"
                                        asp-route-sortOrder="@ViewData["CurrentSort"]">
 
-                                        <p  class="pl-3 ten-loai-sp"><span style="font-size:10px;" class="fas fa-circle"></span> @item.TenLoai</p>
+                                        <p class="pl-3 ten-loai-sp loaisp-@item.MaLoai"><span style="font-size:10px;" class="fas fa-circle"></span> @item.TenLoai</p>
                                     </a>
                                 }
 
@@ -371,14 +403,14 @@
 
 
 
-<a asp-action="testPaging"
+<a asp-action="Filter"
    asp-route-sortOrder="@ViewData["CurrentSort"]"
    asp-route-pageNumber="@(Model.PageIndex - 1)"
    asp-route-currentFilter="@ViewData["CurrentFilter"]"
    class="btn btn-default @prevDisabled">
     Previous
 </a>
-<a asp-action="testPaging"
+<a asp-action="Filter"
    asp-route-sortOrder="@ViewData["CurrentSort"]"
    asp-route-pageNumber="@(Model.PageIndex + 1)"
    asp-route-currentFilter="@ViewData["CurrentFilter"]"

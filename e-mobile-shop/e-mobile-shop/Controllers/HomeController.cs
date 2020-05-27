@@ -32,7 +32,7 @@ namespace e_mobile_shop.Controllers
         }
 
 
-        public async Task<IActionResult> testPaging(
+        public async Task<IActionResult> Filter(
             string sortOrder,    
             string currentFilter,    
             string giaTien,    
@@ -42,16 +42,18 @@ namespace e_mobile_shop.Controllers
             ViewData["CurrentSort"] = sortOrder;
             if(string.IsNullOrEmpty(sortOrder))
             {
-                ViewData["SortByName"] = "by_name";
+                ViewData["SortByPrice"] = "";
             }
             if (sortOrder == "high_first")
             {
                 ViewData["SortByPrice"] = "high_first";
             }
-            else ViewData["SortByPrice"] = "low_first";
+            else if (sortOrder=="low_first")
+            {
+                ViewData["SortByPrice"] = "low_first";
+            }
 
-            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "high_first" : "";
-            ViewData["DateSortParm"] = sortOrder == "high_first" ? "high_first" : "low_first";
+
 
             if (giaTien != null)
             {
@@ -66,9 +68,9 @@ namespace e_mobile_shop.Controllers
             if (!String.IsNullOrEmpty(giaTien))
             {
                 string[] paramStrs = new string[2];
-                if (giaTien.Contains('&'))
+                if (giaTien.Contains('-'))
                 {
-                    paramStrs = giaTien.Split('&');
+                    paramStrs = giaTien.Split('-');
                     sanphams = sanphams.Where(s => s.GiaGoc <= int.Parse(paramStrs[1]) && s.GiaGoc >= int.Parse(paramStrs[0]));
                 }
                 else
