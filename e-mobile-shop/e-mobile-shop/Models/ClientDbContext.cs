@@ -28,6 +28,7 @@ namespace e_mobile_shop.Models
         public virtual DbSet<ChiTietDonHang> ChiTietDonHang { get; set; }
         public virtual DbSet<DonHang> DonHang { get; set; }
         public virtual DbSet<LoaiSp> LoaiSp { get; set; }
+        public virtual DbSet<NhaCungCap> NhaCungCap { get; set; }
         public virtual DbSet<SanPham> SanPham { get; set; }
         public virtual DbSet<ThongSoKiThuat> ThongSoKiThuat { get; set; }
 
@@ -36,7 +37,7 @@ namespace e_mobile_shop.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Data Source=DESKTOP-R3PM237;Initial Catalog=eShopDb;Integrated Security=True");
+                optionsBuilder.UseSqlServer("Data Source=UAENA;Initial Catalog=eShopDb;Integrated Security=True");
             }
         }
 
@@ -45,8 +46,8 @@ namespace e_mobile_shop.Models
             modelBuilder.Entity<AnhSanPham>(entity =>
             {
                 entity.Property(e => e.Id)
-                    .HasMaxLength(10)
-                    .IsFixedLength();
+                    .HasMaxLength(7)
+                    .HasDefaultValueSql("([dbo].[AUTO_ID]())");
 
                 entity.Property(e => e.Anh1).HasColumnType("text");
 
@@ -55,8 +56,8 @@ namespace e_mobile_shop.Models
                 entity.Property(e => e.Anh3).HasColumnType("text");
 
                 entity.Property(e => e.MaSp)
-                    .HasMaxLength(5)
-                    .IsFixedLength();
+                    .HasColumnName("MaSP")
+                    .HasMaxLength(6);
 
                 entity.HasOne(d => d.MaSpNavigation)
                     .WithMany(p => p.AnhSanPham)
@@ -180,14 +181,14 @@ namespace e_mobile_shop.Models
 
                 entity.Property(e => e.MaKm)
                     .HasColumnName("MaKM")
-                    .HasMaxLength(10)
-                    .IsFixedLength();
+                    .HasMaxLength(6)
+                    .HasDefaultValueSql("([dbo].[AUTO_MAKM]())");
 
                 entity.Property(e => e.AnhDaiDien).HasMaxLength(100);
 
-                entity.Property(e => e.MaSp)
-                    .HasMaxLength(5)
-                    .IsFixedLength();
+                entity.Property(e => e.MaSp).HasMaxLength(6);
+
+                entity.Property(e => e.Status).HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.ThongTin).HasColumnType("text");
 
@@ -203,7 +204,8 @@ namespace e_mobile_shop.Models
 
                 entity.Property(e => e.MaBl)
                     .HasColumnName("MaBL")
-                    .ValueGeneratedNever();
+                    .HasMaxLength(6)
+                    .HasDefaultValueSql("([dbo].[AUTO_MABL]())");
 
                 entity.Property(e => e.DaTraLoi)
                     .HasMaxLength(1)
@@ -221,12 +223,13 @@ namespace e_mobile_shop.Models
 
                 entity.Property(e => e.MaSp)
                     .HasColumnName("MaSP")
-                    .HasMaxLength(5)
-                    .IsFixedLength();
+                    .HasMaxLength(6);
 
                 entity.Property(e => e.NgayDang).HasColumnType("datetime");
 
                 entity.Property(e => e.NoiDung).HasColumnType("ntext");
+
+                entity.Property(e => e.Status).HasDefaultValueSql("((1))");
 
                 entity.HasOne(d => d.MaKhNavigation)
                     .WithMany(p => p.BinhLuan)
@@ -242,23 +245,22 @@ namespace e_mobile_shop.Models
             modelBuilder.Entity<ChiTietDonHang>(entity =>
             {
                 entity.HasKey(e => e.MaCtdh)
-                    .HasName("PK__ChiTietD__1E4E40F077BB8AE3");
+                    .HasName("PK__ChiTietD__1E4E40F0714611F3");
 
                 entity.Property(e => e.MaCtdh)
                     .HasColumnName("MaCTDH")
-                    .HasMaxLength(20);
+                    .HasMaxLength(8)
+                    .HasDefaultValueSql("([dbo].[AUTO_MACTDH]())");
 
                 entity.Property(e => e.MaDh)
                     .IsRequired()
                     .HasColumnName("MaDH")
-                    .HasMaxLength(5)
-                    .IsFixedLength();
+                    .HasMaxLength(6);
 
                 entity.Property(e => e.MaSp)
                     .IsRequired()
                     .HasColumnName("MaSP")
-                    .HasMaxLength(5)
-                    .IsFixedLength();
+                    .HasMaxLength(6);
 
                 entity.Property(e => e.ThanhTien).HasColumnType("decimal(18, 0)");
 
@@ -281,8 +283,8 @@ namespace e_mobile_shop.Models
 
                 entity.Property(e => e.MaDh)
                     .HasColumnName("MaDH")
-                    .HasMaxLength(5)
-                    .IsFixedLength();
+                    .HasMaxLength(6)
+                    .HasDefaultValueSql("([dbo].[AUTO_MADH]())");
 
                 entity.Property(e => e.Diachi).HasMaxLength(100);
 
@@ -304,12 +306,14 @@ namespace e_mobile_shop.Models
                     .HasColumnName("PTGiaoDich")
                     .HasMaxLength(200);
 
+                entity.Property(e => e.Status).HasDefaultValueSql("((1))");
+
                 entity.Property(e => e.TinhTrangDh).HasColumnName("TinhTrangDH");
 
                 entity.HasOne(d => d.MaKhNavigation)
                     .WithMany(p => p.DonHang)
                     .HasForeignKey(d => d.MaKh)
-                    .HasConstraintName("FK__DonHang__MaKH__7C4F7684");
+                    .HasConstraintName("FK__DonHang__MaKH__07C12930");
             });
 
             modelBuilder.Entity<LoaiSp>(entity =>
@@ -317,12 +321,38 @@ namespace e_mobile_shop.Models
                 entity.HasKey(e => e.MaLoai);
 
                 entity.Property(e => e.MaLoai)
-                    .HasMaxLength(5)
-                    .IsFixedLength();
+                    .HasMaxLength(7)
+                    .HasDefaultValueSql("([dbo].[AUTO_MALOAISP]())");
 
                 entity.Property(e => e.TenLoai)
                     .IsRequired()
                     .HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<NhaCungCap>(entity =>
+            {
+                entity.HasKey(e => e.MaNcc);
+
+                entity.Property(e => e.MaNcc)
+                    .HasColumnName("MaNCC")
+                    .HasMaxLength(7);
+
+                entity.Property(e => e.DiaChi)
+                    .IsRequired()
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.Email)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.Sdt).HasColumnName("SDT");
+
+                entity.Property(e => e.Status).HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.TenNcc)
+                    .IsRequired()
+                    .HasColumnName("TenNCC")
+                    .HasMaxLength(100);
             });
 
             modelBuilder.Entity<SanPham>(entity =>
@@ -331,8 +361,8 @@ namespace e_mobile_shop.Models
 
                 entity.Property(e => e.MaSp)
                     .HasColumnName("MaSP")
-                    .HasMaxLength(5)
-                    .IsFixedLength();
+                    .HasMaxLength(6)
+                    .HasDefaultValueSql("([dbo].[AUTO_MASP]())");
 
                 entity.Property(e => e.AnhDaiDien).HasColumnType("ntext");
 
@@ -347,11 +377,11 @@ namespace e_mobile_shop.Models
                 entity.Property(e => e.HangSx)
                     .IsRequired()
                     .HasColumnName("HangSX")
-                    .HasMaxLength(5)
+                    .HasMaxLength(50)
                     .IsFixedLength()
                     .HasDefaultValueSql("('NOTTT')");
 
-                entity.Property(e => e.IsOnline).HasColumnName("isOnline");
+                entity.Property(e => e.IsOnline).HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.Ishot).HasColumnName("ishot");
 
@@ -360,13 +390,18 @@ namespace e_mobile_shop.Models
                 entity.Property(e => e.LoaiSp)
                     .IsRequired()
                     .HasColumnName("LoaiSP")
-                    .HasMaxLength(5)
-                    .IsFixedLength()
+                    .HasMaxLength(7)
                     .HasDefaultValueSql("('NOTTT')");
+
+                entity.Property(e => e.MaNcc)
+                    .HasColumnName("MaNCC")
+                    .HasMaxLength(7);
 
                 entity.Property(e => e.MoTa).HasColumnType("ntext");
 
                 entity.Property(e => e.SoLuotXemSp).HasColumnName("SoLuotXemSP");
+
+                entity.Property(e => e.Status).HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.TenSp)
                     .IsRequired()
@@ -380,16 +415,22 @@ namespace e_mobile_shop.Models
                     .HasForeignKey(d => d.LoaiSp)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_SanPham_LoaiSp");
+
+                entity.HasOne(d => d.MaNccNavigation)
+                    .WithMany(p => p.SanPham)
+                    .HasForeignKey(d => d.MaNcc)
+                    .HasConstraintName("FK_SanPham_NhaCungCap");
             });
 
             modelBuilder.Entity<ThongSoKiThuat>(entity =>
             {
                 entity.HasKey(e => e.MaTskt)
-                    .HasName("PK__ThongSoK__475C93A1CED312BD");
+                    .HasName("PK__ThongSoK__475C93A10F1F71F3");
 
                 entity.Property(e => e.MaTskt)
                     .HasColumnName("MaTSKT")
-                    .HasMaxLength(10);
+                    .HasMaxLength(8)
+                    .HasDefaultValueSql("([dbo].[AUTO_MATSKT]())");
 
                 entity.Property(e => e.GiaTri)
                     .IsRequired()
@@ -398,8 +439,7 @@ namespace e_mobile_shop.Models
                 entity.Property(e => e.MaSp)
                     .IsRequired()
                     .HasColumnName("MaSP")
-                    .HasMaxLength(5)
-                    .IsFixedLength();
+                    .HasMaxLength(6);
 
                 entity.Property(e => e.ThuocTinh)
                     .IsRequired()

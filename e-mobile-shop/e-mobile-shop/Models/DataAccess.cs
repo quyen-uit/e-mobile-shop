@@ -18,7 +18,7 @@ namespace e_mobile_shop.Models
         public static List<LoaiSp> ReadLoaiSp()
         {
             List<LoaiSp> result = new List<LoaiSp>();
-            result.Add(context.LoaiSp.Find("00000"));
+            result.Add(context.LoaiSp.Find("LSP0001"));
 
             foreach (var item in context.LoaiSp.ToList())
             {
@@ -32,14 +32,14 @@ namespace e_mobile_shop.Models
 
         public static List<SanPham> ReadSanPham(string loaiSp)
         {
-            if (loaiSp != "00000")
+            if (loaiSp != "LSP0001")
             {
                 return context.SanPham.Where(x => x.LoaiSp == loaiSp).ToList();
             }
 
             else
             {
-                return context.SanPham.Where(x => x.LoaiSp != "15674" && x.LoaiSp != "87356" && x.LoaiSp != "89742").ToList();
+                return context.SanPham.Where(x => x.LoaiSp != "LSP0002" && x.LoaiSp != "LSP0007" && x.LoaiSp != "LSP0008").ToList();
             }
         }
 

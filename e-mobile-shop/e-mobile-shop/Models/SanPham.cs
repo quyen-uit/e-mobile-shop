@@ -29,9 +29,12 @@ namespace e_mobile_shop.Models
         public int? SoLuong { get; set; }
         public bool? Isnew { get; set; }
         public bool? Ishot { get; set; }
+        public int? Status { get; set; }
         public int? IsOnline { get; set; }
+        public string MaNcc { get; set; }
 
         public virtual LoaiSp LoaiSpNavigation { get; set; }
+        public virtual NhaCungCap MaNccNavigation { get; set; }
         public virtual ICollection<AnhSanPham> AnhSanPham { get; set; }
         public virtual ICollection<BannerKhuyenMai> BannerKhuyenMai { get; set; }
         public virtual ICollection<BinhLuan> BinhLuan { get; set; }

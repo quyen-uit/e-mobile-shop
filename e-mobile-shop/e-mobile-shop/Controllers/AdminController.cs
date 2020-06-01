@@ -33,7 +33,7 @@ namespace e_mobile_shop.Controllers
         }
         public IActionResult QuanLyDienThoai()
         {
-            return View(DataAccess.ReadSanPham("15674"));
+            return View(DataAccess.ReadSanPham("LSP0002"));
         }
         public IActionResult ThemDienThoai()
         {
