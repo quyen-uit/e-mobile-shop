@@ -26,8 +26,7 @@ namespace e_mobile_shop.Controllers
 
         public IActionResult Index()
         {
-            if (TempData["GioHang"] == null)
-                TempData["GioHang"] = 0;
+   
             return View(DataAccess.ViewSanPham());
         }
 
@@ -37,8 +36,11 @@ namespace e_mobile_shop.Controllers
             string currentFilter,    
             string giaTien,    
             int? pageNumber, 
-            string loaiSp)
+            string loaiSp,
+            string tenSp)
         {
+
+            //sort order
             ViewData["CurrentSort"] = sortOrder;
             if(string.IsNullOrEmpty(sortOrder))
             {
@@ -53,7 +55,7 @@ namespace e_mobile_shop.Controllers
                 ViewData["SortByPrice"] = "low_first";
             }
 
-
+           
 
             if (giaTien != null)
             {
@@ -65,6 +67,16 @@ namespace e_mobile_shop.Controllers
             }
             ViewData["CurrentFilter"] = giaTien;
             var sanphams = from s in DataAccess.context.SanPham  select s;
+
+            //filter by name 
+            if (!String.IsNullOrEmpty(tenSp))
+            {
+                ViewData["TenSp"] = tenSp;
+                sanphams = sanphams.Where(s => s.TenSp.ToLower().Contains(tenSp.ToLower()));
+            }
+            
+
+            //filter by price
             if (!String.IsNullOrEmpty(giaTien))
             {
                 string[] paramStrs = new string[2];
@@ -81,10 +93,19 @@ namespace e_mobile_shop.Controllers
                 }
             }
 
+            //filter by type 
             if(!string.IsNullOrEmpty(loaiSp))
             {
                 ViewData["LoaiSp"] = loaiSp;
-                sanphams = sanphams.Where(s => s.LoaiSp == loaiSp);
+
+                if (loaiSp != "00000")
+                {
+                    sanphams = sanphams.Where(x => x.LoaiSp == loaiSp);
+                }
+                else
+                {
+                    sanphams = sanphams.Where(x => x.LoaiSp != "15674" && x.LoaiSp != "87356" && x.LoaiSp != "89742");
+                }
             }
             switch (sortOrder)
             {

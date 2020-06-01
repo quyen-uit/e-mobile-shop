@@ -7,7 +7,7 @@
 
 @model PaginatedList<SanPham>
 @{
-    ViewData["LoaiSp"] =Model[0].LoaiSp;
+    ViewData["LoaiSp"] = Model[0].LoaiSp;
     var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
     var nextDisabled = !Model.HasNextPage ? "disabled" : "";
 }
@@ -123,243 +123,230 @@
 
 
                         <div class="" style="width:100%; font-weight:bold" aria-labelledby="dropdownMenuLink">
-                            <a class="btn btn-block btn-outline-secondary radius-0 selected-0-2000000"
-                               asp-action="Filter"
-                               asp-controller="Home"
-                               asp-route-giaTien="0-2000000"
-                               asp-route-loaiSp="@ViewData["LoaiSp"]">
-                                Dưới 2 triệu
-                            </a>
+                            @for (int i = 0; i < 9; i = i + 2)
+                            {
 
-                            <a class="btn btn-block btn-outline-secondary radius-0 selected-2000000-7000000"
-                               asp-action="Filter"
-                               asp-controller="Home"
-                               asp-route-giaTien="2000000-7000000"
-                               asp-route-loaiSp="@ViewData["LoaiSp"]">
-                                Từ 2 - 7 triệu
-                            </a>
+                                <a class="btn btn-block btn-outline-secondary radius-0 selected-@(i*1000000)-@((i+2)*1000000)"
+                                   asp-route-loaiSp="@ViewData["LoaiSp"]"
+                                   asp-route-giaTien="@(i*1000000)-@((i+2)*1000000)"
+                                   asp-controller="Home"
+                                   asp-action="Filter">Từ @(i) đến @((i+2)) triệu</a>
 
-                            <a class="btn btn-block btn-outline-secondary radius-0 selected-7000000-12000000"
-                               asp-action="Filter"
-                               asp-controller="Home"
-                               asp-route-giaTien="7000000-12000000"
-                               asp-route-loaiSp="@ViewData["LoaiSp"]">
-                                Từ 7 - 12 triệu
-                            </a>
-                            <a class="btn btn-block btn-outline-secondary radius-0 selected-12000000-100000000"
-                               asp-action="Filter"
-                               asp-controller="Home"
-                               asp-route-giaTien="12000000-100000000"
-                               asp-route-loaiSp="@ViewData["LoaiSp"]">
-                                Trên 12 triệu
-                            </a>
-                        </div>
-                        <br />
-
-                        <form style="display:none" asp-action="Filter" method="get">
-                            <div class="form-actions no-color">
-                                <div class="d-flex" style="font-size: 15px; margin:5px;">
-                                    <div class="p-2 pl-0"> Nhập giá tiền </div>
-                                    <input class="p-2" style="font-size:10px;" type="text" name="giaTien" value="@ViewData["CurrentFilter"]" />
-                                    <button class="ml-1 p-2" style="background:#F45C5D; border: none" type="submit" value=""> Tìm kiếm </button>
-
-                                </div>
-                            </div>
-                        </form>
-
-                        <br />
-
-                        <div class="d-flex ">
-                            <a class="dropdown-item border p-2 m-2 "
-                               asp-action="Filter"
+                            }
+                            <a class="btn btn-block btn-outline-secondary radius-0 selected-@(12000000)-@(120000000)"
                                asp-route-loaiSp="@ViewData["LoaiSp"]"
-                               asp-route-sortOrder="high_first"
-                               asp-route-currentFilter="@ViewData["CurrentFilter"]"><i class="fas fa-arrow-down"></i> Giá cao đến thấp</a>
-
-                            <a class="dropdown-item border p-2 m-2 "
-                               asp-action="Filter"
-                               asp-route-loaiSp="@ViewData["LoaiSp"]"
-                               asp-route-sortOrder="low_first"
-                               asp-route-currentFilter="@ViewData["CurrentFilter"]"><i class="fas fa-arrow-up"></i> Giá thấp đến cao</a>
+                               asp-route-giaTien="@(12000000)-@(120000000)"
+                               asp-controller="Home"
+                               asp-action="Filter">Trên 12 triệu</a>
                         </div>
 
+                    </div>
+                    <br />
 
-
-
-                        <div class="left-side py-2 border mt-5">
-                            <h3 class="text-center" style="color:black; font-weight:bold;"> Chọn loại sản phẩm </h3>
-                            <div>
-                                @foreach (var item in DataAccess.ReadLoaiSp())
-                                {
-                                    <a type="button text-type-sp" style="text-align:left; border-radius:0px;"
-                                       asp-action="Filter"
-                                       asp-controller="Home"
-                                       asp-route-currentFilter="@ViewData["CurrentFilter"]"
-                                       asp-route-loaiSp="@item.MaLoai"
-                                       asp-route-sortOrder="@ViewData["CurrentSort"]">
-
-                                        <p class="pl-3 ten-loai-sp loaisp-@item.MaLoai"><span style="font-size:10px;" class="fas fa-circle"></span> @item.TenLoai</p>
-                                    </a>
-                                }
+                    <form style="display:none" asp-action="Filter" method="get">
+                        <div class="form-actions no-color">
+                            <div class="d-flex" style="font-size: 15px; margin:5px;">
+                                <div class="p-2 pl-0"> Nhập giá tiền </div>
+                                <input class="p-2" style="font-size:10px;" type="text" name="giaTien" value="@ViewData["CurrentFilter"]" />
+                                <button class="ml-1 p-2" style="background:#F45C5D; border: none" type="submit" value=""> Tìm kiếm </button>
 
                             </div>
                         </div>
+                    </form>
+
+                    <br />
+
+                    <div class="d-flex ">
+                        <a class="dropdown-item border p-2 m-2 "
+                           asp-action="Filter"
+                           asp-route-loaiSp="@ViewData["LoaiSp"]"
+                           asp-route-sortOrder="high_first"
+                           asp-route-currentFilter="@ViewData["CurrentFilter"]"><i class="fas fa-arrow-down"></i> Giá cao đến thấp</a>
+
+                        <a class="dropdown-item border p-2 m-2 "
+                           asp-action="Filter"
+                           asp-route-loaiSp="@ViewData["LoaiSp"]"
+                           asp-route-sortOrder="low_first"
+                           asp-route-currentFilter="@ViewData["CurrentFilter"]"><i class="fas fa-arrow-up"></i> Giá thấp đến cao</a>
                     </div>
-                    <!-- ram -->
-                    <div class="left-side border-bottom py-2">
-                        <h3 class="agileits-sear-head mb-3">Ram</h3>
-                        <ul>
-                            <li>
-                                <input type="checkbox" class="checked">
-                                <span class="span">Less than 512 MB</span>
-                            </li>
-                            <li>
-                                <input type="checkbox" class="checked">
-                                <span class="span">512 MB - 1 GB</span>
-                            </li>
-                            <li>
-                                <input type="checkbox" class="checked">
-                                <span class="span">1 GB</span>
-                            </li>
-                            <li>
-                                <input type="checkbox" class="checked">
-                                <span class="span">2 GB</span>
-                            </li>
-                            <li>
-                                <input type="checkbox" class="checked">
-                                <span class="span">3 GB</span>
-                            </li>
-                            <li>
-                                <input type="checkbox" class="checked">
-                                <span class="span">5 GB</span>
-                            </li>
-                            <li>
-                                <input type="checkbox" class="checked">
-                                <span class="span">6 GB</span>
-                            </li>
-                            <li>
-                                <input type="checkbox" class="checked">
-                                <span class="span">6 GB & Above</span>
-                            </li>
-                        </ul>
-                    </div>
-                    <!-- //ram -->
-                    <!-- price -->
-                    <div class="range border-bottom py-2">
-                        <h3 class="agileits-sear-head mb-3">Price</h3>
-                        <div class="w3l-range">
-                            <ul>
-                                <li>
-                                    <a href="#">Under $1,000</a>
-                                </li>
-                                <li class="my-1">
-                                    <a href="#">$1,000 - $5,000</a>
-                                </li>
-                                <li>
-                                    <a href="#">$5,000 - $10,000</a>
-                                </li>
-                                <li class="my-1">
-                                    <a href="#">$10,000 - $20,000</a>
-                                </li>
-                                <li>
-                                    <a href="#">$20,000 $30,000</a>
-                                </li>
-                                <li class="mt-1">
-                                    <a href="#">Over $30,000</a>
-                                </li>
-                            </ul>
+
+
+
+
+                    <div class="left-side py-2 border mt-5">
+                        <h3 class="text-center" style="color:black; font-weight:bold;"> Chọn loại sản phẩm </h3>
+                        <div>
+                            @foreach (var item in DataAccess.ReadLoaiSp())
+                            {
+                                <a type="button text-type-sp" style="text-align:left; border-radius:0px;"
+                                   asp-action="Filter"
+                                   asp-controller="Home"
+                                   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                                   asp-route-loaiSp="@item.MaLoai"
+                                   asp-route-sortOrder="@ViewData["CurrentSort"]">
+
+                                    <p class="pl-3 ten-loai-sp loaisp-@item.MaLoai"><span style="font-size:10px;" class="fas fa-circle"></span> @item.TenLoai</p>
+                                </a>
+                            }
+
                         </div>
                     </div>
-                    <!-- //price -->
-                    <!-- discounts -->
-                    <div class="left-side border-bottom py-2">
-                        <h3 class="agileits-sear-head mb-3">Discount</h3>
-                        <ul>
-                            <li>
-                                <input type="checkbox" class="checked">
-                                <span class="span">5% or More</span>
-                            </li>
-                            <li>
-                                <input type="checkbox" class="checked">
-                                <span class="span">10% or More</span>
-                            </li>
-                            <li>
-                                <input type="checkbox" class="checked">
-                                <span class="span">20% or More</span>
-                            </li>
-                            <li>
-                                <input type="checkbox" class="checked">
-                                <span class="span">30% or More</span>
-                            </li>
-                            <li>
-                                <input type="checkbox" class="checked">
-                                <span class="span">50% or More</span>
-                            </li>
-                            <li>
-                                <input type="checkbox" class="checked">
-                                <span class="span">60% or More</span>
-                            </li>
-                        </ul>
-                    </div>
-                    <!-- //discounts -->
-                    <!-- offers -->
-                    <div class="left-side border-bottom py-2">
-                        <h3 class="agileits-sear-head mb-3">Offers</h3>
-                        <ul>
-                            <li>
-                                <input type="checkbox" class="checked">
-                                <span class="span">Exchange Offer</span>
-                            </li>
-                            <li>
-                                <input type="checkbox" class="checked">
-                                <span class="span">No Cost EMI</span>
-                            </li>
-                            <li>
-                                <input type="checkbox" class="checked">
-                                <span class="span">Special Price</span>
-                            </li>
-                        </ul>
-                    </div>
-                    <!-- //offers -->
-                    <!-- delivery -->
-                    <div class="left-side border-bottom py-2">
-                        <h3 class="agileits-sear-head mb-3">Cash On Delivery</h3>
-                        <ul>
-                            <li>
-                                <input type="checkbox" class="checked">
-                                <span class="span">Eligible for Cash On Delivery</span>
-                            </li>
-                        </ul>
-                    </div>
-                    <!-- //delivery -->
-                    <!-- arrivals -->
-                    <div class="left-side border-bottom py-2">
-                        <h3 class="agileits-sear-head mb-3">New Arrivals</h3>
-                        <ul>
-                            <li>
-                                <input type="checkbox" class="checked">
-                                <span class="span">Last 30 days</span>
-                            </li>
-                            <li>
-                                <input type="checkbox" class="checked">
-                                <span class="span">Last 90 days</span>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="left-side py-2">
-                        <h3 class="agileits-sear-head mb-3">Availability</h3>
-                        <ul>
-                            <li>
-                                <input type="checkbox" class="checked">
-                                <span class="span">Exclude Out of Stock</span>
-                            </li>
-                        </ul>
-                    </div>
-                    <!-- //arrivals -->
                 </div>
-                <!-- //product right -->
+                <!-- ram -->
+                <div class="left-side border-bottom py-2">
+                    <h3 class="agileits-sear-head mb-3">Ram</h3>
+                    <ul>
+                        <li>
+                            <input type="checkbox" class="checked">
+                            <span class="span">Less than 512 MB</span>
+                        </li>
+                        <li>
+                            <input type="checkbox" class="checked">
+                            <span class="span">512 MB - 1 GB</span>
+                        </li>
+                        <li>
+                            <input type="checkbox" class="checked">
+                            <span class="span">1 GB</span>
+                        </li>
+                        <li>
+                            <input type="checkbox" class="checked">
+                            <span class="span">2 GB</span>
+                        </li>
+                        <li>
+                            <input type="checkbox" class="checked">
+                            <span class="span">3 GB</span>
+                        </li>
+                        <li>
+                            <input type="checkbox" class="checked">
+                            <span class="span">5 GB</span>
+                        </li>
+                        <li>
+                            <input type="checkbox" class="checked">
+                            <span class="span">6 GB</span>
+                        </li>
+                        <li>
+                            <input type="checkbox" class="checked">
+                            <span class="span">6 GB & Above</span>
+                        </li>
+                    </ul>
+                </div>
+                <!-- //ram -->
+                <!-- price -->
+                <div class="range border-bottom py-2">
+                    <h3 class="agileits-sear-head mb-3">Price</h3>
+                    <div class="w3l-range">
+                        <ul>
+                            <li>
+                                <a href="#">Under $1,000</a>
+                            </li>
+                            <li class="my-1">
+                                <a href="#">$1,000 - $5,000</a>
+                            </li>
+                            <li>
+                                <a href="#">$5,000 - $10,000</a>
+                            </li>
+                            <li class="my-1">
+                                <a href="#">$10,000 - $20,000</a>
+                            </li>
+                            <li>
+                                <a href="#">$20,000 $30,000</a>
+                            </li>
+                            <li class="mt-1">
+                                <a href="#">Over $30,000</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- //price -->
+                <!-- discounts -->
+                <div class="left-side border-bottom py-2">
+                    <h3 class="agileits-sear-head mb-3">Discount</h3>
+                    <ul>
+                        <li>
+                            <input type="checkbox" class="checked">
+                            <span class="span">5% or More</span>
+                        </li>
+                        <li>
+                            <input type="checkbox" class="checked">
+                            <span class="span">10% or More</span>
+                        </li>
+                        <li>
+                            <input type="checkbox" class="checked">
+                            <span class="span">20% or More</span>
+                        </li>
+                        <li>
+                            <input type="checkbox" class="checked">
+                            <span class="span">30% or More</span>
+                        </li>
+                        <li>
+                            <input type="checkbox" class="checked">
+                            <span class="span">50% or More</span>
+                        </li>
+                        <li>
+                            <input type="checkbox" class="checked">
+                            <span class="span">60% or More</span>
+                        </li>
+                    </ul>
+                </div>
+                <!-- //discounts -->
+                <!-- offers -->
+                <div class="left-side border-bottom py-2">
+                    <h3 class="agileits-sear-head mb-3">Offers</h3>
+                    <ul>
+                        <li>
+                            <input type="checkbox" class="checked">
+                            <span class="span">Exchange Offer</span>
+                        </li>
+                        <li>
+                            <input type="checkbox" class="checked">
+                            <span class="span">No Cost EMI</span>
+                        </li>
+                        <li>
+                            <input type="checkbox" class="checked">
+                            <span class="span">Special Price</span>
+                        </li>
+                    </ul>
+                </div>
+                <!-- //offers -->
+                <!-- delivery -->
+                <div class="left-side border-bottom py-2">
+                    <h3 class="agileits-sear-head mb-3">Cash On Delivery</h3>
+                    <ul>
+                        <li>
+                            <input type="checkbox" class="checked">
+                            <span class="span">Eligible for Cash On Delivery</span>
+                        </li>
+                    </ul>
+                </div>
+                <!-- //delivery -->
+                <!-- arrivals -->
+                <div class="left-side border-bottom py-2">
+                    <h3 class="agileits-sear-head mb-3">New Arrivals</h3>
+                    <ul>
+                        <li>
+                            <input type="checkbox" class="checked">
+                            <span class="span">Last 30 days</span>
+                        </li>
+                        <li>
+                            <input type="checkbox" class="checked">
+                            <span class="span">Last 90 days</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="left-side py-2">
+                    <h3 class="agileits-sear-head mb-3">Availability</h3>
+                    <ul>
+                        <li>
+                            <input type="checkbox" class="checked">
+                            <span class="span">Exclude Out of Stock</span>
+                        </li>
+                    </ul>
+                </div>
+                <!-- //arrivals -->
             </div>
+            <!-- //product right -->
         </div>
     </div>
+</div>
 </div>
 <!-- //top products -->
