@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using e_mobile_shop.Areas.Identity.Data;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 
 namespace e_mobile_shop.Controllers
 {
@@ -105,7 +106,6 @@ namespace e_mobile_shop.Controllers
         public IActionResult CheckOut(IFormCollection fc)
         {
             DonHang dh = new DonHang();
-            dh.MaDh = (DataAccess.context.DonHang.ToList().Count + 1).ToString();
             dh.MaKh = fc["Id"];
             SessionHelper.SetObjectAsJson(HttpContext.Session, "MaKh", fc["Id"]);
             dh.NgayDatMua = DateTime.Now;
@@ -129,11 +129,21 @@ namespace e_mobile_shop.Controllers
             return RedirectToAction("ChiTietDonHang", "GioHang", new { id = dh.MaDh }).WithSuccess("Đặt hàng thành công","");
           
         }
+
+
         [Authorize]
-        public IActionResult DanhSachDonHang(string id)
+        public IActionResult DanhSachDonHang1(string id)
         {
 
-            return View(DataAccess.context.DonHang.Where(x => x.MaKh == id).ToList());
+            return View(DataAccess.context.DonHang.ToList());
+        }
+
+        [Authorize]
+        public async Task<IActionResult> DanhSachDonHang(int? pageNumber ,string id)
+        {
+            var donhangs = from d in DataAccess.context.DonHang where d.MaKh == id select d;
+            int pageSize = 10;
+            return View(await PaginatedList<DonHang>.CreateAsync(donhangs.AsNoTracking(), pageNumber??1, pageSize));
         }
 
         [Authorize]
