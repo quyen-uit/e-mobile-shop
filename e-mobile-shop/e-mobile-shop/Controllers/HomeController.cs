@@ -12,13 +12,14 @@ using e_mobile_shop.Controllers.Components;
 using Microsoft.AspNetCore.Http;
 using e_mobile_shop.Models.Helpers;
 using Microsoft.EntityFrameworkCore;
+using System.Text.RegularExpressions;
 
 namespace e_mobile_shop.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        
+
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
@@ -26,23 +27,23 @@ namespace e_mobile_shop.Controllers
 
         public IActionResult Index()
         {
-   
+
             return View(DataAccess.ViewSanPham());
         }
 
 
         public async Task<IActionResult> Filter(
-            string sortOrder,    
-            string currentFilter,    
-            string giaTien,    
-            int? pageNumber, 
+            string sortOrder,
+            string currentFilter,
+            string giaTien,
+            int? pageNumber,
             string loaiSp,
-            string tenSp)
+            string tenSp, string hangSx, string params_list)
         {
 
             //sort order
             ViewData["CurrentSort"] = sortOrder;
-            if(string.IsNullOrEmpty(sortOrder))
+            if (string.IsNullOrEmpty(sortOrder))
             {
                 ViewData["SortByPrice"] = "";
             }
@@ -50,12 +51,12 @@ namespace e_mobile_shop.Controllers
             {
                 ViewData["SortByPrice"] = "high_first";
             }
-            else if (sortOrder=="low_first")
+            else if (sortOrder == "low_first")
             {
                 ViewData["SortByPrice"] = "low_first";
             }
 
-           
+
 
             if (giaTien != null)
             {
@@ -66,7 +67,7 @@ namespace e_mobile_shop.Controllers
                 giaTien = currentFilter;
             }
             ViewData["CurrentFilter"] = giaTien;
-            var sanphams = from s in DataAccess.context.SanPham  select s;
+            var sanphams = from s in DataAccess.context.SanPham select s;
 
             //filter by name 
             if (!String.IsNullOrEmpty(tenSp))
@@ -74,7 +75,352 @@ namespace e_mobile_shop.Controllers
                 ViewData["TenSp"] = tenSp;
                 sanphams = sanphams.Where(s => s.TenSp.ToLower().Contains(tenSp.ToLower()));
             }
-            
+
+            //filter by cấu hình 
+            if (!String.IsNullOrEmpty(params_list) && !String.IsNullOrEmpty(loaiSp))
+            {
+                sanphams = sanphams.Where(s => s.LoaiSp == loaiSp);
+
+                //for Laptop 
+                if (loaiSp == "LSP0008")
+                {
+                    foreach (var _param in params_list.Split('&'))
+                    {
+                        if (!String.IsNullOrEmpty(_param))
+                        {
+                            if (_param.Contains('f'))
+                            {
+                                string _tmp_param_1 = Regex.Replace(_param, "f", "");
+                                if (_param.Length > 1)
+                                {
+                                    var _filter_ = new List<IQueryable<SanPham>>();
+                                    foreach (var _sub_param in _tmp_param_1.Split('-'))
+                                    {
+                                        if (!String.IsNullOrEmpty(_sub_param))
+                                        {
+                                            var a1 = from s in DataAccess.context.SanPham
+                                                     join t in DataAccess.context.ThongSoKiThuat
+                                                      on s.MaSp equals t.MaSp
+                                                     where (t.GiaTri.Contains(_sub_param) && t.ThongSo.Contains("TS0001"))
+                                                     select s;
+                                            _filter_.Add(a1);
+                                        }
+                                    }
+                                    _filter_.ToList().ForEach(item => _filter_[0] = _filter_[0].Union(item));
+                                    sanphams = sanphams.Intersect(_filter_[0]);
+                                }
+                            }
+                            else if (_param.Contains('j'))
+                            {
+                                string _tmp_param_1 = Regex.Replace(_param, "j", "");
+                                if (_param.Length > 1)
+                                {
+                                    var _filter_ = new List<IQueryable<SanPham>>();
+                                    foreach (string _sub_param in _tmp_param_1.Split('-'))
+                                    {
+                                        if (!String.IsNullOrEmpty(_sub_param))
+                                        {
+                                            var a1 = from s in DataAccess.context.SanPham
+                                                     join t in DataAccess.context.ThongSoKiThuat
+                                                      on s.MaSp equals t.MaSp
+                                                     where (t.GiaTri.ToLower().Contains(_sub_param.ToLower()) == true && t.ThongSo.Contains("TS0002"))
+                                                     select s;
+                                            _filter_.Add(a1);
+                                        }
+                                    }
+                                    _filter_.ToList().ForEach(item => _filter_[0] = _filter_[0].Union(item));
+                                    sanphams = sanphams.Intersect(_filter_[0]);
+                                }
+                            }
+                            else if (_param.Contains('w'))
+                            {
+                                string _tmp_param_1 = Regex.Replace(_param, "w", "");
+                                if (_param.Length > 1)
+                                {
+                                    var _filter_ = new List<IQueryable<SanPham>>();
+                                    foreach (string _sub_param in _tmp_param_1.Split('-'))
+                                    {
+                                        if (!String.IsNullOrEmpty(_sub_param))
+                                        {
+                                            if (_sub_param == "type_1") //học tập
+                                            {
+                                                var a = from s in DataAccess.context.SanPham
+                                                        join t in DataAccess.context.ThongSoKiThuat
+                                                        on s.MaSp equals t.MaSp
+                                                        where s.LoaiSp == "LSP0008"
+                                                        &&
+                                                        (s.TenSp.Contains("vivo")
+                                                        || (t.GiaTri.Contains("i3") && t.ThongSo.Contains("TS0002"))
+
+                                                        || (t.GiaTri.Contains("4") && t.ThongSo.Contains("TS0001")))
+                                                        select s;
+                                                _filter_.Add(a);
+                                            }
+                                            else if (_sub_param.Contains("type_2")) //đồ họa 
+                                            {
+                                                var a = from s in DataAccess.context.SanPham
+                                                        join t in DataAccess.context.ThongSoKiThuat
+                                                        on s.MaSp equals t.MaSp
+                                                        where s.LoaiSp == "LSP0008"
+                                                        &&
+                                                        (s.TenSp.Contains("macbook")
+                                                        || (t.GiaTri.Contains("i5") && t.ThongSo.Contains("TS0002"))
+                                                        || (t.GiaTri.Contains("i7") && t.ThongSo.Contains("TS0002"))
+                                                        || (t.GiaTri.Contains("8") && t.ThongSo.Contains("TS0001")))
+                                                        select s;
+                                                _filter_.Add(a);
+                                            }
+                                            else if (_sub_param == "type_3") //văn phòng 
+                                            {
+                                                var a = from s in DataAccess.context.SanPham
+                                                        join t in DataAccess.context.ThongSoKiThuat
+                                                        on s.MaSp equals t.MaSp
+                                                        where s.LoaiSp == "LSP0008"
+                                                        &&
+                                                        (s.TenSp.Contains("macbook")
+                                                        || (t.GiaTri.Contains("i5") && t.ThongSo.Contains("TS0002")))
+
+                                                        select s;
+                                                _filter_.Add(a);
+                                            }
+                                        }
+                                    }
+                                    _filter_.ToList().ForEach(item => _filter_[0] = _filter_[0].Union(item));
+                                    sanphams = sanphams.Intersect(_filter_[0]);
+                                }
+                            }
+                            else if (_param.Contains('z'))
+                            {
+                                string _tmp_param_1 = Regex.Replace(_param, "z", "");
+                                if (_param.Length > 1)
+                                {
+                                    var _filter_ = new List<IQueryable<SanPham>>();
+                                    foreach (string _sub_param in _tmp_param_1.Split('-'))
+                                    {
+                                        if (!String.IsNullOrEmpty(_sub_param))
+                                        {
+
+                                            var a1 = from s in DataAccess.context.SanPham
+                                                     join t in DataAccess.context.ThongSoKiThuat
+                                                      on s.MaSp equals t.MaSp
+                                                     where (t.GiaTri.ToLower().Contains(_sub_param.ToLower()) || s.TenSp.ToLower().Contains(_sub_param))
+                                                     select s;
+                                            _filter_.Add(a1);
+
+                                        }
+                                    }
+                                    _filter_.ToList().ForEach(item => _filter_[0] = _filter_[0].Union(item));
+                                    sanphams = sanphams.Intersect(_filter_[0]);
+                                }
+                            }
+                        }
+                    }
+                }
+                else if (loaiSp == "LSP0002")
+                {
+                    foreach (var _param in params_list.Split('&'))
+                    {
+                        if (!String.IsNullOrEmpty(_param))
+                        {
+                            if (_param.Contains('f'))
+                            {
+                                string _tmp_param_1 = Regex.Replace(_param, "f", "");
+                                if (_param.Length > 1)
+                                {
+                                    var _filter_ = new List<IQueryable<SanPham>>();
+                                    foreach (var _sub_param in _tmp_param_1.Split('-'))
+                                    {
+                                       
+                                        if (!String.IsNullOrEmpty(_sub_param))
+                                        {
+                                            var a1 = from s in DataAccess.context.SanPham
+                                                     join t in DataAccess.context.ThongSoKiThuat
+                                                     on s.MaSp equals t.MaSp
+                                                     where (t.GiaTri.ToLower().Contains(_sub_param))
+                                                     select s;
+                                            _filter_.Add(a1);
+                                           
+                                           
+                                        }
+                                    }
+                                    _filter_.ToList().ForEach(item => _filter_[0] = _filter_[0].Union(item));
+                                    sanphams = sanphams.Intersect(_filter_[0]);
+                                }
+                            }
+                            else if (_param.Contains('j'))
+                            {
+                                string _tmp_param_1 = Regex.Replace(_param, "j", "");
+                                if (_param.Length > 1)
+                                {
+                                    var _filter_ = new List<IQueryable<SanPham>>();
+                                    foreach (string _sub_param in _tmp_param_1.Split('-'))
+                                    {
+                                        if (!String.IsNullOrEmpty(_sub_param))
+                                        {
+                                            switch (_sub_param)
+                                            {
+                                                case "small":
+                                                    {
+                                                        var a1 = from s in DataAccess.context.SanPham
+                                                                 join t in DataAccess.context.ThongSoKiThuat
+                                                                  on s.MaSp equals t.MaSp
+                                                                 where (Convert.ToInt32(t.GiaTri.Substring(0,4))<= 4000 && t.ThongSo.Contains("TS0018"))
+                                                                 select s;
+                                                        _filter_.Add(a1);
+                                                        break;
+                                                    }
+                                                case "big":
+                                                    {
+                                                        var a1 = from s in DataAccess.context.SanPham
+                                                                 join t in DataAccess.context.ThongSoKiThuat
+                                                                  on s.MaSp equals t.MaSp
+                                                                 where (4000< Convert.ToInt32(t.GiaTri.ToLower().Substring(0, 4)) &&
+                                                                 Convert.ToInt32(t.GiaTri.ToLower().Substring(0, 4)) <= 5000 &&
+                                                                 t.ThongSo.Contains("TS0018"))
+                                                                 select s;
+                                                        _filter_.Add(a1);
+                                                        break;
+                                                    }
+                                                case "super":
+                                                    {
+                                                        var a1 = from s in DataAccess.context.SanPham
+                                                                 join t in DataAccess.context.ThongSoKiThuat
+                                                                  on s.MaSp equals t.MaSp
+                                                                 where (5000 < Convert.ToInt32(t.GiaTri.ToLower().Substring(0, 4)) &&
+                                                                 t.ThongSo.Contains("TS0018"))
+                                                                 select s;
+                                                        _filter_.Add(a1);
+                                                        break;
+                                                    }
+                                            }
+                                        }
+                                    }
+                                    _filter_.ToList().ForEach(item => _filter_[0] = _filter_[0].Union(item));
+                                    sanphams = sanphams.Intersect(_filter_[0]);
+                                }
+                            }
+                            else if (_param.Contains('w'))
+                            {
+                                string _tmp_param_1 = Regex.Replace(_param, "w", "");
+                                if (_param.Length > 1)
+                                {
+                                    var _filter_ = new List<IQueryable<SanPham>>();
+                                    foreach (string _sub_param in _tmp_param_1.Split('-'))
+                                    {
+                                        if (!String.IsNullOrEmpty(_sub_param))
+                                        {
+                                            if (_sub_param == "type_1") //học tập
+                                            {
+                                                var a = from s in DataAccess.context.SanPham
+                                                        join t in DataAccess.context.ThongSoKiThuat
+                                                        on s.MaSp equals t.MaSp
+                                                        where s.LoaiSp == "LSP0008"
+                                                        &&
+                                                        (s.TenSp.Contains("vivo")
+                                                        || (t.GiaTri.Contains("i3") && t.ThongSo.Contains("TS0002"))
+
+                                                        || (t.GiaTri.Contains("4") && t.ThongSo.Contains("TS0001")))
+                                                        select s;
+                                                _filter_.Add(a);
+                                            }
+                                            else if (_sub_param.Contains("type_2")) //đồ họa 
+                                            {
+                                                var a = from s in DataAccess.context.SanPham
+                                                        join t in DataAccess.context.ThongSoKiThuat
+                                                        on s.MaSp equals t.MaSp
+                                                        where s.LoaiSp == "LSP0008"
+                                                        &&
+                                                        (s.TenSp.Contains("macbook")
+                                                        || (t.GiaTri.Contains("i5") && t.ThongSo.Contains("TS0002"))
+                                                        || (t.GiaTri.Contains("i7") && t.ThongSo.Contains("TS0002"))
+                                                        || (t.GiaTri.Contains("8") && t.ThongSo.Contains("TS0001")))
+                                                        select s;
+                                                _filter_.Add(a);
+                                            }
+                                            else if (_sub_param == "type_3") //văn phòng 
+                                            {
+                                                var a = from s in DataAccess.context.SanPham
+                                                        join t in DataAccess.context.ThongSoKiThuat
+                                                        on s.MaSp equals t.MaSp
+                                                        where s.LoaiSp == "LSP0008"
+                                                        &&
+                                                        (s.TenSp.Contains("macbook")
+                                                        || (t.GiaTri.Contains("i5") && t.ThongSo.Contains("TS0002")))
+
+                                                        select s;
+                                                _filter_.Add(a);
+                                            }
+                                        }
+                                    }
+                                    _filter_.ToList().ForEach(item => _filter_[0] = _filter_[0].Union(item));
+                                    sanphams = sanphams.Intersect(_filter_[0]);
+                                }
+                            }
+                            else if (_param.Contains('z'))
+                            {
+                                string _tmp_param_1 = Regex.Replace(_param, "z", "");
+                                if (_param.Length > 1)
+                                {
+                                    var _filter_ = new List<IQueryable<SanPham>>();
+                                    foreach (string _sub_param in _tmp_param_1.Split('-'))
+                                    {
+                                        if (!String.IsNullOrEmpty(_sub_param))
+                                        {
+                                            switch (_sub_param)
+                                            {
+                                                case "mongmat":
+                                                    {
+                                                        var a1 = from s in DataAccess.context.SanPham
+                                                                 join t in DataAccess.context.ThongSoKiThuat
+                                                                  on s.MaSp equals t.MaSp
+                                                                 where (t.ThongSo.Contains("TS0028"))
+                                                                 select s;
+                                                        _filter_.Add(a1);
+                                                        break;
+                                                    }
+
+                                                case "khuonmat":
+                                                    {
+                                                        var a1 = from s in DataAccess.context.SanPham
+                                                                 join t in DataAccess.context.ThongSoKiThuat
+                                                                  on s.MaSp equals t.MaSp
+                                                                 where (t.ThongSo.Contains("TS0029"))
+                                                                 select s;
+                                                        _filter_.Add(a1);
+                                                        break;
+                                                    }
+                                                case "vantay":
+                                                    {
+                                                        var a1 = from s in DataAccess.context.SanPham
+                                                                 join t in DataAccess.context.ThongSoKiThuat
+                                                                  on s.MaSp equals t.MaSp
+                                                                 where (t.ThongSo.Contains("TS0027"))
+                                                                 select s;
+                                                        _filter_.Add(a1);
+                                                        break;
+                                                    }
+                                            }
+                                            
+                                            
+
+                                        }
+                                    }
+                                    _filter_.ToList().ForEach(item => _filter_[0] = _filter_[0].Union(item));
+                                    sanphams = sanphams.Intersect(_filter_[0]);
+                                }
+                            }
+                        }
+                    }
+                }
+
+            }
+
+            //filter by NSX 
+            if (!String.IsNullOrEmpty(hangSx))
+            {
+                ViewData["HangSx"] = hangSx;
+                sanphams = sanphams.Where(s => s.Nsx == hangSx);
+            }
 
             //filter by price
             if (!String.IsNullOrEmpty(giaTien))
@@ -94,7 +440,7 @@ namespace e_mobile_shop.Controllers
             }
 
             //filter by type 
-            if(!string.IsNullOrEmpty(loaiSp))
+            if (!string.IsNullOrEmpty(loaiSp))
             {
                 ViewData["LoaiSp"] = loaiSp;
 
@@ -115,12 +461,12 @@ namespace e_mobile_shop.Controllers
                 case "low_first":
                     sanphams = sanphams.OrderBy(s => s.GiaGoc);
                     break;
-                
+
                 default:
                     sanphams = sanphams.OrderBy(s => s.TenSp);
                     break;
             }
-            int pageSize =12;
+            int pageSize = 12;
             return View(await PaginatedList<SanPham>.CreateAsync(sanphams.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 

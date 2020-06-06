@@ -16,8 +16,6 @@ namespace e_mobile_shop.Controllers
     public class GioHangController : Controller
     {
 
-        UserManager<AppUser> UserManager;
-        SignInManager<AppUser> SignInManager;
         public IActionResult XemGioHang()
         {
             var giohang = SessionHelper.GetObjectFromJson<List<ChiTietDonHang>>(HttpContext.Session, "GioHang");

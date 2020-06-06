@@ -12,6 +12,7 @@ namespace e_mobile_shop.Models
 
         public string MaLoai { get; set; }
         public string TenLoai { get; set; }
+        public string Icon { get; set; }
 
         public virtual ICollection<SanPham> SanPham { get; set; }
     }

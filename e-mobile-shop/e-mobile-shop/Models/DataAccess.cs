@@ -43,6 +43,8 @@ namespace e_mobile_shop.Models
             }
         }
 
+
+
         public static string GetLoaiSp(string loaiSP)
         {
             return context.LoaiSp.Find(loaiSP).TenLoai;
@@ -56,6 +58,15 @@ namespace e_mobile_shop.Models
         public static List<ThongSoKiThuat> GetThongSoKiThuat(string maSp)
         {
             return context.ThongSoKiThuat.Where(x => x.MaSp == maSp).ToList();
+        }
+        public static List<string> getGiaTriThongSoKiThuat(List<ThongSoKiThuat> lst)
+        {
+            List<string> result = new List<string>();
+            foreach (var item in lst)
+            {
+                result.Add(item.GiaTri.ToLower());
+            }
+            return result;
         }
         public static AnhSanPham GetAnhSanPham(string maSp)
         {

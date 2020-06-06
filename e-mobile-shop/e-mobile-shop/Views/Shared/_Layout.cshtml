@@ -26,6 +26,7 @@
     <link href="~/css/style.css" rel="stylesheet" type="text/css" media="all" />
     <!-- Main css -->
     <link rel="stylesheet" href="~/css/fontawesome-all.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css" />
     <!-- Font-Awesome-Icons-CSS -->
     <link href="~/css/popuo-box.css" rel="stylesheet" type="text/css" media="all" />
     <!-- pop-up-box -->
@@ -63,6 +64,9 @@
 
                             <li class="text-center border-right text-white">
                                 <i class="fas fa-phone mr-2"></i> 0988776599
+                            </li>
+                            <li class="text-center border-right text-white">
+                                <a class="text-white" asp-action="Index" asp-controller="Admin"> <i class="fas fa-user-cog"></i> Admin </a>
                             </li>
 
                             <partial name="_LoginPartial" />
@@ -133,7 +137,10 @@
                                         <a type="button" style="text-align:left; border-radius:0px;" class="btn btn-block p-0 " asp-action="DanhSach" asp-controller="SanPham" asp-route-id="@item.MaLoai">
                                             <p style="color:black" class="p-2">@item.TenLoai</p>
                                         </a>
+
                                     }
+                                    <a type="button" style="text-align:left; border-radius:0px;" class="btn btn-block p-0 " asp-action="Filter" asp-controller="Home">
+                                        <p style="color:black;" class="p-2">Tất cả sản phẩm</p> </a>
                                 </div>
 
                             </div>
@@ -176,19 +183,9 @@
 
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="contact.html">Về chúng tôi </a>
+                                <a class="nav-link" href="contact.html">Hỗ trợ  </a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" asp-action="Index" asp-controller="Admin">Admin </a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link" asp-action="TestPage" asp-controller="Home">TestPage </a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link" asp-action="Filter" asp-controller="Home">Filtering </a>
-                            </li>
+                         
                         </ul>
                     </div>
                 </nav>
