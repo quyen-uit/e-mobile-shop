@@ -96,7 +96,7 @@
                         <div class="row">
                             <!-- search -->
                             <div class="col-10 agileits_search">
-                                <form class="form-inline" asp-action="Filter" asp-controller="Home" method="get">
+                                <form class="form-inline" asp-action="Filter" asp-controller="Home"  method="get">
                                     <input name="tenSp" class="form-control mr-sm-2" type="search" placeholder="Bạn muốn tìm gì" aria-label="Search" required>
                                     <button class="btn my-2 my-sm-0" type="submit">Tìm</button>
                                 </form>
@@ -134,12 +134,6 @@
                                             <p style="color:black" class="p-2">@item.TenLoai</p>
                                         </a>
                                     }
-<<<<<<< Updated upstream
-=======
-                                    <a type="button" style="text-align:left; border-radius:0px;" class="btn btn-block p-0 " asp-action="Filter" asp-controller="Home">
-                                        <p style="color:black;" class="p-2">Tất cả sản phẩm</p>
-                                    </a>
->>>>>>> Stashed changes
                                 </div>
 
                             </div>
@@ -195,10 +189,6 @@
                             <li class="nav-item">
                                 <a class="nav-link" asp-action="Filter" asp-controller="Home">Filtering </a>
                             </li>
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
                         </ul>
                     </div>
                 </nav>
@@ -473,6 +463,7 @@
     <!-- //for bootstrap working -->
     <!-- //js-files -->
 
+
     <script src="~/js/jquery.flexslider.js"></script>
     <script>
         // Can also be used with $(document).ready()
@@ -486,7 +477,6 @@
     <script src="~/js/site.js"></script>
     <!-- imagezoom -->
     <script src="~/js/imagezoom.js"></script>
-   
     <!-- //imagezoom -->
     @RenderSection("Scripts", required: false)
 </body>

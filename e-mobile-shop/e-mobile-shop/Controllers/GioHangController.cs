@@ -119,8 +119,8 @@ namespace e_mobile_shop.Controllers
             List<ChiTietDonHang> gh = SessionHelper.GetObjectFromJson<List<ChiTietDonHang>>(HttpContext.Session, "GioHang");
             foreach (var item in gh)
             {
-               item.MaCtdh = (DataAccess.context.ChiTietDonHang.ToList().Count + 1).ToString();
-               item.MaDh = dh.MaDh;
+                item.MaCtdh = (DataAccess.context.ChiTietDonHang.ToList().Count + 1).ToString();
+                item.MaDh = dh.MaDh;
                 DataAccess.context.ChiTietDonHang.Add(item);
                 DataAccess.context.SaveChanges();
             }
@@ -133,19 +133,7 @@ namespace e_mobile_shop.Controllers
         public IActionResult DanhSachDonHang(string id)
         {
 
-<<<<<<< Updated upstream
             return View(DataAccess.context.DonHang.Where(x => x.MaKh == id).ToList());
-=======
-            return View(DataAccess.context.DonHang.ToList());
-        }
-
-        [Authorize]
-        public async Task<IActionResult> DanhSachDonHang(int? pageNumber ,string id)
-        {
-            var donhangs = from d in DataAccess.context.DonHang where d.MaKh == id select d;
-            int pageSize =5 ;
-            return View(await PaginatedList<DonHang>.CreateAsync(donhangs.AsNoTracking(), pageNumber??1, pageSize));
->>>>>>> Stashed changes
         }
 
         [Authorize]

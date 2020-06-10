@@ -36,9 +36,7 @@ namespace e_mobile_shop.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                //optionsBuilder.UseSqlServer("Server=tcp:qtkcinema.database.windows.net,1433;Initial Catalog=eShopDb;Persist Security Info=False;User ID=admin1;Password=43EqmRy9iymbNbC;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
                 optionsBuilder.UseSqlServer("Data Source=DESKTOP-R3PM237;Initial Catalog=eShopDb;Integrated Security=True");
-
             }
         }
 
@@ -244,11 +242,7 @@ namespace e_mobile_shop.Models
             modelBuilder.Entity<ChiTietDonHang>(entity =>
             {
                 entity.HasKey(e => e.MaCtdh)
-<<<<<<< Updated upstream
                     .HasName("PK__ChiTietD__1E4E40F077BB8AE3");
-=======
-                    .HasName("PK__ChiTietD__1E4E40F0D44D0C65");
->>>>>>> Stashed changes
 
                 entity.Property(e => e.MaCtdh)
                     .HasColumnName("MaCTDH")
@@ -340,6 +334,12 @@ namespace e_mobile_shop.Models
                     .HasMaxLength(5)
                     .IsFixedLength();
 
+                entity.Property(e => e.AnhDaiDien).HasColumnType("ntext");
+
+                entity.Property(e => e.AnhKhac).HasColumnType("ntext");
+
+                entity.Property(e => e.AnhNen).HasColumnType("ntext");
+
                 entity.Property(e => e.GiaGoc).HasColumnType("decimal(18, 0)");
 
                 entity.Property(e => e.GiaTien).HasColumnType("decimal(18, 0)");
@@ -364,17 +364,7 @@ namespace e_mobile_shop.Models
                     .IsFixedLength()
                     .HasDefaultValueSql("('NOTTT')");
 
-<<<<<<< Updated upstream
                 entity.Property(e => e.MoTa).HasColumnType("ntext");
-=======
-                entity.Property(e => e.MaNcc)
-                    .HasColumnName("MaNCC")
-                    .HasMaxLength(7);
-
-                entity.Property(e => e.Nsx)
-                    .HasColumnName("NSX")
-                    .HasMaxLength(7);
->>>>>>> Stashed changes
 
                 entity.Property(e => e.SoLuotXemSp).HasColumnName("SoLuotXemSP");
 
@@ -390,40 +380,12 @@ namespace e_mobile_shop.Models
                     .HasForeignKey(d => d.LoaiSp)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_SanPham_LoaiSp");
-<<<<<<< Updated upstream
-=======
-
-                entity.HasOne(d => d.MaNccNavigation)
-                    .WithMany(p => p.SanPham)
-                    .HasForeignKey(d => d.MaNcc)
-                    .HasConstraintName("FK_SanPham_NhaCungCap");
-
-                entity.HasOne(d => d.NsxNavigation)
-                    .WithMany(p => p.SanPham)
-                    .HasForeignKey(d => d.Nsx)
-                    .HasConstraintName("FK__SanPham__NSX__0B91BA14");
-            });
-
-            modelBuilder.Entity<ThongSo>(entity =>
-            {
-                entity.HasKey(e => e.MaThongSo);
-
-                entity.Property(e => e.MaThongSo)
-                    .HasMaxLength(7)
-                    .HasDefaultValueSql("([dbo].[AUTO_MATHONGSO]())");
-
-                entity.Property(e => e.TenThongSo).HasMaxLength(50);
->>>>>>> Stashed changes
             });
 
             modelBuilder.Entity<ThongSoKiThuat>(entity =>
             {
                 entity.HasKey(e => e.MaTskt)
-<<<<<<< Updated upstream
                     .HasName("PK__ThongSoK__475C93A1CED312BD");
-=======
-                    .HasName("PK__ThongSoK__475C93A109A0F456");
->>>>>>> Stashed changes
 
                 entity.Property(e => e.MaTskt)
                     .HasColumnName("MaTSKT")
