@@ -45,7 +45,7 @@
                     </div>
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox"  asp-for="@Model.Ishot" />Sản phẩm nổi bật
+                            <input type="checkbox" asp-for="@Model.Ishot" />Sản phẩm nổi bật
                         </label>
                     </div>
                     <div class="checkbox">
@@ -62,13 +62,13 @@
 
                     <div class="form-group">
                         <label asp-for="MaSp">Mã sản phẩm </label>
-                        <input hidden class="form-control" asp-for="MaSp" />
+                        <input type="hidden" class="form-control" asp-for="MaSp" />
                         <input disabled class="form-control" asp-for="MaSp" />
 
                     </div>
                     <div class="form-group">
                         <label asp-for="LoaiSp"> Loại sản phẩm </label>
-                        <input hidden class="form-control" asp-for="LoaiSp" />
+                        <input type="hidden" class="form-control" asp-for="LoaiSp" />
                         <input disabled class="form-control" asp-for="LoaiSp" />
 
                     </div>
@@ -90,7 +90,11 @@
                         <input asp-for="SoLuong" class="form-control">
                         <span asp-validation-for="SoLuong"></span>
                     </div>
-
+                    <div class="form-group">
+                        <label asp-for="SoLuotXemSp">Số luot xem</label>
+                        <input asp-for="SoLuotXemSp" class="form-control">
+                        <span asp-validation-for="SoLuotXemSp"></span>
+                    </div>
                     <div class="form-group">
                         <label asp-for="GiaGoc">Giá gốc</label>
                         <input type="number" asp-for="GiaGoc" class="form-control">

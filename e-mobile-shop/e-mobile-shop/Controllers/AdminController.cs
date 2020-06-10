@@ -94,30 +94,30 @@ namespace e_mobile_shop.Controllers
 
                 // List<ThongSoKiThuat> listTSKT = DataAccess.ReadThongSoKiThuat(model.MaSp);
 
-                foreach (var tskt in DataAccess.ReadThongSoKiThuat(model.MaSp))
-                {
-                    tskt.GiaTri = fc[tskt.ThongSo];
-                    DataAccess.context.Update(tskt);
-                    DataAccess.context.SaveChanges();
-
-                }
-
-                //ThongSoKiThuat temp;
-                //foreach (var ts in DataAccess.ReadThongSo(model.LoaiSp))
+                //foreach (var tskt in DataAccess.ReadThongSoKiThuat(model.MaSp))
                 //{
-                //    temp = new ThongSoKiThuat()
-                //    {
-                //        MaSp = model.MaSp,
-                //        ThongSo = ts.MaThongSo,
-                //        GiaTri = fc[ts.MaThongSo],
-
-                //    };
-
-                //    DataAccess.context.ThongSoKiThuat.Add(temp);
+                //    tskt.GiaTri = fc[tskt.ThongSo];
+                //    DataAccess.context.Update(tskt);
                 //    DataAccess.context.SaveChanges();
-                //    temp = null;
 
                 //}
+
+                ThongSoKiThuat temp;
+                foreach (var ts in DataAccess.ReadThongSo(model.LoaiSp))
+                {
+                    temp = new ThongSoKiThuat()
+                    {
+                        MaSp = model.MaSp,
+                        ThongSo = ts.MaThongSo,
+                        GiaTri = fc[ts.MaThongSo],
+
+                    };
+
+                    DataAccess.context.ThongSoKiThuat.Add(temp);
+                    DataAccess.context.SaveChanges();
+                    temp = null;
+
+                }
                 return RedirectToAction("QuanLy", "Admin", new { id = model.LoaiSp} );
             }
             else
