@@ -43,11 +43,7 @@
                     <input asp-for="@Model.Nsx" class="form-control" maxlength="5">
                     <span asp-validation-for="@Model.Nsx"></span>
                 </div>
-                <div class="form-group">
-                    <label asp-for="@Model.XuatXu">Xuất xứ</label>
-                    <input class="form-control" asp-for="@Model.XuatXu">
-                    <span asp-validation-for="@Model.XuatXu"></span>
-                </div>
+               
                 <div class="form-group">
                     <label asp-for="@Model.SoLuong">Số lượng</label>
                     <input asp-for="@Model.SoLuong" class="form-control">
@@ -125,7 +121,7 @@
                     {
                         <tr class="mb-1 ">
 
-                            <td style="text-transform:uppercase">@item1.ThuocTinh</td>
+                            <td style="text-transform:uppercase">@DataAccess.context.ThongSo.Find(item1.ThongSo).TenThongSo</td>
                             <td style="text-transform:uppercase">@item1.GiaTri</td>
                         </tr>
                     }

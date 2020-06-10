@@ -18,7 +18,6 @@ namespace e_mobile_shop.Models
         public string TenSp { get; set; }
         public string LoaiSp { get; set; }
         public int? SoLuotXemSp { get; set; }
-        public string XuatXu { get; set; }
         public decimal? GiaGoc { get; set; }
         public decimal? GiaTien { get; set; }
         public string MoTa { get; set; }
@@ -26,8 +25,8 @@ namespace e_mobile_shop.Models
         public string AnhNen { get; set; }
         public string AnhKhac { get; set; }
         public int? SoLuong { get; set; }
-        public bool? Isnew { get; set; }
-        public bool? Ishot { get; set; }
+        public bool Isnew { get; set; }
+        public bool Ishot { get; set; }
         public int? Status { get; set; }
         public int? IsOnline { get; set; }
         public string MaNcc { get; set; }

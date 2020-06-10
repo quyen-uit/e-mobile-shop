@@ -19,7 +19,7 @@ namespace e_mobile_shop.Models
         {
             List<LoaiSp> result = new List<LoaiSp>();
             result.Add(context.LoaiSp.Find("LSP0001"));
-
+           
             foreach (var item in context.LoaiSp.ToList())
             {
                 if(item.TenLoai!="Phụ Kiện")
@@ -32,29 +32,45 @@ namespace e_mobile_shop.Models
 
         public static List<SanPham> ReadSanPham(string loaiSp)
         {
-            if (loaiSp != "LSP0001")
-            {
-                return context.SanPham.Where(x => x.LoaiSp == loaiSp).ToList();
-            }
+            return context.SanPham.Where(x => x.LoaiSp == loaiSp).ToList();
 
-            else
-            {
-                return context.SanPham.Where(x => x.LoaiSp != "LSP0002" && x.LoaiSp != "LSP0007" && x.LoaiSp != "LSP0008").ToList();
-            }
         }
 
+        public static List<ThongSo> ReadThongSo(string loaiSp)
+        {
+           
+              return context.ThongSo.Where(x => x.MaLoai == loaiSp).ToList();
+            
+           
+        }
+        public static List<ThongSoKiThuat> ReadThongSoKiThuat(string ma)
+        {
+
+            return context.ThongSoKiThuat.Where(x => x.MaSp== ma).ToList();
 
 
+        }
+        public static string GetTenTSKT(string masp, string mats)
+        {
+            ThongSoKiThuat temp = context.ThongSoKiThuat.Where(x => x.MaSp == masp && x.ThongSo == mats).FirstOrDefault();
+            if (temp != null)
+                return temp.GiaTri;
+            else
+                return "";
+        }
         public static string GetLoaiSp(string loaiSP)
         {
             return context.LoaiSp.Find(loaiSP).TenLoai;
         }
-
+        public static List<NhaSanXuat> GetNSX()
+        {
+            return context.NhaSanXuat.ToList();
+        }
         public static SanPham GetSanPham(string Id)
         {
             return context.SanPham.Find(Id);
         }
-
+       
         public static List<ThongSoKiThuat> GetThongSoKiThuat(string maSp)
         {
             return context.ThongSoKiThuat.Where(x => x.MaSp == maSp).ToList();
