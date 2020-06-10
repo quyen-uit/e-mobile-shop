@@ -33,13 +33,15 @@ namespace e_mobile_shop.Controllers
         }
         public IActionResult QuanLyDienThoai()
         {
-            return View(DataAccess.ReadSanPham("15674"));
+            return View(DataAccess.ReadSanPham("LSP0002"));
         }
-        public IActionResult ThemDienThoai()
+        public IActionResult Them(string Id)
         {
+            ViewData["MaLoai"] = Id;
+            ViewData["TenLoai"] = DataAccess.context.LoaiSp.Find(Id).TenLoai;
             return View();
         }
-
+       
         public IActionResult XoaSanPham(string Id)
         {
             DataAccess.context.SanPham.Find(Id).IsOnline = 0;
@@ -47,25 +49,86 @@ namespace e_mobile_shop.Controllers
             return RedirectToAction("QuanLy", "Admin", new { id = DataAccess.context.SanPham.Find(Id).LoaiSp }).WithSuccess("Thành công", "Bạn đã xóa sản phẩm khỏi danh sách.");
         }
 
-        public IActionResult ChinhSua()
+        public IActionResult ChinhSua(string Id)
         {
-            return View();
+            SanPham sp = DataAccess.context.SanPham.Find(Id);
+            return View(sp);
         }
 
         [HttpPost]
-        public IActionResult ChinhSua(IFormFile AnhDaiDien, IFormCollection fc)
+        public ActionResult ChinhSua(
+            SanPham model, IFormFile AnhDaiDien,
+            IFormCollection fc,
+            IFormFile productImages1,
+            IFormFile productImages2,
+            IFormFile productImages3)
         {
+            string message = "";
+            model.MaSp = fc["MaSp"];
+            SanPham a =  DataAccess.context.SanPham.Find(fc["MaSp"]);
+            model.Status = string.IsNullOrEmpty(fc["status"]) ? 0 : 1;
 
+            if (AnhDaiDien==null)
+            {
+                model.AnhDaiDien = a.AnhDaiDien;
+            }
+            else
+            {
+                model.AnhDaiDien = UploadedFile(AnhDaiDien, "ProductAvatar");
+            }
+            if (true)
+            {                
+                DataAccess.context.Entry(a).CurrentValues.SetValues(model);
+                DataAccess.context.SaveChanges();
 
-            DataAccess.context.SanPham.Find(fc["Id"]).TenSp = fc["TenSp"];
+                AnhSanPham pic = DataAccess.context.AnhSanPham.Where(x => x.MaSp == model.MaSp).FirstOrDefault();
+                if (productImages1 != null)
+                    pic.Anh1 = UploadedFile(productImages1, "ProductImages");
+                if (productImages2 != null)
+                    pic.Anh2 = UploadedFile(productImages2, "ProductImages");
+                if (productImages3 != null)
+                    pic.Anh3 = UploadedFile(productImages3, "ProductImages");
 
-            DataAccess.context.SaveChanges();
-            return RedirectToAction("QuanLy", "Admin", new { id = DataAccess.context.SanPham.Find(fc["Id"]).LoaiSp }).WithSuccess("Chỉnh sửa thành công", "");
+                DataAccess.context.AnhSanPham.Update(pic);
+                DataAccess.context.SaveChanges();
 
+                // List<ThongSoKiThuat> listTSKT = DataAccess.ReadThongSoKiThuat(model.MaSp);
+
+                foreach (var tskt in DataAccess.ReadThongSoKiThuat(model.MaSp))
+                {
+                    tskt.GiaTri = fc[tskt.ThongSo];
+                    DataAccess.context.Update(tskt);
+                    DataAccess.context.SaveChanges();
+
+                }
+
+                //ThongSoKiThuat temp;
+                //foreach (var ts in DataAccess.ReadThongSo(model.LoaiSp))
+                //{
+                //    temp = new ThongSoKiThuat()
+                //    {
+                //        MaSp = model.MaSp,
+                //        ThongSo = ts.MaThongSo,
+                //        GiaTri = fc[ts.MaThongSo],
+
+                //    };
+
+                //    DataAccess.context.ThongSoKiThuat.Add(temp);
+                //    DataAccess.context.SaveChanges();
+                //    temp = null;
+
+                //}
+                return RedirectToAction("QuanLy", "Admin", new { id = model.LoaiSp} );
+            }
+            else
+            {
+                return View(model);
+            }
         }
 
+
         [HttpPost]
-        public ActionResult ThemDienThoai(SanPham model,
+        public ActionResult Them(SanPham model,
             IFormFile AnhDaiDien,
             IFormCollection fc,
             IFormFile productImages1,
@@ -78,16 +141,17 @@ namespace e_mobile_shop.Controllers
             if (ModelState.IsValid)
             {
 
-                model.MaSp = (DataAccess.context.SanPham.ToList().Count() + 1).ToString();
-                model.LoaiSp = fc["LoaiSp"].ToString();
+              //  model.MaSp = (DataAccess.context.SanPham.ToList().Count() + 1).ToString();
+                
                 model.AnhDaiDien = UploadedFile(AnhDaiDien, "ProductAvatar");
-
+                model.SoLuotXemSp = 0;
+                
                 DataAccess.context.SanPham.Add(model);
                 DataAccess.context.SaveChanges();
-
+         
                 AnhSanPham pic = new AnhSanPham()
                 {
-                    Id = (DataAccess.context.AnhSanPham.ToList().Count() + 1).ToString(),
+                  
                     MaSp = model.MaSp,
                     Anh1 = UploadedFile(productImages1, "ProductImages"),
                     Anh2 = UploadedFile(productImages2, "ProductImages"),
@@ -97,26 +161,47 @@ namespace e_mobile_shop.Controllers
                 DataAccess.context.AnhSanPham.Add(pic);
                 DataAccess.context.SaveChanges();
 
-                for (int i = 1; i < 10; i++)
+                ThongSoKiThuat tskt;
+                List<ThongSo> listTS = DataAccess.ReadThongSo(model.LoaiSp).ToList();
+                for (int i = 0; i < listTS.Count(); i++)
                 {
-                    var param = "attribute_" + i.ToString() + "_name";
-                    var param2 = "attribute_" + i.ToString() + "_value";
-                    if (fc[param].ToString()!="" && fc[param2].ToString() != "")
-                    {
-                        var thongSoKiThuat = new ThongSoKiThuat()
+                    
+                        tskt = new ThongSoKiThuat()
                         {
-                            MaTskt = (DataAccess.context.ThongSoKiThuat.ToList().Count() + 1).ToString(),
-                            ThuocTinh = fc[param],
-                            GiaTri = fc[param2],
-                            MaSp = model.MaSp
+                            MaSp = model.MaSp,
+                            ThongSo = listTS[i].MaThongSo,
+                            GiaTri = fc[listTS[i].MaThongSo],
+                           
                         };
-                        DataAccess.context.ThongSoKiThuat.Add(thongSoKiThuat);
-                        DataAccess.context.SaveChanges();
-                    }
-                    else break;
 
+                        DataAccess.context.ThongSoKiThuat.AddAsync(tskt);
+                        DataAccess.context.SaveChanges();
+                        tskt = null;
+                    
                 }
-                return RedirectToAction("QuanLyDienThoai", "Admin");
+
+
+
+                //for (int i = 1; i < 10; i++)
+                //{
+                //    var param = "attribute_" + i.ToString() + "_name";
+                //    var param2 = "attribute_" + i.ToString() + "_value";
+                //    if (fc[param].ToString()!="" && fc[param2].ToString() != "")
+                //    {
+                //        var thongSoKiThuat = new ThongSoKiThuat()
+                //        {
+                //            MaTskt = (DataAccess.context.ThongSoKiThuat.ToList().Count() + 1).ToString(),
+                //            ThuocTinh = fc[param],
+                //            GiaTri = fc[param2],
+                //            MaSp = model.MaSp
+                //        };
+                //        DataAccess.context.ThongSoKiThuat.Add(thongSoKiThuat);
+                //        DataAccess.context.SaveChanges();
+                //    }
+                //    else break;
+
+                //}
+                return RedirectToAction("QuanLy", "Admin", new { id = model.LoaiSp});
             }
             else
             {

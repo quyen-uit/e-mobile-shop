@@ -9,6 +9,7 @@ namespace e_mobile_shop.Models
         public string AnhDaiDien { get; set; }
         public string MaKm { get; set; }
         public string ThongTin { get; set; }
+        public int? Status { get; set; }
 
         public virtual SanPham MaSpNavigation { get; set; }
     }
