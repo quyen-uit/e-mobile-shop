@@ -4,9 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using e_mobile_shop.Data;
 using e_mobile_shop.Models;
+using e_mobile_shop.Models.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -31,9 +33,8 @@ namespace e_mobile_shop
             services.AddRazorPages();
 
             services.AddDbContext<eShopDbContext>(options =>
-                    options.UseSqlServer(
-                        Configuration.GetConnectionString("eShopDbContextConnection")));
-            
+                    options.UseSqlServer(Configuration.GetConnectionString("eShopDbContextConnection")), ServiceLifetime.Transient);
+
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddSession();
             services.Configure<IdentityOptions>(options =>
@@ -46,8 +47,23 @@ namespace e_mobile_shop
                 options.Password.RequiredLength = 6;
                 options.Password.RequiredUniqueChars = 0;
 
-                options.SignIn.RequireConfirmedEmail = false;
+                options.SignIn.RequireConfirmedEmail = true;
             });
+            services.AddAuthentication().AddGoogle(options =>{
+           IConfigurationSection googleAuthNSection =
+               Configuration.GetSection("Authentication:Google");
+
+           options.ClientId = googleAuthNSection["ClientId"];
+           options.ClientSecret = googleAuthNSection["ClientSecret"];
+              });
+            services.AddAuthentication().AddFacebook(facebookOptions =>
+            {
+                facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
+                facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
+            });
+
+            services.AddTransient<IEmailSender, EmailSender>();
+            services.Configure<AuthMessageSenderOptions>(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -66,7 +82,6 @@ namespace e_mobile_shop
             app.UseSession();
             app.UseAuthentication();
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

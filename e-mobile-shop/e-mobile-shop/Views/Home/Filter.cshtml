@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewData["Title"] = "Filter";
+
     Layout = "~/Views/Shared/_Layout.cshtml";
 
 }
@@ -8,30 +8,17 @@
 
 @model PaginatedList<SanPham>
 @{
+   
     var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
     var nextDisabled = !Model.HasNextPage ? "disabled" : "";
-
-    var currentUp = "";
-    var currentDown = "";
-
-    if (ViewData["SortByPrice"].ToString() == "")
-    {
-        currentUp = "";
-        currentDown = "";
-    }
-    else if (ViewData["SortByPrice"].ToString() == "low_first")
-    {
-        currentUp = "";
-        currentDown = "active-selected";
-    }
-    else if (ViewData["SortByPrice"].ToString() == "high_first")
-    {
-        currentUp = "active-selected";
-        currentDown = "";
-    }
 }
+
 <style>
 
+    .text-ajax{
+        padding: 5px !important;
+        font-weight:bold;
+    }
     .text-type-sp:hover {
         color: blue !important;
     }
@@ -47,6 +34,7 @@
             background-color: #0879C9;
             color: white;
         }
+<<<<<<< Updated upstream
 </style>
 <div class="pt-4 pl-4">
     @if(ViewData["TenSp"]!=null)
@@ -109,13 +97,405 @@
     }
 
 </div>
+=======
+
+        .nhasanxuat-@ViewData["HangSx"] {
+            border:solid blue 2px;
+            z-index: 1;
+        }
+    .sortorder-@ViewData["SortByPrice"] {
+        background-color: #0879C9;
+        color: white;
+    }
+
+
+</style>
+<div class="pt-4 pl-4">
+    <div class="row">
+        <div class="col-6">
+            @if (ViewData["TenSp"] != null)
+            {
+                <a class="btn btn-primary"
+                   asp-action="Filter"
+                   asp-controller="Home"
+                   asp-route-tenSp=""
+                   asp-route-loaiSp="@ViewData["LoaiSp"]"
+                   asp-route-sortOrder="@ViewData["CurrentSort"]"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                   asp-route-hangSx="@ViewData["HangSx"]">
+                    @ViewData["TenSp"] <i class="fas fa-times"></i>
+                </a>
+            }
+            @if (ViewData["SortByPrice"].ToString() == "low_first")
+            {
+                <a class="btn btn-primary"
+                   asp-action="Filter"
+                   asp-controller="Home"
+                   asp-route-tenSp="@ViewData["tenSp"]"
+                   asp-route-loaiSp="@ViewData["LoaiSp"]"
+                   asp-route-hangSx="@ViewData["HangSx"]"
+                   asp-route-sortOrder=""
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]"> Giá thấp đến cao <i class="fas fa-times"></i> </a>
+            }
+            else if (ViewData["SortByPrice"].ToString() == "high_first")
+            {
+                <a class="btn btn-primary"
+                   asp-action="Filter"
+                   asp-controller="Home"
+                   asp-route-loaiSp="@ViewData["LoaiSp"]"
+                   asp-route-tenSp="@ViewData["tenSp"]"
+                   asp-route-hangSx="@ViewData["HangSx"]"
+                   asp-route-sortOrder=""
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]"> Giá cao đến thấp <i class="fas fa-times"></i> </a>
+            }
+            else if (ViewData["SortByPrice"].ToString() == "view_first")
+            {
+                <a class="btn btn-primary"
+                   asp-action="Filter"
+                   asp-controller="Home"
+                   asp-route-loaiSp="@ViewData["LoaiSp"]"
+                   asp-route-tenSp="@ViewData["tenSp"]"
+                   asp-route-hangSx="@ViewData["HangSx"]"
+                   asp-route-sortOrder=""
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]"> Xem nhiều nhất <i class="fas fa-times"></i> </a>
+            }
+            else if (ViewData["SortByPrice"].ToString() == "buy_first")
+            {
+                <a class="btn btn-primary"
+                   asp-action="Filter"
+                   asp-controller="Home"
+                   asp-route-loaiSp="@ViewData["LoaiSp"]"
+                   asp-route-tenSp="@ViewData["tenSp"]"
+                   asp-route-hangSx="@ViewData["HangSx"]"
+                   asp-route-sortOrder=""
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]"> Mua nhiều nhất <i class="fas fa-times"></i> </a>
+            }
+
+            @if (ViewData["CurrentFilter"] != null)
+            {
+                var lstStr = ViewData["CurrentFilter"].ToString().Split('-');
+
+                <a class="btn btn-primary"
+                   asp-action="Filter"
+                   asp-controller="Home"
+                   asp-route-loaiSp="@ViewData["LoaiSp"]"
+                   asp-route-tenSp="@ViewData["tenSp"]"
+                   asp-route-sortOrder="@ViewData["CurrentSort"]"
+                   asp-route-hangSx="@ViewData["HangSx"]"
+                   asp-route-currentFilter="">Từ @(int.Parse(lstStr[0])/1000000) - @(int.Parse(lstStr[1])/1000000) triệu <i class="fas fa-times"></i> </a>
+            }
+
+            @if (ViewData["LoaiSp"] != null)
+            {
+                <a class="btn btn-primary"
+                   asp-action="Filter"
+                   asp-controller="Home"
+                   asp-route-loaiSp=""
+                   asp-route-tenSp="@ViewData["tenSp"]"
+                   asp-route-sortOrder="@ViewData["CurrentSort"]"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                   asp-route-hangSx="@ViewData["HangSx"]">
+                    @DataAccess.GetLoaiSp(ViewData["LoaiSp"].ToString()) <i class="fas fa-times"></i>
+                </a>
+            }
+
+            @if (ViewData["HangSx"] != null)
+            {
+                <a class="btn btn-primary"
+                   asp-action="Filter"
+                   asp-controller="Home"
+                   asp-route-loaiSp=""
+                   asp-route-tenSp="@ViewData["tenSp"]"
+                   asp-route-sortOrder="@ViewData["CurrentSort"]"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                   asp-route-hangSx="">
+                    @DataAccess.context.NhaSanXuat.Find(ViewData["HangSx"].ToString()).TenNsx <i class="fas fa-times"></i>
+                </a>
+            }
+
+            @{
+                var c = 0;
+                foreach (var item in ViewData.ToList())
+                {
+                    if (item.Value != null)
+                        c++;
+                    if (c > 1)
+                    {
+                        c = 0;
+                        <a class="btn btn-danger"
+                           asp-action="Filter"
+                           asp-controller="Home">
+                            Xóa tất cả  <i class="fas fa-times"></i>
+                        </a> break;
+                    }
+                }
+            }
+        </div>
+
+        <div class="col-6 row  ">
+
+            @if (ViewData["LoaiSp"] != null)
+            {
+                if (ViewData["LoaiSp"].ToString() == "LSP0001")
+                {
+                    <div> list Loại phụ kiện ở đây </div>
+                }
+                else
+                {
+                    <div class="btn-group dropleft  d-flex flex-row-reverse " style="width:100%;">
+                        <button type="button" class="btn btn-primary radius-0 dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Chọn tính năng
+                        </button>
+                        <div class="dropdown-menu p-3">
+                            @if (ViewData["LoaiSp"].ToString() == "LSP0008")
+                            {
+                                <div class="row  d-flex pl-3 ">
+
+                                    <div class="col-12 row p-2">
+                                        <div class="col-6" id="rams">
+                                            <div> RAM: </div>
+                                            <input id="chkbx_0" type="checkbox"  onchange="ShowOff()"  name="4GB" />
+                                            <label> 4GB</label> <br />
+                                            <input id="chkbx_1" type="checkbox" onchange="ShowOff()" name="8GB" />
+                                            <label>8GB</label><br />
+                                            <input type="checkbox" onchange="ShowOff()" name="16GB" />
+                                            <label>16GB </label>
+                                        </div>
+                                        <div class="col-6" id="cpus">
+                                            <div> CPU: </div>
+                                            <input id="chkbx_2" type="checkbox" onchange="ShowOff()" name="I3" /><label>Intel Core i3</label><br />
+                                            <input id="chkbx_3" type="checkbox" onchange="ShowOff()" name="I5" /><label>Intel Core i5</label><br />
+                                            <input type="checkbox" onchange="ShowOff()" name="I7" /><label>Intel Core i7 </label><br />
+                                            <input type="checkbox" onchange="ShowOff()" name="I9" /><label>Intel Core i9 </label><br />
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 row p-2 border-top">
+                                        <div class="col-6" id="nhucaus">
+                                            <div> Nhu cầu </div>
+                                            <input id="" type="checkbox" onchange="ShowOff()" name="type_1" />
+                                            <label> Học tập </label> <br />
+                                            <input id="" type="checkbox" onchange="ShowOff()" name="type_2" />
+                                            <label>Đồ họa - kĩ thuật</label><br />
+                                            <input type="checkbox" onchange="ShowOff()" name="type_3" />
+                                            <label>Văn phòng </label>
+                                        </div>
+                                        <div class="col-6" id="specials">
+                                            <div> Tính năng đặc biệt  </div>
+                                            <input id="" type="checkbox" onchange="ShowOff()" name="ssd" /><label>Ổ cứng SSD</label><br />
+                                            <input id="" type="checkbox" onchange="ShowOff()" name="hdd" /><label>Ổ cứng HDD</label><br />
+                                            <input type="checkbox" onchange="ShowOff()" name="optane" /><label>Intel Optane </label><br />
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            }
+                            <!-- For smartphone, LSP0002 -->
+                            @if (ViewData["LoaiSp"].ToString() == "LSP0002")
+                            {
+                                <div class="row d-flex p-2 ">
+
+                                    <div class="col-12 row p-2">
+                                        <div class="col-6" id="rams">
+                                            <div> Hệ điều hành:  </div>
+                                            <input id="chkbx_0" type="checkbox" onchange="ShowOff()" name="android" />
+                                            <label> Android </label> <br />
+                                            <input id="chkbx_1" type="checkbox" onchange="ShowOff()" name="ios" />
+                                            <label>iOS</label><br />
+
+                                        </div>
+                                        <div class="col-6" id="cpus">
+                                            <div> Dung lượng pin:  </div>
+                                            <input id="chkbx_2" type="checkbox" onchange="ShowOff()" name="small" /><label>Nhu cầu phổ thông</label><br />
+                                            <input id="chkbx_3" type="checkbox" onchange="ShowOff()" name="big" /><label>Dùng ổn định </label><br />
+                                            <input type="checkbox" onchange="ShowOff()" name="super" /><label>Pin khủng  </label><br />
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 row p-2 border-top">
+                                        <div class="col-6" id="nhucaus">
+                                            <div> Kích thước màn hình </div>
+                                            <input disabled id="" type="checkbox" onchange="ShowOff()" name="6_inch" />
+                                            <label>Dưới 6"</label> <br />
+                                            <input disabled id="" type="checkbox" onchange="ShowOff()" name="8_inch" />
+                                            <label>Từ 6" - 8"</label><br />
+                                            <input disabled type="checkbox" onchange="ShowOff()" name="10_inch" />
+                                            <label>Trên 8" </label>
+                                        </div>
+                                        <div class="col-6" id="specials">
+                                            <div> Tính năng đặc biệt  </div>
+                                            <input id="" type="checkbox" onchange="ShowOff()" name="mongmat" /><label>Cảm biến mống mắt</label><br />
+                                            <input id="" type="checkbox" onchange="ShowOff()" name="khuonmat" /><label>Nhận diện khuôn mặt</label><br />
+                                            <input type="checkbox" onchange="ShowOff()" name="vantay" /><label>Cảm biến vân tay </label><br />
+                                        </div>
+                                    </div>
+
+                                </div>
+                            }
+                            @if (ViewData["LoaiSp"].ToString() == "LSP0007")
+                            {
+                                <div class="row d-flex p-2 ">
+                                    <div class="col-12 row p-2">
+                                        <div class="col-6" id="rams">
+                                            <div> Hệ điều hành:  </div>
+                                            <input id="chkbx_0" type="checkbox" onchange="ShowOff()" name="android" />
+                                            <label> Android </label> <br />
+                                            <input id="chkbx_1" type="checkbox" onchange="ShowOff()" name="ios" />
+                                            <label>iOS</label><br />
+                                        </div>
+                                        <div class="col-6" id="cpus">
+                                            <div> Dung lượng pin:  </div>
+                                            <input id="chkbx_2" type="checkbox" onchange="ShowOff()" name="small" /><label>Nhu cầu phổ thông</label><br />
+                                            <input id="chkbx_3" type="checkbox" onchange="ShowOff()" name="big" /><label>Dùng ổn định </label><br />
+                                            <input type="checkbox" onchange="ShowOff()" name="super" /><label>Pin khủng  </label><br />
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 row p-2 border-top">
+                                        <div class="col-6" id="nhucaus">
+                                            <div> Kích thước màn hình </div>
+                                            <input id="" type="checkbox" onchange="ShowOff()" name="6_inch" />
+                                            <label>Dưới 6"</label> <br />
+                                            <input id="" type="checkbox" onchange="ShowOff()" name="8_inch" />
+                                            <label>Từ 6" - 8"</label><br />
+                                            <input type="checkbox" onchange="ShowOff()" name="10_inch" />
+                                            <label>Trên 8" </label>
+                                        </div>
+                                        <div class="col-6" id="specials">
+                                            <div> Tính năng đặc biệt  </div>
+                                            <input id="" type="checkbox" onchange="ShowOff()" name="mongmat" /><label>Cảm biến mống mắt</label><br />
+                                            <input id="" type="checkbox" onchange="ShowOff()" name="khuonmat" /><label>Nhận diện khuôn mặt</label><br />
+                                            <input type="checkbox" onchange="ShowOff()" name="vantay" /><label>Cảm biến vân tay </label><br />
+                                        </div>
+                                    </div>
+
+                                </div>
+                            }
+
+                            <div class="col-12 row">
+                                <form asp-action="Filter" asp-controller="Home" method="get">
+                                    <input type="hidden" name="loaiSp" id="id_loai_sp" value="@ViewData["LoaiSp"]" />
+
+                                    <!-- params list -->
+                                    <input type="hidden" id="input_param" name="params_list" />
+
+
+                                    <button class="btn btn-primary btn-block"
+                                            type="submit" id="btn_submit_param">
+                                        
+                                        Tìm sản phẩm 
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                }
+            }
+            else
+            {
+                <div class="btn-group dropleft  d-flex flex-row-reverse " style="width:100%;">
+                    <a class="btn btn-primary radius-0 dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Chọn loại sản phẩm
+                    </a>
+
+                    <div class="dropdown-menu p-3" aria-labelledby="dropdownMenuLink">
+
+                        @foreach (var item in DataAccess.ReadLoaiSp())
+                        {
+                            <a type="button text-type-sp" style="text-align:left; border-radius:0px;"
+                               asp-action="Filter"
+                               asp-controller="Home"
+                               asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                               asp-route-tenSp="@ViewData["tenSp"]"
+                               asp-route-hangSx="@ViewData["HangSx"]"
+                               asp-route-loaiSp="@item.MaLoai"
+                               asp-route-sortOrder="@ViewData["CurrentSort"]">
+
+                                <p class="pl-3 ten-loai-sp loaisp-@item.MaLoai">@Html.Raw(item.Icon) @item.TenLoai</p>
+                            </a>
+                        }
+
+
+                    </div>
+                </div>
+            }
+
+        </div>
+
+
+
+    </div>
+
+
+</div>
+<script>
+    function GetNumberProduct() {
+        
+    }
+    function ShowOff() {
+        var result = "&f";
+        $('#rams input:checked').each(function () {
+            result = result + $(this).attr('name') + "-"
+            //selected.push($(this).attr('name'));
+        });
+        result = result + "&j";
+        $('#cpus input:checked').each(function () {
+            result = result + $(this).attr('name') + "-"
+            //selected.push($(this).attr('name'));
+        });
+        result = result + "&w";
+        $('#nhucaus input:checked').each(function () {
+            result = result + $(this).attr('name') + "-"
+        });
+        result = result + "&z";
+
+        $('#specials input:checked').each(function () {
+            result = result + $(this).attr('name') + "-"
+        });
+
+        document.getElementById("input_param").value = result;
+
+        paramslist = $("#input_param").val() +"%"+ $("#id_loai_sp").val();
+
+        $.ajax(
+            {
+                type: 'POST',
+                url: '/Home/GetNumberProduct',
+                data: { paramslist: paramslist},
+                success: function (response) {
+                    var but = $("#btn_submit_param");
+                    but.html("Có " + response + " sản phẩm phù hợp");
+                    but.addClass("text-ajax");
+
+                    if (response == "0") {
+                        but.prop('disabled', 'true');
+                    } else {
+                        but.removeAttr('disabled');
+                    }
+
+                },
+                error: function (response) {
+                    alert("ajax fail");
+                }
+            })
+
+    }
+</script>
+>>>>>>> Stashed changes
 <!-- top Products -->
 <div class="ads-grid py-sm-1 py-4">
     <div class="container-fluid py-xl-4 py-lg-2">
         <!-- tittle heading -->
         <!-- //tittle heading -->
 
+<<<<<<< Updated upstream
         <div class="row">
+=======
+        <div class="row pl-5">
+
+>>>>>>> Stashed changes
 
             <!-- product left -->
             <div class="agileinfo-ads-display col-lg-9">
@@ -204,8 +584,9 @@
                 </div>
             </div>
             <!-- //product left -->
-            <div class="col-lg-3 mt-lg-0 mt-4 p-lg-0">
+            <div class="col-lg-3 mt-lg-0 mt-2 p-lg-0">
 
+<<<<<<< Updated upstream
                 <div class="side-bar p-sm-4 p-3">
                     <div class="d-flex">
                         <a asp-action="Filter"
@@ -224,8 +605,26 @@
                            class="btn btn-outline-primary m-1 @nextDisabled" style="width:50%; border-radius:0px;">
                             Trang sau <i class="fas fa-forward"></i>
                         </a>
+=======
+                <div class="side-bar p-sm-4 p-2">
+                    <div class="d-flex align-items-end" style="color:black !important">
+                        <a class="btn btn-outline-secondary radius-0 border p-2 m-2 sortorder-view_first"
+                           asp-action="Filter"
+                           asp-route-loaiSp="@ViewData["LoaiSp"]"
+                           asp-route-tenSp="@ViewData["tenSp"]"
+                           asp-route-hangSx="@ViewData["HangSx"]"
+                           asp-route-sortOrder="view_first"
+                           asp-route-currentFilter="@ViewData["CurrentFilter"]"><i class="fas fa-arrow-down"></i> Xếp theo xem nhiều</a>
+
+                        <a class=" btn btn-outline-secondary radius-0 border p-2 m-2 sortorder-buy_first"
+                           asp-action="Filter"
+                           asp-route-loaiSp="@ViewData["LoaiSp"]"
+                           asp-route-tenSp="@ViewData["tenSp"]"
+                           asp-route-hangSx="@ViewData["HangSx"]"
+                           asp-route-sortOrder="buy_first"
+                           asp-route-currentFilter="@ViewData["CurrentFilter"]"><i class="fas fa-arrow-up"></i> Xếp theo mua nhiều </a>
+>>>>>>> Stashed changes
                     </div>
-                    <br />
                     <div class="search-hotel border-bottom py-2">
                         <h3 class="agileits-sear-head mb-3 text-center">Chọn mức giá </h3>
 
@@ -263,14 +662,14 @@
                         <br />
 
                         <div class="d-flex ">
-                            <a class="dropdown-item border p-2 m-2 @currentUp"
+                            <a class="dropdown-item border p-2 m-2 sortorder-high_first"
                                asp-action="Filter"
                                asp-route-loaiSp="@ViewData["LoaiSp"]"
                                 asp-route-tenSp="@ViewData["tenSp"]"
                                asp-route-sortOrder="high_first"
                                asp-route-currentFilter="@ViewData["CurrentFilter"]"><i class="fas fa-arrow-down"></i> Giá cao đến thấp</a>
 
-                            <a class="dropdown-item border p-2 m-2 @currentDown"
+                            <a class="dropdown-item border p-2 m-2 sortorder-low_first"
                                asp-action="Filter"
                                asp-route-loaiSp="@ViewData["LoaiSp"]"
                                 asp-route-tenSp="@ViewData["tenSp"]"
@@ -309,8 +708,12 @@
     </div>
 </div>
 <!-- //top products -->
+<<<<<<< Updated upstream
 
 
 
 
 
+=======
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+>>>>>>> Stashed changes

@@ -9,7 +9,7 @@ namespace e_mobile_shop.Models
     public class DataAccess
     {
         public static int soCtdh =0;
-        public static ClientDbContext context = new ClientDbContext();
+        public static readonly ClientDbContext context = new ClientDbContext();
         public static List<AspNetUsers> ViewSanPham()
         {
             return context.AspNetUsers.ToList();
