@@ -1,0 +1,213 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model e_mobile_shop.Models.SanPham
+@{
+    ViewData["Title"] = "ChinhSua";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+
+}
+<style>
+
+    .field-validation-error {
+        color: red
+    }
+
+    .validation-summary-errors {
+        color: red
+    }
+
+    img {
+        padding-top: 5px;
+    }
+</style>
+@{ 
+    var str = "";
+    if (Model.Status == 0)
+    {
+        str = "";
+    }
+    else str = "checked";
+}
+
+
+<body>
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Thêm @Model.TenSp
+            </div>
+            <div class="panel-body">
+                <form enctype="multipart/form-data" role="form" asp-action="ChinhSua" asp-controller="Admin" method="post">
+
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" asp-for="@Model.Isnew" />Sản phẩm mới
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox"  asp-for="@Model.Ishot" />Sản phẩm nổi bật
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+
+                            <input type="checkbox" name="status" @str />Hoạt động
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="TenSp">Tên sản phẩm</label>
+                        <input class="form-control" asp-for="TenSp">
+                        <span asp-validation-for="TenSp"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="MaSp">Mã sản phẩm </label>
+                        <input hidden class="form-control" asp-for="MaSp" />
+                        <input disabled class="form-control" asp-for="MaSp" />
+
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="LoaiSp"> Loại sản phẩm </label>
+                        <input hidden class="form-control" asp-for="LoaiSp" />
+                        <input disabled class="form-control" asp-for="LoaiSp" />
+
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Nsx">Hãng sản xuất</label>
+                        <select class="form-control" asp-for="Nsx" asp-items="@(new SelectList(DataAccess.GetNSX(),"MaNsx","TenNsx"))">
+                        </select>
+
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="MaNcc">Nhà cung cấp</label>
+                        <select class="form-control" asp-for="MaNcc" asp-items="@(new SelectList(DataAccess.context.NhaCungCap.ToList(),"MaNcc","TenNcc"))">
+                        </select>
+
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="SoLuong">Số lượng</label>
+                        <input asp-for="SoLuong" class="form-control">
+                        <span asp-validation-for="SoLuong"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="GiaGoc">Giá gốc</label>
+                        <input type="number" asp-for="GiaGoc" class="form-control">
+                        <span asp-validation-for="GiaGoc"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="GiaTien">Giá bán</label>
+                        <input type="number" asp-for="GiaTien" class="form-control">
+                        <span asp-validation-for="GiaTien"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="AnhDaiDien">Ảnh đại diện</label>
+                        <input onchange="loadFile(event)" type="file" asp-for="AnhDaiDien" accept="image/*" class="form-control">
+                        <input asp-for="AnhDaiDien" class="form-control">
+                    </div>
+                    <img id="output" style="width: 150px; height:150px;" src="~/ProductAvatar/@Model.AnhDaiDien" />
+
+                    <div> <label> Ảnh mô tả</label></div>
+
+                    <div class="row">
+                        <div class="col-lg-4 ">
+                            <input onchange="loadFile1(event)" type="file" accept="image/*" placeholder="Chọn file" name="productImages1">
+                            <img id="output1" style="width: 150px; height:150px;" src="~/ProductImages/@DataAccess.GetAnhSanPham(Model.MaSp).Anh1" />
+                        </div>
+                        <div class="col-lg-4">
+                            <input onchange="loadFile2(event)" type="file" accept="image/*" name="productImages2">
+                            <img id="output2" style="width: 150px; height:150px;" src="~/ProductImages/@DataAccess.GetAnhSanPham(Model.MaSp).Anh2" />
+                        </div>
+                        <div class="col-lg-4">
+                            <input onchange="loadFile3(event)" type="file" accept="image/*" name="productImages3">
+                            <img id="output3" style="width: 150px; height:150px;" src="~/ProductImages/@DataAccess.GetAnhSanPham(Model.MaSp).Anh3" />
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>Mô tả</label>
+                        <textarea class="form-control" rows="3" asp-for="MoTa"></textarea>
+                        <script>
+                            CKEDITOR.replace('MoTa');
+                        </script>
+                    </div>
+                    @*<div class="form-group">
+            <label>Thông số kĩ thuật  </label>
+
+            <div id="czContainer">
+                <div id="first">
+                    <div class="recordset">
+                        <input placeholder="Tên thuộc tính" class="form-group ml-2" type="text" id="attribute_1_name" name="attribute_1_name">
+
+                        <input placeholder="Giá trị" class="form-group" type="text" id="attribute_1_value" name="attribute_1_value">
+                    </div>
+                </div>
+            </div>
+        </div>*@
+                    <div class="form-group">
+                        @foreach (var item in DataAccess.ReadThongSo(Model.LoaiSp))
+                        {
+                            <div class="form-group">
+                                <label>@item.TenThongSo</label>
+                                <input name="@item.MaThongSo" type="text" class="form-control" value="@DataAccess.GetTenTSKT(Model.MaSp,item.MaThongSo)">
+                            </div>
+                        }
+                    </div>
+                    <br />
+                    <button type="submit" name="submit" class="btn btn-default">Submit Button</button>
+                    <button type="reset" class="btn btn-default">Reset Button</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="~/Admin/js/jquery.czMore-1.5.3.2.js"></script>
+    <script>
+        $("#czContainer").czMore({
+
+            // maximum number of form fields allowed
+            max: 5,
+
+            // minimum number of form fields allowed
+            min: 0,
+
+            // uses your own CSS styles
+            styleOverride: false,
+
+            // change the prefix name of the text field
+            countFieldPrefix: '_czMore_txtCount'
+
+        });
+
+        var loadFile = function (event) {
+            var image = document.getElementById('output');
+            image.src = URL.createObjectURL(event.target.files[0]);
+
+        };
+
+
+        var loadFile1 = function (event) {
+            var image = document.getElementById('output1');
+            image.src = URL.createObjectURL(event.target.files[0]);
+
+        };
+        var loadFile2 = function (event) {
+            var image = document.getElementById('output2');
+            image.src = URL.createObjectURL(event.target.files[0]);
+
+        };
+        var loadFile3 = function (event) {
+            var image = document.getElementById('output3');
+            image.src = URL.createObjectURL(event.target.files[0]);
+
+        };
+        function changeType() {
+            document.getElementById("textType").value = document.getElementById("typeSelection").value;
+        }
+    </script>
+</body>
+
+

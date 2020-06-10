@@ -24,13 +24,13 @@ namespace e_mobile_shop.Controllers
         public async Task<IActionResult> DanhSach(int? pageNumber, string Id)
         {
             var sanphams = from s in DataAccess.context.SanPham select s ;
-            if (Id != "00000")
+            if (Id != "LSP0001")
             {
                 sanphams= DataAccess.context.SanPham.Where(x => x.LoaiSp == Id);
             }
             else
             {
-                 sanphams = DataAccess.context.SanPham.Where(x => x.LoaiSp != "15674" && x.LoaiSp != "87356" && x.LoaiSp != "89742");
+                 sanphams = DataAccess.context.SanPham.Where(x => x.LoaiSp != "LSP0002" && x.LoaiSp != "LSP0007" && x.LoaiSp != "LSP0008");
             }
 
             int pageSize = 16;

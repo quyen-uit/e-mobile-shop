@@ -26,6 +26,7 @@
     <link href="~/css/style.css" rel="stylesheet" type="text/css" media="all" />
     <!-- Main css -->
     <link rel="stylesheet" href="~/css/fontawesome-all.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css" />
     <!-- Font-Awesome-Icons-CSS -->
     <link href="~/css/popuo-box.css" rel="stylesheet" type="text/css" media="all" />
     <!-- pop-up-box -->
@@ -63,6 +64,9 @@
 
                             <li class="text-center border-right text-white">
                                 <i class="fas fa-phone mr-2"></i> 0988776599
+                            </li>
+                            <li class="text-center border-right text-white">
+                                <a class="text-white" asp-action="Index" asp-controller="Admin"> <i class="fas fa-user-cog"></i> Admin </a>
                             </li>
 
                             <partial name="_LoginPartial" />
@@ -133,13 +137,11 @@
                                         <a type="button" style="text-align:left; border-radius:0px;" class="btn btn-block p-0 " asp-action="DanhSach" asp-controller="SanPham" asp-route-id="@item.MaLoai">
                                             <p style="color:black" class="p-2">@item.TenLoai</p>
                                         </a>
+
                                     }
-<<<<<<< Updated upstream
-=======
                                     <a type="button" style="text-align:left; border-radius:0px;" class="btn btn-block p-0 " asp-action="Filter" asp-controller="Home">
                                         <p style="color:black;" class="p-2">Tất cả sản phẩm</p>
                                     </a>
->>>>>>> Stashed changes
                                 </div>
 
                             </div>
@@ -158,22 +160,22 @@
                                 </a>
                             </li>
                             <li class="nav-item mr-lg-2 mb-lg-0 mb-2">
-                                <a class="nav-link " asp-controller="SanPham" asp-action="DanhSach" asp-route-id="15674" role="button" aria-haspopup="true" aria-expanded="false">
+                                <a class="nav-link " asp-controller="SanPham" asp-action="DanhSach" asp-route-id="LSP0002" role="button" aria-haspopup="true" aria-expanded="false">
                                     Điện thoại
                                 </a>
 
                             </li>
                             <li class="nav-item  mr-lg-2 mb-lg-0 mb-2">
-                                <a class="nav-link " asp-controller="SanPham" asp-action="DanhSach" asp-route-id="87356" role="button" aria-haspopup="true" aria-expanded="false">
+                                <a class="nav-link " asp-controller="SanPham" asp-action="DanhSach" asp-route-id="LSP0007" role="button" aria-haspopup="true" aria-expanded="false">
                                     Máy tính bảng
                                 </a>
 
                             </li>
                             <li class="nav-item mr-lg-2 mb-lg-0 mb-2">
-                                <a class="nav-link" asp-controller="SanPham" asp-action="DanhSach" asp-route-id="89742">Laptop</a>
+                                <a class="nav-link" asp-controller="SanPham" asp-action="DanhSach" asp-route-id="LSP0008">Laptop</a>
                             </li>
                             <li class="nav-item mr-lg-2 mb-lg-0 mb-2">
-                                <a class="nav-link" asp-controller="SanPham" asp-action="DanhSach" asp-route-id="00000">Phụ kiện</a>
+                                <a class="nav-link" asp-controller="SanPham" asp-action="DanhSach" asp-route-id="LSP0001">Phụ kiện</a>
                             </li>
                             <li class="nav-item mr-lg-2 mb-lg-0 mb-2">
                                 <a class="nav-link " href="#" role="button" aria-haspopup="true" aria-expanded="false">
@@ -182,23 +184,9 @@
 
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="contact.html">Về chúng tôi </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" asp-action="Index" asp-controller="Admin">Admin </a>
+                                <a class="nav-link" href="contact.html">Hỗ trợ  </a>
                             </li>
 
-                            <li class="nav-item">
-                                <a class="nav-link" asp-action="TestPage" asp-controller="Home">TestPage </a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link" asp-action="Filter" asp-controller="Home">Filtering </a>
-                            </li>
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
                         </ul>
                     </div>
                 </nav>

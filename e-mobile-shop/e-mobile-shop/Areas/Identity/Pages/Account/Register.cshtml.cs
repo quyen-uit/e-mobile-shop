@@ -134,7 +134,7 @@ namespace e_mobile_shop.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = user.Id, code = code },
                         protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Xác nhận email", $"Xác nhận email bằng cách <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>nhấn vào đây </a>.");
+                    await _emailSender.SendEmailAsync(Input.Email, "Xác nhận email", $"Xác nhận email bằng cách kiểm tra email  </a>.");
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {

@@ -49,13 +49,13 @@ namespace e_mobile_shop
 
                 options.SignIn.RequireConfirmedEmail = true;
             });
-            services.AddAuthentication().AddGoogle(options =>{
-           IConfigurationSection googleAuthNSection =
-               Configuration.GetSection("Authentication:Google");
+            services.AddAuthentication().AddGoogle(options => {
+                IConfigurationSection googleAuthNSection =
+                    Configuration.GetSection("Authentication:Google");
 
-           options.ClientId = googleAuthNSection["ClientId"];
-           options.ClientSecret = googleAuthNSection["ClientSecret"];
-              });
+                options.ClientId = googleAuthNSection["ClientId"];
+                options.ClientSecret = googleAuthNSection["ClientSecret"];
+            });
             services.AddAuthentication().AddFacebook(facebookOptions =>
             {
                 facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];

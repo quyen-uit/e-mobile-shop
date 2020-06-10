@@ -34,70 +34,6 @@
             background-color: #0879C9;
             color: white;
         }
-<<<<<<< Updated upstream
-</style>
-<div class="pt-4 pl-4">
-    @if(ViewData["TenSp"]!=null)
-    {
-        <a class="btn btn-primary" 
-           asp-action="Filter"
-           asp-controller="Home"
-           asp-route-tenSp=""
-           asp-route-loaiSp="@ViewData["LoaiSp"]"
-           asp-route-sortOrder="@ViewData["CurrentSort"]"
-           asp-route-currentFilter="@ViewData["CurrentFilter"]">
-            @ViewData["TenSp"] <i class="fas fa-times"></i> 
-        </a>
-    }
-    @if (ViewData["SortByPrice"].ToString() == "low_first" )
-    {
-        <a class="btn btn-primary"
-           asp-action="Filter"
-           asp-controller="Home"
-           asp-route-tenSp="@ViewData["tenSp"]"
-           asp-route-loaiSp="@ViewData["LoaiSp"]"
-           asp-route-sortOrder=""
-           asp-route-currentFilter="@ViewData["CurrentFilter"]"> Giá thấp đến cao <i class="fas fa-times"></i> </a>
-    }
-    else if (ViewData["SortByPrice"].ToString() == "high_first" )
-    {
-        <a class="btn btn-primary"
-           asp-action="Filter"
-           asp-controller="Home"
-           asp-route-loaiSp="@ViewData["LoaiSp"]"
-            asp-route-tenSp="@ViewData["tenSp"]"
-           asp-route-sortOrder=""
-           asp-route-currentFilter="@ViewData["CurrentFilter"]"> Giá cao đến thấp <i class="fas fa-times"></i> </a>
-    }
-
-    @if (ViewData["CurrentFilter"] != null)
-    {
-        var lstStr = ViewData["CurrentFilter"].ToString().Split('-');
-
-        <a class="btn btn-primary"
-           asp-action="Filter"
-           asp-controller="Home"
-           asp-route-loaiSp="@ViewData["LoaiSp"]"
-            asp-route-tenSp="@ViewData["tenSp"]"
-           asp-route-sortOrder="@ViewData["CurrentSort"]"
-           asp-route-currentFilter="">Từ @(int.Parse(lstStr[0])/1000000) - @(int.Parse(lstStr[1])/1000000) triệu <i class="fas fa-times"></i> </a>
-    }
-
-    @if (ViewData["LoaiSp"] != null)
-    {
-        <a class="btn btn-primary"
-           asp-action="Filter"
-           asp-controller="Home"
-           asp-route-loaiSp=""
-            asp-route-tenSp="@ViewData["tenSp"]"
-           asp-route-sortOrder="@ViewData["CurrentSort"]"
-           asp-route-currentFilter="@ViewData["CurrentFilter"]">
-            @DataAccess.GetLoaiSp(ViewData["LoaiSp"].ToString()) <i class="fas fa-times"></i>
-        </a>
-    }
-
-</div>
-=======
 
         .nhasanxuat-@ViewData["HangSx"] {
             border:solid blue 2px;
@@ -483,19 +419,14 @@
 
     }
 </script>
->>>>>>> Stashed changes
 <!-- top Products -->
 <div class="ads-grid py-sm-1 py-4">
     <div class="container-fluid py-xl-4 py-lg-2">
         <!-- tittle heading -->
         <!-- //tittle heading -->
 
-<<<<<<< Updated upstream
-        <div class="row">
-=======
         <div class="row pl-5">
 
->>>>>>> Stashed changes
 
             <!-- product left -->
             <div class="agileinfo-ads-display col-lg-9">
@@ -565,7 +496,7 @@
                            asp-route-sortOrder="@ViewData["CurrentSort"]"
                            asp-route-pageNumber="@(Model.PageIndex - 1)"
                            asp-route-currentFilter="@ViewData["CurrentFilter"]"
-                            asp-route-tenSp="@ViewData["tenSp"]"
+                           asp-route-tenSp="@ViewData["tenSp"]"
                            class="btn btn-outline-primary m-1 @prevDisabled" style="width:50%;border-radius:0px">
                             <i class="fas fa-backward"></i>  Trang trước
                         </a>
@@ -574,7 +505,7 @@
                            asp-route-sortOrder="@ViewData["CurrentSort"]"
                            asp-route-pageNumber="@(Model.PageIndex + 1)"
                            asp-route-currentFilter="@ViewData["CurrentFilter"]"
-                            asp-route-tenSp="@ViewData["tenSp"]"
+                           asp-route-tenSp="@ViewData["tenSp"]"
                            class="btn btn-outline-primary m-1 @nextDisabled" style="width:50%; border-radius:0px;">
                             Trang sau <i class="fas fa-forward"></i>
                         </a>
@@ -586,26 +517,6 @@
             <!-- //product left -->
             <div class="col-lg-3 mt-lg-0 mt-2 p-lg-0">
 
-<<<<<<< Updated upstream
-                <div class="side-bar p-sm-4 p-3">
-                    <div class="d-flex">
-                        <a asp-action="Filter"
-                           asp-route-sortOrder="@ViewData["CurrentSort"]"
-                           asp-route-pageNumber="@(Model.PageIndex - 1)"
-                           asp-route-currentFilter="@ViewData["CurrentFilter"]"
-                            asp-route-tenSp="@ViewData["tenSp"]"
-                           class="btn btn-outline-primary m-1 @prevDisabled" style="width:50%;border-radius:0px">
-                            <i class="fas fa-backward"></i>  Trang trước
-                        </a>
-                        <a asp-action="Filter"
-                           asp-route-sortOrder="@ViewData["CurrentSort"]"
-                            asp-route-tenSp="@ViewData["tenSp"]"
-                           asp-route-pageNumber="@(Model.PageIndex + 1)"
-                           asp-route-currentFilter="@ViewData["CurrentFilter"]"
-                           class="btn btn-outline-primary m-1 @nextDisabled" style="width:50%; border-radius:0px;">
-                            Trang sau <i class="fas fa-forward"></i>
-                        </a>
-=======
                 <div class="side-bar p-sm-4 p-2">
                     <div class="d-flex align-items-end" style="color:black !important">
                         <a class="btn btn-outline-secondary radius-0 border p-2 m-2 sortorder-view_first"
@@ -623,7 +534,6 @@
                            asp-route-hangSx="@ViewData["HangSx"]"
                            asp-route-sortOrder="buy_first"
                            asp-route-currentFilter="@ViewData["CurrentFilter"]"><i class="fas fa-arrow-up"></i> Xếp theo mua nhiều </a>
->>>>>>> Stashed changes
                     </div>
                     <div class="search-hotel border-bottom py-2">
                         <h3 class="agileits-sear-head mb-3 text-center">Chọn mức giá </h3>
@@ -635,15 +545,17 @@
 
                                 <a class="btn btn-block btn-outline-secondary radius-0 selected-@(i*1000000)-@((i+2)*1000000)"
                                    asp-route-loaiSp="@ViewData["LoaiSp"]"
-                                    asp-route-tenSp="@ViewData["tenSp"]"
+                                   asp-route-tenSp="@ViewData["tenSp"]"
                                    asp-route-sortOrder="@ViewData["CurrentSort"]"
+                                   asp-route-hangSx="@ViewData["HangSx"]"
                                    asp-route-giaTien="@(i*1000000)-@((i+2)*1000000)">Từ @(i) đến @((i+2)) triệu</a>
 
                             }
                             <a class="btn btn-block btn-outline-secondary radius-0 selected-@(12000000)-@(120000000)"
                                asp-route-loaiSp="@ViewData["LoaiSp"]"
-                                asp-route-tenSp="@ViewData["tenSp"]"
+                               asp-route-tenSp="@ViewData["tenSp"]"
                                asp-route-sortOrder="@ViewData["CurrentSort"]"
+                               asp-route-hangSx="@ViewData["HangSx"]"
                                asp-route-giaTien="@(12000000)-@(120000000)">Trên 12 triệu</a>
                         </div>
                         <br />
@@ -665,14 +577,16 @@
                             <a class="dropdown-item border p-2 m-2 sortorder-high_first"
                                asp-action="Filter"
                                asp-route-loaiSp="@ViewData["LoaiSp"]"
-                                asp-route-tenSp="@ViewData["tenSp"]"
+                               asp-route-tenSp="@ViewData["tenSp"]"
+                               asp-route-hangSx="@ViewData["HangSx"]"
                                asp-route-sortOrder="high_first"
                                asp-route-currentFilter="@ViewData["CurrentFilter"]"><i class="fas fa-arrow-down"></i> Giá cao đến thấp</a>
 
                             <a class="dropdown-item border p-2 m-2 sortorder-low_first"
                                asp-action="Filter"
                                asp-route-loaiSp="@ViewData["LoaiSp"]"
-                                asp-route-tenSp="@ViewData["tenSp"]"
+                               asp-route-tenSp="@ViewData["tenSp"]"
+                               asp-route-hangSx="@ViewData["HangSx"]"
                                asp-route-sortOrder="low_first"
                                asp-route-currentFilter="@ViewData["CurrentFilter"]"><i class="fas fa-arrow-up"></i> Giá thấp đến cao</a>
                         </div>
@@ -681,7 +595,7 @@
 
 
                         <div class="left-side py-2 border mt-5">
-                            <h3 class="text-center" style="color:black; font-weight:bold;"> Chọn loại sản phẩm </h3>
+                            <h3 class="text-center" style="color:black; font-weight:bold;"> Loại sản phẩm </h3>
                             <div>
                                 @foreach (var item in DataAccess.ReadLoaiSp())
                                 {
@@ -689,18 +603,47 @@
                                        asp-action="Filter"
                                        asp-controller="Home"
                                        asp-route-currentFilter="@ViewData["CurrentFilter"]"
-                                        asp-route-tenSp="@ViewData["tenSp"]"
+                                       asp-route-tenSp="@ViewData["tenSp"]"
+                                       asp-route-hangSx="@ViewData["HangSx"]"
                                        asp-route-loaiSp="@item.MaLoai"
                                        asp-route-sortOrder="@ViewData["CurrentSort"]">
 
-                                        <p class="pl-3 ten-loai-sp loaisp-@item.MaLoai"><span style="font-size:10px;" class="fas fa-circle"></span> @item.TenLoai</p>
+                                        <p class="pl-3 ten-loai-sp loaisp-@item.MaLoai">@Html.Raw(item.Icon) @item.TenLoai</p>
                                     </a>
                                 }
 
                             </div>
                         </div>
+
+                        <div class="left-side py-2 border mt-5">
+                            <h3 class="text-center" style="color:black; font-weight:bold;"> Hãng sản xuất  </h3>
+                            <div class="d-flex">
+                                <div class="row m-0 ">
+                                    @foreach (var item in DataAccess.context.NhaSanXuat)
+                                    {
+                                        @if (!String.IsNullOrEmpty(item.Avatar))
+                                        {
+                                            <a class="col-6 mt-2  " type="button text-type-sp" style="text-align:left; border-radius:0px;height: 50px; "
+                                               asp-action="Filter"
+                                               asp-controller="Home"
+                                               asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                                               asp-route-tenSp="@ViewData["tenSp"]"
+                                               asp-route-hangSx="@item.MaNsx"
+                                               asp-route-loaiSp="@ViewData["LoaiSp"]"
+                                               asp-route-sortOrder="@ViewData["CurrentSort"]">
+
+                                                <div class="ten-loai-sp border  " style="height: 50px; width: 100%">
+                                                    <img src="@Html.Raw(item.Avatar)" class="nhasanxuat-@item.MaNsx" style="width: 100%;height:100%;" />
+                                                </div>
+                                            </a>
+                                        }
+
+                                    }
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                   
+
                 </div>
                 <!-- //product right -->
             </div>
@@ -708,12 +651,4 @@
     </div>
 </div>
 <!-- //top products -->
-<<<<<<< Updated upstream
-
-
-
-
-
-=======
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
->>>>>>> Stashed changes

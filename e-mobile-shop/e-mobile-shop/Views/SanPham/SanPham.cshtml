@@ -55,7 +55,7 @@
                 <div class="single-infoagile">
                     <ul>
                         <li class="mb-3">
-                            <span style="text-transform: uppercase">Hãng sản xuất: @Model.HangSx </span>
+                            <span style="text-transform: uppercase">Hãng sản xuất: @DataAccess.context.NhaSanXuat.Find(Model.Nsx).TenNsx </span>
                         </li>
                         <li class="mb-3">
                             Còn
@@ -77,12 +77,9 @@
                         @foreach (var item in DataAccess.GetThongSoKiThuat(Model.MaSp))
                         {
                             <li class="mb-1">
-
-                                <span style="text-transform:uppercase">@item.ThuocTinh</span>  : <span style="text-transform:uppercase">@item.GiaTri</span>
+                                <span style="text-transform:uppercase">@DataAccess.context.ThongSo.Find(item.ThongSo).TenThongSo</span>  : <span style="text-transform:uppercase">@item.GiaTri</span>
                             </li>
                         }
-
-
                     </ul>
                     <button class="btn dropdown-toggle" href="#"> xem cấu hình chi tiết </button>
                     <p class="my-sm-4 my-3">
