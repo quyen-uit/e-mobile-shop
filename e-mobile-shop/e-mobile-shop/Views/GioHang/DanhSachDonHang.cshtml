@@ -1,13 +1,8 @@
-﻿@using e_mobile_shop.Models.Helpers;
-@model PaginatedList<e_mobile_shop.Models.DonHang>
+﻿@model IEnumerable<e_mobile_shop.Models.DonHang>
 
 @{
     ViewData["Title"] = "DanhSachDonHang";
     Layout = "~/Views/Shared/_Layout.cshtml";
-}
-@{
-    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
-    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
 }
 
 <style>
@@ -17,7 +12,7 @@
 
     .s {
         font-size: 20px;
-        padding: 5px;
+        padding: 10px;
     }
 
     .tooltip {
@@ -97,17 +92,5 @@
                 }
             </tbody>
         </table>
-        <div class="d-flex">
-            <a asp-action="DanhSachDonHang"
-               asp-route-pageNumber="@(Model.PageIndex - 1)"
-               class="btn btn-outline-primary m-1 @prevDisabled" style="width:50%;border-radius:0px">
-                <i class="fas fa-backward"></i>  Trang trước
-            </a>
-            <a asp-action="DanhSachDonHang"
-               asp-route-pageNumber="@(Model.PageIndex + 1)"
-               class="btn btn-outline-primary m-1 @nextDisabled" style="width:50%; border-radius:0px;">
-                Trang sau <i class="fas fa-forward"></i>
-            </a>
-        </div>
     </div>
 </div>

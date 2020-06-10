@@ -20,7 +20,6 @@ namespace e_mobile_shop.Models
         public string Ghichu { get; set; }
         public string Diachi { get; set; }
         public string Dienthoai { get; set; }
-        public int? Status { get; set; }
 
         public virtual AspNetUsers MaKhNavigation { get; set; }
         public virtual ICollection<ChiTietDonHang> ChiTietDonHang { get; set; }
