@@ -5,7 +5,14 @@
 }
 
 @model SanPham
-
+<style>
+    td{
+        padding: 5px;
+    }
+    .flex-control-thumbs li img{
+        max-height: 120px;
+    }
+</style>
 
 <!-- Single Page -->
 <div class="banner-bootom-w3-agileits py-5">
@@ -21,20 +28,20 @@
                     <div class="flexslider">
                         <ul class="slides">
 
-                            <li data-thumb="../../ProductImages/@DataAccess.GetAnhSanPham(Model.MaSp).Anh1">
+                            <li data-thumb="../../ProductImages/@DataAccess.GetAnhSanPham(Model.MaSp).Anh1" class="data-thumb">
                                 <div class="thumb-image">
                                     <img src="~/ProductImages/@DataAccess.GetAnhSanPham(Model.MaSp).Anh1" id="" data-imagezoom="true" class="img-fluid w-100" alt="2">
                                 </div>
                             </li>
 
-                            <li data-thumb="../../ProductImages/@DataAccess.GetAnhSanPham(Model.MaSp).Anh2">
+                            <li data-thumb="../../ProductImages/@DataAccess.GetAnhSanPham(Model.MaSp).Anh2"  class="data-thumb">
                                 <div class="thumb-image">
                                     <img src="~/ProductImages/@DataAccess.GetAnhSanPham(Model.MaSp).Anh2" id="" data-imagezoom="true" class="img-fluid w-100" alt="2">
                                 </div>
                             </li>
 
 
-                            <li data-thumb="../../ProductImages/@DataAccess.GetAnhSanPham(Model.MaSp).Anh3">
+                            <li data-thumb="../../ProductImages/@DataAccess.GetAnhSanPham(Model.MaSp).Anh3"  class="data-thumb">
                                 <div class="thumb-image">
                                     <img src="~/ProductImages/@DataAccess.GetAnhSanPham(Model.MaSp).Anh3" id="" data-imagezoom="true" class="img-fluid w-100" alt="2">
                                 </div>
@@ -74,14 +81,64 @@
                     <br />
 
                     <ul>
-                        @foreach (var item in DataAccess.GetThongSoKiThuat(Model.MaSp))
+                        @foreach (var item in DataAccess.GetThongSoKiThuat(Model.MaSp).Take(8))
                         {
-                            <li class="mb-1">
-                                <span style="text-transform:uppercase">@DataAccess.context.ThongSo.Find(item.ThongSo).TenThongSo</span>  : <span style="text-transform:uppercase">@item.GiaTri</span>
-                            </li>
+                            if (item.GiaTri.Length <= 50)
+                            {
+                                <li class="mb-1">
+                                    <span style="text-transform:uppercase">@DataAccess.context.ThongSo.Find(item.ThongSo).TenThongSo</span>  : <span style="text-transform:uppercase">@item.GiaTri</span>
+                                </li>
+                            }
+
                         }
                     </ul>
-                    <button class="btn dropdown-toggle" href="#"> xem cấu hình chi tiết </button>
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                        Xem cấu hình chi tiết 
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel" style="color:black !important">Cấu hình chi tiết </h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <table style="width:100% ">
+                                        @{
+                                            var lst = DataAccess.GetThongSoKiThuat(Model.MaSp);
+                                            for (int i = 0; i < lst.Count(); i++)
+                                            {
+                                                if (i % 2 == 0)
+                                                {
+                                                    <tr class="mb-1 border-bottom">
+                                                        <td style="text-transform:uppercase; width: 40%">@DataAccess.context.ThongSo.Find(lst[i].ThongSo).TenThongSo</td>
+                                                        <td style="text-transform:uppercase">@lst[i].GiaTri</td>
+                                                    </tr>
+                                                }
+                                                else
+                                                {
+                                                    <tr class="mb-1 border-bottom" style="background-color:aliceblue">
+                                                        <td style="text-transform:uppercase; width: 40%">@DataAccess.context.ThongSo.Find(lst[i].ThongSo).TenThongSo</td>
+                                                        <td style="text-transform:uppercase">@lst[i].GiaTri</td>
+                                                    </tr>
+                                                }
+                                            }
+                                        }
+
+
+                                    </table>
+                                    
+                                </div>
+                               
+                            </div>
+                        </div>
+                    </div>
+
                     <p class="my-sm-4 my-3">
                         <i class="fas fa-retweet mr-3"></i>Net banking & Credit/ Debit/ ATM card
                     </p>
@@ -114,7 +171,6 @@
                     </div>
 
                 </div>
-                @*<a class="btn btn-primary" asp-controller="GioHang" asp-action="AddToCartSession" asp-route-id="@Model.MaSp"> Thêm vô giỏ  </a>*@
 
             </div>
         </div>

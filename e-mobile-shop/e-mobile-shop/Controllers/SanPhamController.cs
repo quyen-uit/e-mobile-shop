@@ -24,6 +24,7 @@ namespace e_mobile_shop.Controllers
         public async Task<IActionResult> DanhSach(int? pageNumber, string Id)
         {
             var sanphams = from s in DataAccess.context.SanPham select s ;
+
             if (Id != "LSP0001")
             {
                 sanphams= DataAccess.context.SanPham.Where(x => x.LoaiSp == Id);
