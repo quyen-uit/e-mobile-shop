@@ -49,20 +49,20 @@ namespace e_mobile_shop
 
                 options.SignIn.RequireConfirmedEmail = true;
             });
-            services.AddAuthentication().AddGoogle(options => {
-                IConfigurationSection googleAuthNSection =
-                    Configuration.GetSection("Authentication:Google");
+            //services.AddAuthentication().AddGoogle(options => {
+            //    IConfigurationSection googleAuthNSection =
+            //        Configuration.GetSection("Authentication:Google");
 
-                options.ClientId = googleAuthNSection["ClientId"];
-                options.ClientSecret = googleAuthNSection["ClientSecret"];
-            });
-            services.AddAuthentication().AddFacebook(facebookOptions =>
-            {
-                facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
-                facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
-            });
+            //    options.ClientId = googleAuthNSection["ClientId"];
+            //    options.ClientSecret = googleAuthNSection["ClientSecret"];
+            //});
+            //services.AddAuthentication().AddFacebook(facebookOptions =>
+            //{
+            //    facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
+            //    facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
+            //});
 
-            services.AddTransient<IEmailSender, EmailSender>();
+            //services.AddTransient<IEmailSender, EmailSender>();
             services.Configure<AuthMessageSenderOptions>(Configuration);
         }
 

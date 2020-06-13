@@ -36,6 +36,11 @@ namespace e_mobile_shop.Models
             return context.SanPham.Where(x => x.LoaiSp == loaiSp).ToList();
 
         }
+        public static List<SanPham> ReadSanPhamByMaSP(string masp)
+        {
+            return context.SanPham.Where(x => x.MaSp == masp).ToList();
+
+        }
 
         public static List<ThongSo> ReadThongSo(string loaiSp)
         {

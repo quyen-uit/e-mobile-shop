@@ -31,6 +31,7 @@ namespace e_mobile_shop.Controllers
         {
             return View(DataAccess.ReadSanPham(Id));
         }
+      
         public IActionResult QuanLyDienThoai()
         {
             return View(DataAccess.ReadSanPham("LSP0002"));
@@ -54,9 +55,12 @@ namespace e_mobile_shop.Controllers
             SanPham sp = DataAccess.context.SanPham.Find(Id);
             return View(sp);
         }
-
-        [HttpPost]
-        public ActionResult ChinhSua(
+        public IActionResult TimKiem(string name)
+        {
+            return RedirectToAction("QuanLy", "Admin", new { });
+        }
+        [HttpPut]
+        public IActionResult ChinhSua(
             SanPham model, IFormFile AnhDaiDien,
             IFormCollection fc,
             IFormFile productImages1,
@@ -118,7 +122,7 @@ namespace e_mobile_shop.Controllers
                 //    temp = null;
 
                 //}
-                return RedirectToAction("QuanLy", "Admin", new { id = model.LoaiSp });
+                return RedirectToAction("QuanLy", "Admin", new { id = model.LoaiSp }).WithSuccess("Thành công", "Sản phẩm đã được sửa");
             }
             else
             {
@@ -128,7 +132,7 @@ namespace e_mobile_shop.Controllers
 
 
         [HttpPost]
-        public ActionResult Them(SanPham model,
+        public IActionResult Them(SanPham model,
             IFormFile AnhDaiDien,
             IFormCollection fc,
             IFormFile productImages1,
@@ -145,7 +149,7 @@ namespace e_mobile_shop.Controllers
 
                 model.AnhDaiDien = UploadedFile(AnhDaiDien, "ProductAvatar");
                 model.SoLuotXemSp = 0;
-
+                
                 DataAccess.context.SanPham.Add(model);
                 DataAccess.context.SaveChanges();
 
@@ -201,10 +205,12 @@ namespace e_mobile_shop.Controllers
                 //    else break;
 
                 //}
-                return RedirectToAction("QuanLy", "Admin", new { id = model.LoaiSp });
+                return RedirectToAction("QuanLy", "Admin", new { id = model.LoaiSp }).WithSuccess("Thành công", "Sản phẩm đã được sửa");
             }
             else
             {
+                ModelState.AddModelError("","aaa");
+                ViewData["MaLoai"] = model.LoaiSp;
                 return View(model);
             }
         }
