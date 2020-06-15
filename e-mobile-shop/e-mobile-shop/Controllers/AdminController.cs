@@ -27,11 +27,29 @@ namespace e_mobile_shop.Controllers
             return View();
         }
 
-        public IActionResult QuanLy(string Id)
+        public IActionResult QuanLy(string id, string searchValue)
         {
-            return View(DataAccess.ReadSanPham(Id));
+            ViewData["LoaiSp"] = id;
+            var a = DataAccess.ReadSanPham(id);
+            List<SanPham> rs = new List<SanPham>();
+            if (!String.IsNullOrEmpty(searchValue))
+            {
+               
+                foreach (var item in a)
+                {
+                    if (item.TenSp.ToLower().Contains(searchValue.ToLower().Trim()) || item.MaSp.ToLower().Contains(searchValue.ToLower().Trim()))
+                        rs.Add(item);
+                }
+                return View(rs).WithSuccess("Tìm kiếm",searchValue);
+            }
+          
+
+            return View(a);
         }
-      
+        //public IActionResult QuanLy(string maloai, string search)
+        //{
+        //    return View(DataAccess.context.SanPham.Where(x => x.MaSp.ToLower().Contains(search.ToLower()) || x.TenSp.ToLower().Contains(search.ToLower())));
+        //}
         public IActionResult QuanLyDienThoai()
         {
             return View(DataAccess.ReadSanPham("LSP0002"));
@@ -45,7 +63,7 @@ namespace e_mobile_shop.Controllers
 
         public IActionResult XoaSanPham(string Id)
         {
-            DataAccess.context.SanPham.Find(Id).IsOnline = 0;
+            DataAccess.context.SanPham.Find(Id).Status = 0;
             DataAccess.context.SaveChanges();
             return RedirectToAction("QuanLy", "Admin", new { id = DataAccess.context.SanPham.Find(Id).LoaiSp }).WithSuccess("Thành công", "Bạn đã xóa sản phẩm khỏi danh sách.");
         }
@@ -55,11 +73,8 @@ namespace e_mobile_shop.Controllers
             SanPham sp = DataAccess.context.SanPham.Find(Id);
             return View(sp);
         }
-        public IActionResult TimKiem(string name)
-        {
-            return RedirectToAction("QuanLy", "Admin", new { });
-        }
-        [HttpPut]
+       
+        [HttpPost]
         public IActionResult ChinhSua(
             SanPham model, IFormFile AnhDaiDien,
             IFormCollection fc,
