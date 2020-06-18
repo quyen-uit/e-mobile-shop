@@ -26,24 +26,25 @@ namespace e_mobile_shop.Models
         public virtual DbSet<BannerKhuyenMai> BannerKhuyenMai { get; set; }
         public virtual DbSet<BinhLuan> BinhLuan { get; set; }
         public virtual DbSet<ChiTietDonHang> ChiTietDonHang { get; set; }
+        public virtual DbSet<Country> Country { get; set; }
+        public virtual DbSet<District> District { get; set; }
         public virtual DbSet<DonHang> DonHang { get; set; }
         public virtual DbSet<LoaiSp> LoaiSp { get; set; }
         public virtual DbSet<NhaCungCap> NhaCungCap { get; set; }
         public virtual DbSet<NhaSanXuat> NhaSanXuat { get; set; }
+        public virtual DbSet<Parameters> Parameters { get; set; }
+        public virtual DbSet<Province> Province { get; set; }
         public virtual DbSet<SanPham> SanPham { get; set; }
         public virtual DbSet<ThongSo> ThongSo { get; set; }
         public virtual DbSet<ThongSoKiThuat> ThongSoKiThuat { get; set; }
+        public virtual DbSet<Ward> Ward { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer(
-                    "Server=tcp:qtkcinema.database.windows.net,1433;Initial Catalog=eShopDb;Persist Security Info=False;User ID=admin1;Password=43EqmRy9iymbNbC;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=60;"
-                   //"Data Source=DESKTOP-R3PM237;Initial Catalog=eShopDb;Integrated Security=True"
-
-                    );
+                optionsBuilder.UseSqlServer("Server=tcp:qtkcinema.database.windows.net,1433;Initial Catalog=eShopDb;Persist Security Info=False;User ID=admin1;Password=43EqmRy9iymbNbC;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
             }
         }
 
@@ -283,6 +284,56 @@ namespace e_mobile_shop.Models
                     .HasConstraintName("FK_ChiTietDonHang_SanPham");
             });
 
+            modelBuilder.Entity<Country>(entity =>
+            {
+                entity.Property(e => e.Capital).HasMaxLength(100);
+
+                entity.Property(e => e.CommonName).HasMaxLength(100);
+
+                entity.Property(e => e.CountryCode)
+                    .IsRequired()
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.CountryCode3).HasMaxLength(100);
+
+                entity.Property(e => e.CountryNumber).HasMaxLength(100);
+
+                entity.Property(e => e.CountrySubType).HasMaxLength(100);
+
+                entity.Property(e => e.CountryType).HasMaxLength(100);
+
+                entity.Property(e => e.CurrencyCode).HasMaxLength(100);
+
+                entity.Property(e => e.CurrencyName).HasMaxLength(100);
+
+                entity.Property(e => e.Flags).HasMaxLength(50);
+
+                entity.Property(e => e.FormalName).HasMaxLength(100);
+
+                entity.Property(e => e.InternetCountryCode).HasMaxLength(100);
+
+                entity.Property(e => e.Sovereignty).HasMaxLength(100);
+
+                entity.Property(e => e.TelephoneCode).HasMaxLength(100);
+            });
+
+            modelBuilder.Entity<District>(entity =>
+            {
+                entity.Property(e => e.LatiLongTude)
+                    .HasMaxLength(50)
+                    .HasComment("Kinh độ, vĩ độ");
+
+                entity.Property(e => e.Name).HasMaxLength(250);
+
+                entity.Property(e => e.Type).HasMaxLength(50);
+
+                entity.HasOne(d => d.Province)
+                    .WithMany(p => p.District)
+                    .HasForeignKey(d => d.ProvinceId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_District_Province");
+            });
+
             modelBuilder.Entity<DonHang>(entity =>
             {
                 entity.HasKey(e => e.MaDh);
@@ -298,7 +349,13 @@ namespace e_mobile_shop.Models
                     .HasMaxLength(15)
                     .IsFixedLength();
 
+                entity.Property(e => e.Email)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.Ghichu).HasColumnType("text");
+
+                entity.Property(e => e.HoTen).HasMaxLength(200);
 
                 entity.Property(e => e.MaKh)
                     .HasColumnName("MaKH")
@@ -313,11 +370,6 @@ namespace e_mobile_shop.Models
                 entity.Property(e => e.Status).HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.TinhTrangDh).HasColumnName("TinhTrangDH");
-
-                entity.HasOne(d => d.MaKhNavigation)
-                    .WithMany(p => p.DonHang)
-                    .HasForeignKey(d => d.MaKh)
-                    .HasConstraintName("FK__DonHang__MaKH__07C12930");
             });
 
             modelBuilder.Entity<LoaiSp>(entity =>
@@ -381,6 +433,41 @@ namespace e_mobile_shop.Models
                     .IsRequired()
                     .HasColumnName("TenNSX")
                     .HasMaxLength(100);
+            });
+
+            modelBuilder.Entity<Parameters>(entity =>
+            {
+                entity.Property(e => e.Id)
+                    .HasColumnName("ID")
+                    .HasMaxLength(20);
+
+                entity.Property(e => e.Key)
+                    .HasColumnName("KEY")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Value)
+                    .HasColumnName("VALUE")
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<Province>(entity =>
+            {
+                entity.Property(e => e.CountryCode).HasMaxLength(2);
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(250);
+
+                entity.Property(e => e.Type).HasMaxLength(20);
+
+                entity.Property(e => e.ZipCode).HasMaxLength(20);
+
+                entity.HasOne(d => d.Country)
+                    .WithMany(p => p.Province)
+                    .HasForeignKey(d => d.CountryId)
+                    .HasConstraintName("FK_Province_Country");
             });
 
             modelBuilder.Entity<SanPham>(entity =>
@@ -491,6 +578,31 @@ namespace e_mobile_shop.Models
                     .WithMany(p => p.ThongSoKiThuat)
                     .HasForeignKey(d => d.ThongSo)
                     .HasConstraintName("FK_ThongSoKiThuat_ThongSoKiThuat");
+            });
+
+            modelBuilder.Entity<Ward>(entity =>
+            {
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.DistrictId).HasColumnName("DistrictID");
+
+                entity.Property(e => e.IsPublished).HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.LatiLongTude).HasMaxLength(50);
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.SortOrder).HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.Type).HasMaxLength(50);
+
+                entity.HasOne(d => d.District)
+                    .WithMany(p => p.Ward)
+                    .HasForeignKey(d => d.DistrictId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Ward_District");
             });
 
             OnModelCreatingPartial(modelBuilder);

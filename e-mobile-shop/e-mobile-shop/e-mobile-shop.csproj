@@ -14,6 +14,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="RegisterEmail.html" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="wwwroot\ProductImages\1_9_3_1.webp" />
     <None Include="wwwroot\ProductImages\41c944907a80a6702c36de63502dcbb0.jpg_200x200q80.jpg_.webp" />
     <None Include="wwwroot\ProductImages\ae-galaxy-tab-a-t295-sm-t295nzsaxsg-frontsilver-172640354.webp" />
@@ -25,10 +29,12 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.2.7" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="3.1.5" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="3.1.5" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.5" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.1">

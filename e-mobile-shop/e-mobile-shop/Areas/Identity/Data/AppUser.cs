@@ -26,7 +26,7 @@ namespace e_mobile_shop.Areas.Identity.Data
 
         [PersonalData]
         [Column(TypeName = "int")]
-        public bool? GioiTinh { get; set; }
+        public int? GioiTinh { get; set; }
         [PersonalData]
         [Column(TypeName = "text")]
         public string? DiaChi { get; set; }

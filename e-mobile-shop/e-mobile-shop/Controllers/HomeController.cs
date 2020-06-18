@@ -6,16 +6,15 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using e_mobile_shop.Models;
-using e_mobile_shop.Areas.Identity.Data;
-using Microsoft.AspNetCore.Authorization;
-using e_mobile_shop.Controllers.Components;
+
 using Microsoft.AspNetCore.Http;
 using e_mobile_shop.Models.Helpers;
 using Microsoft.EntityFrameworkCore;
-using System.Text.RegularExpressions;
+
 
 namespace e_mobile_shop.Controllers
 {
+
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -25,6 +24,8 @@ namespace e_mobile_shop.Controllers
             _logger = logger;
         }
 
+
+        // [Route("trang-chu")]
         public IActionResult Index()
         {
 
@@ -191,5 +192,40 @@ namespace e_mobile_shop.Controllers
 
         }
 
+
+        [HttpPost]
+        public IActionResult EditUserInfo(AspNetUsers user)
+        {
+            return View();
+        }
+
+
+        [HttpGet]
+        public IActionResult EditUserInfo(string Id)
+        {
+            return View(DataAccess.context.AspNetUsers.Find(Id)); ;
+        }
+
+        public IActionResult Get()
+        {
+            return View(DataAccess.context.Province.ToList());
+        }
+
+    
+
+        [HttpGet]
+        public IActionResult District_Bind(int provinceId)
+        {
+            var listDistrict = DataAccess.context.District.Where(x => x.ProvinceId == provinceId).ToList();
+            return Json(listDistrict);
+        }
+
+
+        [HttpGet]
+        public IActionResult Ward_Bind(int districtId)
+        {
+            var listWard = DataAccess.context.Ward.Where(x => x.DistrictId == districtId).ToList();
+            return Json(listWard);
+        }
     }
 }

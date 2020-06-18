@@ -22,7 +22,7 @@ namespace e_mobile_shop.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<AppUser> _signInManager;
         private readonly UserManager<AppUser> _userManager;
-        private readonly IEmailSender _emailSender;
+        private  readonly IEmailSender _emailSender;
         private readonly ILogger<ExternalLoginModel> _logger;
 
         public ExternalLoginModel(
@@ -52,6 +52,26 @@ namespace e_mobile_shop.Areas.Identity.Pages.Account
             [Required]
             [EmailAddress]
             public string Email { get; set; }
+
+            [Display(Name = "Họ và tên")]
+            [DataType(DataType.Text)]
+            public string HoTen { get; set; }
+
+            [Display(Name = "Ngày sinh")]
+            [DataType(DataType.DateTime)]
+            public DateTime NgaySinh { get; set; }
+
+            [Display(Name = "Số CMND")]
+            [DataType(DataType.Text)]
+            public string CMND { get; set; }
+
+            [Display(Name = "Số điện thoại")]
+            [DataType(DataType.Text)]
+            public string SDT { get; set; }
+
+            [Display(Name = "Địa chỉ")]
+            [DataType(DataType.Text)]
+            public string DiaChi { get; set; }
         }
 
         public IActionResult OnGetAsync()
@@ -122,7 +142,21 @@ namespace e_mobile_shop.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
-                var user = new AppUser { UserName = Input.Email, Email = Input.Email };
+                var user = new AppUser { UserName = Input.Email, 
+                    Email = Input.Email,
+                    HoTen = info.Principal.FindFirstValue(ClaimTypes.Name),
+                    NgaySinh = Input.NgaySinh,
+                    CMND = Input.CMND,
+                    DiaChi = Input.DiaChi,
+                    PhoneNumber = Input.SDT, 
+                    };
+
+                string content = System.IO.File.ReadAllText("RegisterEmail.html");
+                content = content.Replace("{{Hoten}}", user.HoTen);
+                content = content.Replace("{{username}}", user.UserName);
+                content = content.Replace("{{phone}}", user.PhoneNumber);
+                content = content.Replace("{{email}}", user.Email);
+                content = content.Replace("{{address}}", user.DiaChi);
 
                 var result = await _userManager.CreateAsync(user);
                 if (result.Succeeded)
@@ -140,9 +174,10 @@ namespace e_mobile_shop.Areas.Identity.Pages.Account
                             pageHandler: null,
                             values: new { area = "Identity", userId = userId, code = code },
                             protocol: Request.Scheme);
+                        content = content.Replace("{{callbackurl}}", $"Vui lòng xác nhận tài khoản bằng cách <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>nhấn vào đây </a>.");
 
-                        await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                            $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                        await _emailSender.SendEmailAsync(Input.Email, "Xác nhận email",
+                           $"{System.Net.WebUtility.HtmlDecode(content)}");
 
                         // If account confirmation is required, we need to show the link if we don't have a real email sender
                         if (_userManager.Options.SignIn.RequireConfirmedAccount)

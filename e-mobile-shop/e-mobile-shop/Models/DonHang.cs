@@ -21,8 +21,9 @@ namespace e_mobile_shop.Models
         public string Diachi { get; set; }
         public string Dienthoai { get; set; }
         public int? Status { get; set; }
+        public string HoTen { get; set; }
+        public string Email { get; set; }
 
-        public virtual AspNetUsers MaKhNavigation { get; set; }
         public virtual ICollection<ChiTietDonHang> ChiTietDonHang { get; set; }
     }
 }

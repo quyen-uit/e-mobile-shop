@@ -12,7 +12,6 @@ namespace e_mobile_shop.Models
             AspNetUserRoles = new HashSet<AspNetUserRoles>();
             AspNetUserTokens = new HashSet<AspNetUserTokens>();
             BinhLuan = new HashSet<BinhLuan>();
-            DonHang = new HashSet<DonHang>();
         }
 
         public string Id { get; set; }
@@ -42,6 +41,5 @@ namespace e_mobile_shop.Models
         public virtual ICollection<AspNetUserRoles> AspNetUserRoles { get; set; }
         public virtual ICollection<AspNetUserTokens> AspNetUserTokens { get; set; }
         public virtual ICollection<BinhLuan> BinhLuan { get; set; }
-        public virtual ICollection<DonHang> DonHang { get; set; }
     }
 }

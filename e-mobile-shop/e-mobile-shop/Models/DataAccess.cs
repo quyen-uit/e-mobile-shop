@@ -9,6 +9,7 @@ namespace e_mobile_shop.Models
 {
     public class DataAccess
     {
+       
         public static int soCtdh = 0;
         public static ClientDbContext context = new ClientDbContext();
         public static List<AspNetUsers> ViewSanPham()
@@ -30,8 +31,12 @@ namespace e_mobile_shop.Models
             }
             return result;
         }
+   
 
-        public static List<SanPham> ReadSanPham(string loaiSp)
+    
+
+
+        public static List<SanPham> ReadSanPham(string loaiSp)  
         {
             return context.SanPham.Where(x => x.LoaiSp == loaiSp).ToList();
 
@@ -554,6 +559,14 @@ namespace e_mobile_shop.Models
                 return sanphams;
             }
             else return sanphams;
+        }
+
+        public static bool ExistUser(string id)
+        {
+            var a = context.AspNetUsers.Find(id);
+            if (a == null)
+                return false;
+            else return true;
         }
     }
 }

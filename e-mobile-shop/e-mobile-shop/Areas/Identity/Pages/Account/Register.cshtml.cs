@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
@@ -15,7 +16,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using e_mobile_shop.Models;
-using e_mobile_shop.Models.Services;
+using Newtonsoft.Json;
 
 namespace e_mobile_shop.Areas.Identity.Pages.Account
 {
@@ -62,7 +63,7 @@ namespace e_mobile_shop.Areas.Identity.Pages.Account
             public DateTime NgaySinh { get; set; }
 
             [Display(Name = "Giới tính")]
-            public bool GioiTinh { get; set; }
+            public int GioiTinh { get; set; }
 
             [Display(Name = "Avatar")]
             [DataType(DataType.Text)]
@@ -72,6 +73,9 @@ namespace e_mobile_shop.Areas.Identity.Pages.Account
             [DataType(DataType.Text)]
             public string CMND { get; set; }
 
+            [Display(Name ="Số điện thoại")]
+            [DataType(DataType.Text)]
+            public string SDT { get; set; }
 
             [Display(Name = "Địa chỉ")]
             [DataType(DataType.Text)]
@@ -109,7 +113,8 @@ namespace e_mobile_shop.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = new AppUser { 
-                    UserName = Input.Email, 
+                    HoTen = Input.HoTen,
+                    UserName = Input.Username, 
                     Email = Input.Email,
                     NgaySinh =Input.NgaySinh,
                     CMND =Input.CMND,
@@ -117,6 +122,13 @@ namespace e_mobile_shop.Areas.Identity.Pages.Account
                     GioiTinh=Input.GioiTinh,
                     DiaChi=Input.DiaChi
                 };
+
+                string content = System.IO.File.ReadAllText("RegisterEmail.html");
+                content = content.Replace("{{Hoten}}", user.HoTen);
+                content = content.Replace("{{username}}", user.UserName);
+                content = content.Replace("{{phone}}", user.PhoneNumber);
+                content = content.Replace("{{email}}", user.Email);
+                content = content.Replace("{{address}}", user.DiaChi);
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
@@ -134,7 +146,9 @@ namespace e_mobile_shop.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = user.Id, code = code },
                         protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Xác nhận email", $"Xác nhận email bằng cách kiểm tra email  </a>.");
+                    content = content.Replace("{{callbackurl}}", $"Vui lòng xác nhận tài khoản bằng cách <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>nhấn vào đây </a>.");
+
+                    await _emailSender.SendEmailAsync(Input.Email, "Email thông tin tài khoản ", $"{System.Net.WebUtility.HtmlDecode(content)}");
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
@@ -155,6 +169,19 @@ namespace e_mobile_shop.Areas.Identity.Pages.Account
 
             // If we got this far, something failed, redisplay form
             return Page();
+        }
+
+        public JsonResult District_Bind(int provinceId)
+        {
+            var listDistrict = DataAccess.context.District.Where(x => x.ProvinceId == provinceId).ToList();
+            return JsonConvert.SerializeObject(listDistrict);
+        }
+
+
+        public IActionResult Ward_Bind(int districtId)
+        {
+            var listWard = DataAccess.context.Ward.Where(x => x.DistrictId == districtId).ToList();
+            return Json(listWard);
         }
     }
 }

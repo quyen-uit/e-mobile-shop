@@ -16,11 +16,14 @@ namespace e_mobile_shop.Controllers
         {
             return View();
         }
+
+        [Route("chi-tiet/{id}")]
         public IActionResult SanPham(string Id)
         {
             return View(DataAccess.GetSanPham(Id));
         }
 
+        [Route("danh-sach/{id}")]
         public async Task<IActionResult> DanhSach(int? pageNumber, string Id)
         {
             var sanphams = from s in DataAccess.context.SanPham select s ;

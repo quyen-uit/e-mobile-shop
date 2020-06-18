@@ -56,7 +56,7 @@
                 <div class="col-6">
                     Cần thanh toán
                 </div>
-                <div class="col-6">
+                <div class="col-6"> 
                     <strong style="color:red"> @DataAccess.GetDonHang(Model[0].MaDh).Tongtien VNĐ </strong>
                 </div>
             </div>
@@ -65,7 +65,9 @@
                     <div class="col-12 text-center "> Thông tin khách hàng </div>
                     <form style="width:100%">
                         <div class="col-12 p-1 ">
-                            <input disabled style="width: 100%" placeholder="Họ và tên" value="@DataAccess.GetUser(DataAccess.GetDonHang(Model[0].MaDh).MaKh).HoTen" />
+                           
+                              <input disabled style="width: 100%" placeholder="Họ và tên" value="@DataAccess.GetDonHang(Model[0].MaDh).HoTen" />
+                       
                         </div>
                         <div class="col-12 p-1 ">
                             <input disabled style="width: 100%" placeholder="Điện thoại " value="@DataAccess.GetDonHang(Model[0].MaDh).Dienthoai" />

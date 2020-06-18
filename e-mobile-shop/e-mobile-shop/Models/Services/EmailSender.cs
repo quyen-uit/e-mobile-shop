@@ -6,14 +6,27 @@ using System.Threading.Tasks;
 
 namespace e_mobile_shop.Models.Services
 {
-    public class  EmailSender :IEmailSender
+    public class EmailSender : IEmailSender
     {
+
         public EmailSender(IOptions<AuthMessageSenderOptions> optionsAccessor)
         {
             Options = optionsAccessor.Value;
         }
 
-        public AuthMessageSenderOptions Options { get; } //set only via Secret Manager
+        public EmailSender(AuthMessageSenderOptions optionsAccessor)
+        {
+            this.Options = new AuthMessageSenderOptions()
+            {
+                SendGridUser = optionsAccessor.SendGridUser,
+                SendGridKey = optionsAccessor.SendGridKey
+            };
+
+
+        }
+
+
+        public AuthMessageSenderOptions Options { get; set; } //set only via Secret Manager
 
         public Task SendEmailAsync(string email, string subject, string message)
         {
