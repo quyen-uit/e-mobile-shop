@@ -171,17 +171,17 @@ namespace e_mobile_shop.Areas.Identity.Pages.Account
             return Page();
         }
 
-        public JsonResult District_Bind(int provinceId)
-        {
-            var listDistrict = DataAccess.context.District.Where(x => x.ProvinceId == provinceId).ToList();
-            return JsonConvert.SerializeObject(listDistrict);
-        }
+        //public JsonResult District_Bind(int provinceId)
+        //{
+        //    var listDistrict = DataAccess.context.District.Where(x => x.ProvinceId == provinceId).ToList();
+        //    return JsonConvert.SerializeObject(listDistrict);
+        //}
 
 
-        public IActionResult Ward_Bind(int districtId)
-        {
-            var listWard = DataAccess.context.Ward.Where(x => x.DistrictId == districtId).ToList();
-            return Json(listWard);
-        }
+        //public IActionResult Ward_Bind(int districtId)
+        //{
+        //    var listWard = DataAccess.context.Ward.Where(x => x.DistrictId == districtId).ToList();
+        //    return Json(listWard);
+        //}
     }
 }

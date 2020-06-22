@@ -14,7 +14,7 @@ namespace e_mobile_shop.Models
         public string MaKh { get; set; }
         public double? PhiVanChuyen { get; set; }
         public string PtgiaoDich { get; set; }
-        public DateTime? NgayDatMua { get; set; }
+        public DateTime NgayDatMua { get; set; }
         public int? TinhTrangDh { get; set; }
         public double? Tongtien { get; set; }
         public string Ghichu { get; set; }

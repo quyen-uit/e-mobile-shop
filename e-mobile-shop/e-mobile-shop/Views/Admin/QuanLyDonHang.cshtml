@@ -1,0 +1,77 @@
+﻿@model List<DonHang>
+
+@{
+    ViewData["Title"] = "QuanLyDonHang";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<body>
+    <div class="col-lg-12">
+        <div class="panel panel-success">
+            <div class=" panel-heading ">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <h4>Quản lý đơn hàng</h4>
+
+                    </div>
+                    <div class="col-lg-6">
+                        <form asp-action="QuanLyDonHang" method="get" asp-controller="Admin">
+                            <div class="input-group custom-search-form">
+                                <input name="searchValue" type="text" class="form-control" placeholder="Tìm mã đơn hàng hoặc tên khách hàng ...">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="submit">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </span>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+
+                        <thead>
+                            <tr>
+                                <th>Mã đơn hàng</th>
+                                <th>Tên khách hàng</th>
+                                <th>Trạng thái</th>
+                                <th>Thời gian đặt hàng</th>
+                                <th>Phương thức giao dịch</th>
+                                <th>Tổng tiền</th>
+                                <th>Sửa</th>
+                                <th>Chi tiết</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            @foreach (var item in Model)
+                            {
+
+                                <tr>
+                                    <td style="vertical-align:middle">@item.MaDh</td>
+
+                                    <td style="vertical-align:middle">@item.HoTen</td>
+                                    <td style="vertical-align:middle">@DataAccess.context.TrangThaiDonHang.Find(item.TinhTrangDh).TenTrangThai</td>
+                                    <td  style="vertical-align:middle">@item.Ghichu</td>
+                                    <td style="vertical-align:middle">@item.PtgiaoDich</td>
+                                    <td style="vertical-align:middle">@item.Tongtien</td>
+                                    <td style="vertical-align:middle">
+                                        <button type="button" class="btn btn-primary" onclick="location.href='@Url.Action( "ChiTietDonHang","Admin", new {  id = item.MaDh })'">Chi tiết</button>
+                                    </td>
+                                    <td style="vertical-align:middle">
+                                        <button type="button" class="btn btn-primary" onclick="location.href='@Url.Action( "ChinhSuaDonHang","Admin", new {  id = item.MaDh })'">Sửa</button>
+                                    </td>
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
