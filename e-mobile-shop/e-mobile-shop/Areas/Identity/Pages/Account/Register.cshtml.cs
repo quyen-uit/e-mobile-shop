@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using e_mobile_shop.Models;
 using Newtonsoft.Json;
+using System.Web.Helpers;
 
 namespace e_mobile_shop.Areas.Identity.Pages.Account
 {
@@ -44,7 +45,7 @@ namespace e_mobile_shop.Areas.Identity.Pages.Account
         public InputModel Input { get; set; }
 
         public string ReturnUrl { get; set; }
-
+      
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
         public class InputModel
@@ -98,6 +99,11 @@ namespace e_mobile_shop.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            public int TinhThanh { get; set; }
+            public int QuanHuyen { get; set; }
+            public int XaPhuong { get; set; }
+            
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -120,7 +126,10 @@ namespace e_mobile_shop.Areas.Identity.Pages.Account
                     CMND =Input.CMND,
                     Avatar =Input.Avatar,
                     GioiTinh=Input.GioiTinh,
-                    DiaChi=Input.DiaChi
+                    DiaChi= Input.DiaChi + "," 
+                    + DataAccess.context.Ward.Find(Input.XaPhuong).Name + "," 
+                    + DataAccess.context.District.Find(Input.QuanHuyen).Name
+                    + "," +DataAccess.context.Province.Find(Input.TinhThanh).Name 
                 };
 
                 string content = System.IO.File.ReadAllText("RegisterEmail.html");
@@ -171,17 +180,6 @@ namespace e_mobile_shop.Areas.Identity.Pages.Account
             return Page();
         }
 
-        public JsonResult District_Bind(int provinceId)
-        {
-            var listDistrict = DataAccess.context.District.Where(x => x.ProvinceId == provinceId).ToList();
-            return JsonConvert.SerializeObject(listDistrict);
-        }
-
-
-        public IActionResult Ward_Bind(int districtId)
-        {
-            var listWard = DataAccess.context.Ward.Where(x => x.DistrictId == districtId).ToList();
-            return Json(listWard);
-        }
+       
     }
 }

@@ -28,7 +28,7 @@ namespace e_mobile_shop.Areas.Identity.Data
         [Column(TypeName = "int")]
         public int? GioiTinh { get; set; }
         [PersonalData]
-        [Column(TypeName = "text")]
+        [Column(TypeName = "nvarchar(MAX)")]
         public string? DiaChi { get; set; }
         [PersonalData]
         [Column(TypeName = "text")]

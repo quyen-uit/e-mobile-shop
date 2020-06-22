@@ -167,8 +167,6 @@ namespace e_mobile_shop.Models
                     .HasColumnName("CMND")
                     .HasMaxLength(20);
 
-                entity.Property(e => e.DiaChi).HasColumnType("text");
-
                 entity.Property(e => e.Email).HasMaxLength(256);
 
                 entity.Property(e => e.HoTen).HasMaxLength(100);
@@ -268,8 +266,6 @@ namespace e_mobile_shop.Models
                     .IsRequired()
                     .HasColumnName("MaSP")
                     .HasMaxLength(6);
-
-                entity.Property(e => e.ThanhTien).HasColumnType("decimal(18, 0)");
 
                 entity.HasOne(d => d.MaDhNavigation)
                     .WithMany(p => p.ChiTietDonHang)

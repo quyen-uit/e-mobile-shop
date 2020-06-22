@@ -32,13 +32,13 @@ namespace e_mobile_shop.Controllers
             {
                 giohang = new List<ChiTietDonHang>();
             }
-            decimal? thanhTien = 0;
+            double? thanhTien = 0 ;
             foreach (var item in giohang)
             {
-                thanhTien += item.ThanhTien;
+                thanhTien += (item.ThanhTien*item.SoLuong);
             }
-            string s = String.Format("{0:0,0 VNĐ}", thanhTien.ToString());
-            ViewBag.ThanhTien = s;
+           // string s = String.Format("{0:N0}", thanhTien.ToString());
+            ViewBag.ThanhTien = thanhTien;
             ViewBag.GioHang = giohang;
             ViewBag.Added = 0;
             return View();
@@ -66,7 +66,7 @@ namespace e_mobile_shop.Controllers
                 MaSp = fc["SanPham"],
                 MaCtdh = "001",
                 SoLuong = Int32.Parse(fc["SoLuong"]),
-                ThanhTien = DataAccess.GetSanPham(fc["SanPham"]).GiaGoc
+                ThanhTien = (double?)DataAccess.GetSanPham(fc["SanPham"]).GiaGoc
 
             };
 
@@ -88,7 +88,7 @@ namespace e_mobile_shop.Controllers
                 if (index != -1)
                 {
                     gh[index].SoLuong += int.Parse(fc["SoLuong"]);
-                    gh[index].ThanhTien = DataAccess.GetSanPham(ctdh1.MaSp).GiaGoc * gh[index].SoLuong;
+                    gh[index].ThanhTien = (double?)(DataAccess.GetSanPham(ctdh1.MaSp).GiaGoc * gh[index].SoLuong);
                 }
                 else
                 {
@@ -193,6 +193,7 @@ namespace e_mobile_shop.Controllers
                 dh.Dienthoai = a.PhoneNumber;
                 dh.Ghichu = fc["GhiChu"];
                 dh.Email = a.Email;
+                dh.Diachi = a.DiaChi;
                 SessionHelper.SetObjectAsJson(HttpContext.Session, "MaKh", fc["Id"]);
             }
             else
@@ -210,7 +211,7 @@ namespace e_mobile_shop.Controllers
             dh.TinhTrangDh = 0;
             dh.Tongtien = Double.Parse(fc["ThanhTien"]);
             dh.Ghichu = fc["GhiChu"];
-            dh.Diachi = fc["DiaChi"];
+            //dh.Diachi = fc["DiaChi"];
             DataAccess.context.DonHang.Add(dh);
             DataAccess.context.SaveChanges();
 
@@ -229,14 +230,18 @@ namespace e_mobile_shop.Controllers
                 DataAccess.context.ChiTietDonHang.Add(item);
                 DataAccess.context.SaveChanges();
                 strCtdh = strCtdh + "<tr>";
-                strCtdh = strCtdh + "<td>" + ++index + "</td><td>" +
-                    DataAccess.context.SanPham.Find(item.MaSp).TenSp + "</td><td>" + item.SoLuong + "</td><td>" + DataAccess.context.SanPham.Find(item.MaSp).GiaGoc * item.SoLuong + "</td><tr>";
+                strCtdh = strCtdh + "<td style='text-align:center'>" + ++index + "</td><td>" +
+                    DataAccess.context.SanPham.Find(item.MaSp).TenSp + "</td><td  style='text-align:center'>"
+                    + item.SoLuong + "</td><td  style='text-align:center'>"
+                    + ((DataAccess.context.SanPham.Find(item.MaSp).GiaGoc * item.SoLuong).HasValue? 
+                    (DataAccess.context.SanPham.Find(item.MaSp).GiaGoc * item.SoLuong).Value.ToString("N0"):"NULL") + "</td><tr>";
             }
 
             content = content.Replace("{{thongtindonhang}}", HtmlEncoder.Default.Encode(strCtdh));
             content = content.Replace("{{madh}}", dh.MaDh.ToUpper());
-            content = content.Replace("{{thanhtien}}", dh.Tongtien.ToString());
-
+            content = content.Replace("{{diachi}}", dh.Diachi);
+            content = content.Replace("{{thanhtien}}", dh.Tongtien.HasValue? dh.Tongtien.Value.ToString("N0"): "NULL");
+            content = content.Replace("{{sdt}}", dh.Dienthoai);
 
             AuthMessageSenderOptions Option = new AuthMessageSenderOptions()
             {

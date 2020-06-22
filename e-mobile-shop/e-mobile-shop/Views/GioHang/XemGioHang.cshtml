@@ -3,6 +3,8 @@
     ViewData["Title"] = "XemGioHang";
     Layout = "~/Views/Shared/_Layout.cshtml";
     System.Globalization.CultureInfo culture = new System.Globalization.CultureInfo("vi-VN");
+    var mySpecialCurrencyFormat = new System.Globalization.NumberFormatInfo();
+    mySpecialCurrencyFormat.CurrencyGroupSizes = new[] { 3 };
 }
 @using Microsoft.AspNetCore.Identity
 @using e_mobile_shop.Areas.Identity.Data
@@ -51,7 +53,9 @@
                     </div>
                     <div class="col-4  d-flex justify-content-around flex-column" style="text-align:right">
                         <div class="p-2">
-                            <strong style="font-size: 13px">  @ViewBag.GioHang[i].ThanhTien</strong>
+                            <strong style="font-size: 13px">
+                                @((DataAccess.context.SanPham.Find(ViewBag.GioHang[i].MaSp).GiaGoc * ViewBag.GioHang[i].SoLuong).ToString("N0"))
+                            </strong>
                         </div>
                         <div class="p-2 d-flex  justify-content-between" style="font-size: 12px">
                             <a class="" asp-action="Remove" asp-controller="GioHang" asp-route-id="i">Cập nhật</a>
@@ -69,7 +73,7 @@
                     Tổng cộng
                 </div>
                 <div class="col-6">
-                    <span style="color:blue">  @ViewBag.ThanhTien </span>
+                    <span style="color:blue">  @ViewBag.ThanhTien.ToString("N0") VNĐ </span>
                 </div>
                 <div class="col-6">
                     Giảm giá
@@ -81,7 +85,7 @@
                     Cần thanh toán
                 </div>
                 <div class="col-6">
-                    <strong style="color:red"> @ViewBag.ThanhTien VNĐ </strong>
+                    <strong style="color:red"> @ViewBag.ThanhTien.ToString("N2") VNĐ </strong>
                 </div>
             </div>
             @await Component.InvokeAsync("CheckoutInfo", new { Id = UserManager.GetUserId(User) })
