@@ -1,11 +1,9 @@
 ﻿
-@{
-    ViewData["Title"] = "XemGioHang";
+@{ ViewData["Title"] = "XemGioHang";
     Layout = "~/Views/Shared/_Layout.cshtml";
     System.Globalization.CultureInfo culture = new System.Globalization.CultureInfo("vi-VN");
     var mySpecialCurrencyFormat = new System.Globalization.NumberFormatInfo();
-    mySpecialCurrencyFormat.CurrencyGroupSizes = new[] { 3 };
-}
+    mySpecialCurrencyFormat.CurrencyGroupSizes = new[] { 3 }; }
 @using Microsoft.AspNetCore.Identity
 @using e_mobile_shop.Areas.Identity.Data
 
@@ -32,6 +30,7 @@
     }
 </style>
 
+@Html.Partial("_StatusMessages")
 <h3 class="tittle-w3l text-center mb-lg-5 mb-sm-4 mb-2 mt-2">
     <span>G</span>iỏ hàng
 
@@ -41,31 +40,29 @@
         <div class="col-md-8 col-12 p-0 ">
             @for (int i = 0; i < ViewBag.GioHang.Count; i++)
             {
-                <div class="row border m-1 ">
-                    <div class="col-3 " style=" margin:auto; text-align:center">
-                        <img src=@Url.Content("~/ProductAvatar/" + @DataAccess.GetSanPham(ViewBag.GioHang[i].MaSp).AnhDaiDien) style="max-width:70px; max-height: 70px" />
-                    </div>
-                    <div class="col-5 ">
-                        <div class="p-2"> <strong>   @DataAccess.GetSanPham(ViewBag.GioHang[i].MaSp).TenSp </strong> </div>
-                        <div class="p-2">
-                            Số lượng: <span><input disabled size="1" value="@ViewBag.GioHang[i].SoLuong" /> </span>
-                        </div>
-                    </div>
-                    <div class="col-4  d-flex justify-content-around flex-column" style="text-align:right">
-                        <div class="p-2">
-                            <strong style="font-size: 13px">
-                                @((DataAccess.context.SanPham.Find(ViewBag.GioHang[i].MaSp).GiaGoc * ViewBag.GioHang[i].SoLuong).ToString("N0"))
-                            </strong>
-                        </div>
-                        <div class="p-2 d-flex  justify-content-between" style="font-size: 12px">
-                            <a class="" asp-action="Remove" asp-controller="GioHang" asp-route-id="i">Cập nhật</a>
-                            <a class="" asp-action="Remove" asp-controller="GioHang" asp-route-id="i">Xóa</a>
-                        </div>
+<div class="row border m-1 ">
+    <div class="col-3 " style=" margin:auto; text-align:center">
+        <img src=@Url.Content("~/ProductAvatar/" + @DataAccess.GetSanPham(ViewBag.GioHang[i].MaSp).AnhDaiDien) style="max-width:70px; max-height: 70px" />
+    </div>
+    <div class="col-5 ">
+        <div class="p-2"> <strong>   @DataAccess.GetSanPham(ViewBag.GioHang[i].MaSp).TenSp </strong> </div>
+        <div class="p-2">
+            Số lượng: <span><input disabled size="1" value="@ViewBag.GioHang[i].SoLuong" /> </span>
+        </div>
+    </div>
+    <div class="col-4  d-flex justify-content-around flex-column" style="text-align:right">
+        <div class="p-2">
+            <strong style="font-size: 13px">
+                @((DataAccess.context.SanPham.Find(ViewBag.GioHang[i].MaSp).GiaGoc * ViewBag.GioHang[i].SoLuong).ToString("N0"))
+            </strong>
+        </div>
+        <div class="p-2 d-flex  justify-content-between" style="font-size: 12px">
+            <a class="" asp-action="Remove" asp-controller="GioHang" asp-route-id="i">Cập nhật</a>
+            <a class="" asp-action="Remove" asp-controller="GioHang" asp-route-id="i">Xóa</a>
+        </div>
 
-                    </div>
-                </div>
-
-            }
+    </div>
+</div>}
         </div>
         <div class="col-md-4 col-12 border">
             <div class="row p-2 m-2 " style=" border-bottom: 1px dashed black">
@@ -87,7 +84,40 @@
                 <div class="col-6">
                     <strong style="color:red"> @ViewBag.ThanhTien.ToString("N2") VNĐ </strong>
                 </div>
+
+
             </div>
+            <div class="row p-2 m-2" style=" border-bottom: 1px dashed black">
+                @if (ViewBag.Vouchers != null)
+                {
+                    foreach (var item in ViewBag.Vouchers as List<Voucher>)
+                    {
+    <div class="col-12 ">
+
+        <a class="btn btn-block btn-outline-primary" asp-action="RemoveVoucher" asp-controller="GioHang" asp-route-voucherCode="@item.VoucherCode"> @item.VoucherName</a>
+    </div>}
+
+                }
+                <div class="col-12 p-0 m-0">
+                    <form asp-action="XemGioHang" name="voucher" onsubmit="return true" method="post" asp-controller="GioHang">
+                        <table style="width:100%" >
+                            <tr>
+                                <td style="width:10%">
+                                    <span id="messageVoucher"> </span>
+                                </td>
+                                <td style="width:50%">
+                                    <input id="voucher" onkeyup="ClearMessageVoucher()" name="voucher" onblur="CheckVoucher()" placeholder="Nhập mã giảm giá" type="text" class="m-2 p-2" />
+                                </td>
+                                <td style="width:40%">
+                                    <button class="btn btn-primary radius-0 m-2 p-2" type="submit" id="btnsubmit" > Sử dụng </button>
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                </div>
+            </div>
+
+
             @await Component.InvokeAsync("CheckoutInfo", new { Id = UserManager.GetUserId(User) })
         </div>
     </div>
@@ -95,3 +125,51 @@
 
 
 
+<script>
+    function ClearMessageVoucher() {
+        $("#messageVoucher").html("");
+        if ($("#voucher").val() = "") {
+            $("#messageVoucher").html("");
+        }
+    };
+    function CheckVoucher() {
+        var voucher = $("#voucher").val();
+        $.ajax({
+            type: "POST",
+            url: "/Home/CheckVoucher",
+            data: { voucher: voucher },
+            success: function (response) {
+
+                var message = $("#messageVoucher");
+                var btnn = $("#btnsubmit");
+                if (response) {
+                    message.css("color", "green");
+                    message.addClass("fas fa-check-circle p-0 m-0");
+                    message.removeClass("fa-times");
+                    btnn.html("Sử dụng");
+                    if (voucher != "") {
+                        btnn.removeAttr("disabled");
+                    }
+                    else {
+                        btnn.attr("disabled", true);
+                    }
+                  
+                }
+                else {
+                    message.css("color", "red");
+                    message.addClass("fas fa-times p-0 m-0");
+                    message.removeClass("fa-check-circle")
+                    btnn.html("Không khả dụng");
+                    btnn.attr("disabled", true);
+                }
+            }
+        });
+    };
+
+</script>
+<script>
+    //How this line work???
+    if (window.history.replaceState) {
+        window.history.replaceState(null, null, window.location.href);
+    }
+</script>

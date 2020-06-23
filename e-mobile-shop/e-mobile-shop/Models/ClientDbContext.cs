@@ -37,6 +37,8 @@ namespace e_mobile_shop.Models
         public virtual DbSet<SanPham> SanPham { get; set; }
         public virtual DbSet<ThongSo> ThongSo { get; set; }
         public virtual DbSet<ThongSoKiThuat> ThongSoKiThuat { get; set; }
+        public virtual DbSet<Voucher> Voucher { get; set; }
+        public virtual DbSet<VoucherType> VoucherType { get; set; }
         public virtual DbSet<Ward> Ward { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -574,6 +576,35 @@ namespace e_mobile_shop.Models
                     .WithMany(p => p.ThongSoKiThuat)
                     .HasForeignKey(d => d.ThongSo)
                     .HasConstraintName("FK_ThongSoKiThuat_ThongSoKiThuat");
+            });
+
+            modelBuilder.Entity<Voucher>(entity =>
+            {
+                entity.Property(e => e.VoucherId)
+                    .HasMaxLength(10)
+                    .IsFixedLength();
+
+                entity.Property(e => e.VoucherCode).HasMaxLength(20);
+
+                entity.Property(e => e.VoucherName).HasMaxLength(100);
+
+                entity.Property(e => e.VoucherType)
+                    .HasMaxLength(10)
+                    .IsFixedLength();
+
+                entity.HasOne(d => d.VoucherTypeNavigation)
+                    .WithMany(p => p.Voucher)
+                    .HasForeignKey(d => d.VoucherType)
+                    .HasConstraintName("FK_Voucher_VoucherType");
+            });
+
+            modelBuilder.Entity<VoucherType>(entity =>
+            {
+                entity.Property(e => e.VoucherTypeId)
+                    .HasMaxLength(10)
+                    .IsFixedLength();
+
+                entity.Property(e => e.VoucherTypeName).HasMaxLength(20);
             });
 
             modelBuilder.Entity<Ward>(entity =>

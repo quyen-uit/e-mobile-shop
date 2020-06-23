@@ -16,6 +16,7 @@
 
 <!-- Single Page -->
 <div class="banner-bootom-w3-agileits py-5">
+    @Html.Partial("_StatusMessages")
     <div class="container py-xl-4 py-lg-2 border">
         <!-- tittle heading -->
         <h3 class="tittle-w3l  mb-lg-5 mb-sm-4 mb-3">
@@ -34,14 +35,14 @@
                                 </div>
                             </li>
 
-                            <li data-thumb="../../ProductImages/@DataAccess.GetAnhSanPham(Model.MaSp).Anh2"  class="data-thumb">
+                            <li data-thumb="../../ProductImages/@DataAccess.GetAnhSanPham(Model.MaSp).Anh2" class="data-thumb">
                                 <div class="thumb-image">
                                     <img src="~/ProductImages/@DataAccess.GetAnhSanPham(Model.MaSp).Anh2" id="" data-imagezoom="true" class="img-fluid w-100" alt="2">
                                 </div>
                             </li>
 
 
-                            <li data-thumb="../../ProductImages/@DataAccess.GetAnhSanPham(Model.MaSp).Anh3"  class="data-thumb">
+                            <li data-thumb="../../ProductImages/@DataAccess.GetAnhSanPham(Model.MaSp).Anh3" class="data-thumb">
                                 <div class="thumb-image">
                                     <img src="~/ProductImages/@DataAccess.GetAnhSanPham(Model.MaSp).Anh3" id="" data-imagezoom="true" class="img-fluid w-100" alt="2">
                                 </div>
@@ -94,7 +95,7 @@
                     </ul>
                     <!-- Button trigger modal -->
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                        Xem cấu hình chi tiết 
+                        Xem cấu hình chi tiết
                     </button>
 
                     <!-- Modal -->
@@ -132,9 +133,9 @@
 
 
                                     </table>
-                                    
+
                                 </div>
-                               
+
                             </div>
                         </div>
                     </div>

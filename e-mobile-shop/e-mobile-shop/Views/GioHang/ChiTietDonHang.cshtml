@@ -31,7 +31,7 @@
                             <p style="font-size: 13px"> Thành tiền </p>
                         </div>
                         <div class="p-2  " style="font-size: 12px">
-                            <strong style="font-size: 13px">  @item.ThanhTien</strong>
+                            <strong style="font-size: 13px">  @((DataAccess.context.SanPham.Find(item.MaSp).GiaGoc * item.SoLuong).Value.ToString("N0"))</strong>
                         </div>
 
                     </div>
@@ -45,7 +45,7 @@
                     Tổng cộng
                 </div>
                 <div class="col-6">
-                    <span style="color:blue">  @DataAccess.context.DonHang.Find(Model[0].MaDh).Tongtien </span>
+                    <span style="color:blue">  @DataAccess.context.DonHang.Find(Model[0].MaDh).Tongtien.Value.ToString("N0") </span>
                 </div>
                 <div class="col-6">
                     Giảm giá
@@ -57,7 +57,7 @@
                     Cần thanh toán
                 </div>
                 <div class="col-6"> 
-                    <strong style="color:red"> @DataAccess.GetDonHang(Model[0].MaDh).Tongtien VNĐ </strong>
+                    <strong style="color:red"> @DataAccess.GetDonHang(Model[0].MaDh).Tongtien.Value.ToString("N0") VNĐ </strong>
                 </div>
             </div>
             <div class="row ">

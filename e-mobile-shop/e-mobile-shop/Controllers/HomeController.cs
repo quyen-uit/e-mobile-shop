@@ -193,6 +193,26 @@ namespace e_mobile_shop.Controllers
         }
 
 
+
+        [HttpPost]
+        public JsonResult CheckVoucher(string voucher)
+        {
+            if(String.IsNullOrEmpty(voucher) || String.IsNullOrWhiteSpace(voucher))
+            {
+                return Json(true);
+            }
+            var a = DataAccess.context.Voucher.Where(x => x.VoucherCode == voucher).SingleOrDefault();
+
+            if (a != null)
+            {
+                return Json(true);
+            }
+            else
+            {
+                return Json(false);
+            }
+        }
+
         [HttpPost]
         public IActionResult EditUserInfo(AspNetUsers user)
         {
@@ -211,7 +231,7 @@ namespace e_mobile_shop.Controllers
             return View(DataAccess.context.Province.ToList());
         }
 
-    
+
 
         [HttpGet]
         public IActionResult District_Bind(int provinceId)

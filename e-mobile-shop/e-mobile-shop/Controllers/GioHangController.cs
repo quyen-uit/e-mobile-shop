@@ -22,9 +22,87 @@ namespace e_mobile_shop.Controllers
 {
     public class GioHangController : Controller
     {
+        [Route("xem-gio-hang")]
+        [HttpPost]
+        public IActionResult XemGioHang(IFormCollection fc)
+        {
 
+            var giohang = SessionHelper.GetObjectFromJson<List<ChiTietDonHang>>(HttpContext.Session, "GioHang");
+            if (giohang == null)
+            {
+                giohang = new List<ChiTietDonHang>();
+            }
+
+            double? thanhTien = 0;
+
+            foreach (var item in giohang)
+            {
+                thanhTien += (item.ThanhTien * item.SoLuong);
+            }
+
+            var listVoucher = SessionHelper.GetObjectFromJson<List<Voucher>>(HttpContext.Session, "Vouchers");
+
+            if (listVoucher == null)
+            {
+                listVoucher = new List<Voucher>();
+            }
+            else
+            {
+                ViewBag.Vouchers = listVoucher;
+            }
+
+            var _voucher = DataAccess.context.Voucher.Where(x => x.VoucherCode == fc["voucher"].ToString()).SingleOrDefault();
+
+            if (_voucher != null)
+            {
+
+                if (!listVoucher.Exists(x => x.VoucherCode == _voucher.VoucherCode))
+                {
+                    listVoucher.Add(_voucher);
+                }
+                else
+                {
+                    ViewBag.Vouchers = listVoucher;
+                    ViewBag.ThanhTien = thanhTien;
+                    ViewBag.GioHang = giohang;
+                    ViewBag.Added = 0;
+                    return View().WithWarning("", "Voucher đã sử dụng");
+                }
+
+                SessionHelper.SetObjectAsJson(HttpContext.Session, "Vouchers", listVoucher);
+                ViewBag.Vouchers = listVoucher;
+            }
+
+
+
+            foreach (var item in listVoucher)
+            {
+                if (item.VoucherType.Contains("VCT003"))
+                {
+
+                    thanhTien = thanhTien - item.VoucherDiscount;
+                }
+                else if (item.VoucherType.Contains("VCT002"))
+                {
+                    thanhTien = thanhTien - thanhTien * ((double)item.VoucherDiscount / 100);
+                }
+            }
+
+
+        
+           
+
+
+
+            // string s = String.Format("{0:N0}", thanhTien.ToString());
+            ViewBag.ThanhTien = thanhTien;
+            ViewBag.GioHang = giohang;
+            ViewBag.Added = 0;
+            return View();
+        }
 
         [Route("xem-gio-hang")]
+        [HttpGet]
         public IActionResult XemGioHang()
         {
             var giohang = SessionHelper.GetObjectFromJson<List<ChiTietDonHang>>(HttpContext.Session, "GioHang");
@@ -32,18 +110,68 @@ namespace e_mobile_shop.Controllers
             {
                 giohang = new List<ChiTietDonHang>();
             }
-            double? thanhTien = 0 ;
+
+            double? thanhTien = 0;
+
             foreach (var item in giohang)
             {
-                thanhTien += (item.ThanhTien*item.SoLuong);
+                thanhTien += (item.ThanhTien * item.SoLuong);
             }
-           // string s = String.Format("{0:N0}", thanhTien.ToString());
+
+            var listVoucher = SessionHelper.GetObjectFromJson<List<Voucher>>(HttpContext.Session, "Vouchers");
+
+            if (listVoucher == null)
+            {
+                listVoucher = new List<Voucher>();
+            }
+            else
+            {
+                ViewBag.Vouchers = listVoucher;
+            }
+
+     
+            foreach (var item in listVoucher)
+            {
+                if (item.VoucherType.Contains("VCT003"))
+                {
+
+                    thanhTien = thanhTien - item.VoucherDiscount;
+                }
+                else if (item.VoucherType.Contains("VCT002"))
+                {
+                    thanhTien = thanhTien - thanhTien * ((double)item.VoucherDiscount / 100);
+                }
+            }
+
+
+
+
+
+
+
+            // string s = String.Format("{0:N0}", thanhTien.ToString());
             ViewBag.ThanhTien = thanhTien;
             ViewBag.GioHang = giohang;
             ViewBag.Added = 0;
             return View();
         }
+        
+        public IActionResult RemoveVoucher(string voucherCode)
+        {
+            var listVoucher = SessionHelper.GetObjectFromJson<List<Voucher>>(HttpContext.Session, "Vouchers");
+            var _lst = new List<Voucher>();
+            if (listVoucher != null)
+            {
+                foreach (var item in listVoucher)
+                {
+                    if (item.VoucherCode != voucherCode)
+                        _lst.Add(item);
+                }
+            }
+            SessionHelper.SetObjectAsJson(HttpContext.Session, "Vouchers", _lst);
+            return RedirectToAction("XemGioHang");
 
+        }
         private int isExist(string id)
         {
             List<ChiTietDonHang> gh = SessionHelper.GetObjectFromJson<List<ChiTietDonHang>>(HttpContext.Session, "GioHang");
@@ -97,7 +225,7 @@ namespace e_mobile_shop.Controllers
                 }
                 ViewBag.Added = 1;
                 SessionHelper.SetObjectAsJson(HttpContext.Session, "GioHang", gh);
-                return RedirectToAction("SanPham", "SanPham", new { Id = ctdh1.MaSp });
+                return RedirectToAction("SanPham", "SanPham", new { Id = ctdh1.MaSp }).WithSuccess("Thành công", "Đã thêm vào giỏ");
             }
         }
 
@@ -112,72 +240,72 @@ namespace e_mobile_shop.Controllers
             return RedirectToAction("XemGioHang", "GioHang");
         }
 
-    //    [HttpPost]
-    ////    [Route("thanh-toan")]
-    //    public IActionResult CheckOut1(IFormCollection fc)
-    //    {
-    //        DonHang dh = new DonHang();
+        //    [HttpPost]
+        ////    [Route("thanh-toan")]
+        //    public IActionResult CheckOut1(IFormCollection fc)
+        //    {
+        //        DonHang dh = new DonHang();
 
-    //        if (!String.IsNullOrEmpty(fc["Id"].ToString()))
-    //        {
-    //            dh.MaKh = fc["Id"];
-    //            var a = DataAccess.GetUser(dh.MaKh);
-    //            dh.HoTen = a.HoTen;
-    //            dh.Dienthoai = a.PhoneNumber;
-    //            dh.Ghichu = fc["GhiChu"];
-    //            dh.Email = a.Email;
-    //            SessionHelper.SetObjectAsJson(HttpContext.Session, "MaKh", fc["Id"]);
-    //        }
-    //        else
-    //        {
-    //            dh.MaKh = "null" + (DataAccess.context.DonHang.Count() + 1).ToString();
-    //            dh.HoTen = fc["HoTen"];
-    //            dh.Diachi = fc["DiaChi"];
-    //            dh.Ghichu = fc["GhiChu"];
-    //            dh.Email = fc["Email"];
-    //            dh.Dienthoai = fc["DienThoai"];
-    //        }
+        //        if (!String.IsNullOrEmpty(fc["Id"].ToString()))
+        //        {
+        //            dh.MaKh = fc["Id"];
+        //            var a = DataAccess.GetUser(dh.MaKh);
+        //            dh.HoTen = a.HoTen;
+        //            dh.Dienthoai = a.PhoneNumber;
+        //            dh.Ghichu = fc["GhiChu"];
+        //            dh.Email = a.Email;
+        //            SessionHelper.SetObjectAsJson(HttpContext.Session, "MaKh", fc["Id"]);
+        //        }
+        //        else
+        //        {
+        //            dh.MaKh = "null" + (DataAccess.context.DonHang.Count() + 1).ToString();
+        //            dh.HoTen = fc["HoTen"];
+        //            dh.Diachi = fc["DiaChi"];
+        //            dh.Ghichu = fc["GhiChu"];
+        //            dh.Email = fc["Email"];
+        //            dh.Dienthoai = fc["DienThoai"];
+        //        }
 
-    //        dh.NgayDatMua = DateTime.Now;
-    //        dh.PhiVanChuyen = 1000000;
-    //        dh.TinhTrangDh = 0;
-    //        dh.Tongtien = Double.Parse(fc["ThanhTien"]);
-    //        dh.Ghichu = fc["GhiChu"];
-    //        dh.Diachi = fc["DiaChi"];
-    //        DataAccess.context.DonHang.Add(dh);
-    //        DataAccess.context.SaveChanges();
-
-
-    //        string content = System.IO.File.ReadAllText("GioHang.html");
-    //        content = content.Replace("{{Hoten}}", dh.HoTen);
-
-    //        string strCtdh = "";
-    //        int index = 0;
-    //        List<ChiTietDonHang> gh = SessionHelper.GetObjectFromJson<List<ChiTietDonHang>>(HttpContext.Session, "GioHang");
-    //        foreach (var item in gh)
-    //        {
-    //            item.MaCtdh = (DataAccess.context.ChiTietDonHang.ToList().Count + 1).ToString();
-    //            item.MaDh = dh.MaDh;
-    //            DataAccess.context.SanPham.Find(item.MaSp).SoLuong = DataAccess.context.SanPham.Find(item.MaSp).SoLuong - item.SoLuong;
-    //            DataAccess.context.ChiTietDonHang.Add(item);    
-    //            DataAccess.context.SaveChanges();
-    //            strCtdh = strCtdh + "<tr>";
-    //            strCtdh = strCtdh + "<td>" + index + "</td><td>" +
-    //                DataAccess.context.SanPham.Find(item.MaSp).TenSp + "</td><td>" + item.SoLuong + "</td><td>" + DataAccess.context.SanPham.Find(item.MaSp).GiaGoc * item.SoLuong + "</td><tr>";
-    //        }
-
-    //        content = content.Replace("{{thongtindonhang}}", HtmlEncoder.Default.Encode(strCtdh));
-
-    //         _emailSender.SendEmailAsync(dh.Email, "Chi tiết đơn hàng ", $"{System.Net.WebUtility.HtmlDecode(content)}");
+        //        dh.NgayDatMua = DateTime.Now;
+        //        dh.PhiVanChuyen = 1000000;
+        //        dh.TinhTrangDh = 0;
+        //        dh.Tongtien = Double.Parse(fc["ThanhTien"]);
+        //        dh.Ghichu = fc["GhiChu"];
+        //        dh.Diachi = fc["DiaChi"];
+        //        DataAccess.context.DonHang.Add(dh);
+        //        DataAccess.context.SaveChanges();
 
 
-    //        SessionHelper.DeleteAllSession(HttpContext.Session);
-    //        DataAccess.soCtdh = 0;
+        //        string content = System.IO.File.ReadAllText("GioHang.html");
+        //        content = content.Replace("{{Hoten}}", dh.HoTen);
 
-    //        return RedirectToAction("ChiTietDonHang", "GioHang", new { id = dh.MaDh }).WithSuccess("Đặt hàng thành công", "");
+        //        string strCtdh = "";
+        //        int index = 0;
+        //        List<ChiTietDonHang> gh = SessionHelper.GetObjectFromJson<List<ChiTietDonHang>>(HttpContext.Session, "GioHang");
+        //        foreach (var item in gh)
+        //        {
+        //            item.MaCtdh = (DataAccess.context.ChiTietDonHang.ToList().Count + 1).ToString();
+        //            item.MaDh = dh.MaDh;
+        //            DataAccess.context.SanPham.Find(item.MaSp).SoLuong = DataAccess.context.SanPham.Find(item.MaSp).SoLuong - item.SoLuong;
+        //            DataAccess.context.ChiTietDonHang.Add(item);    
+        //            DataAccess.context.SaveChanges();
+        //            strCtdh = strCtdh + "<tr>";
+        //            strCtdh = strCtdh + "<td>" + index + "</td><td>" +
+        //                DataAccess.context.SanPham.Find(item.MaSp).TenSp + "</td><td>" + item.SoLuong + "</td><td>" + DataAccess.context.SanPham.Find(item.MaSp).GiaGoc * item.SoLuong + "</td><tr>";
+        //        }
+
+        //        content = content.Replace("{{thongtindonhang}}", HtmlEncoder.Default.Encode(strCtdh));
+
+        //         _emailSender.SendEmailAsync(dh.Email, "Chi tiết đơn hàng ", $"{System.Net.WebUtility.HtmlDecode(content)}");
 
 
-    //    }
+        //        SessionHelper.DeleteAllSession(HttpContext.Session);
+        //        DataAccess.soCtdh = 0;
+
+        //        return RedirectToAction("ChiTietDonHang", "GioHang", new { id = dh.MaDh }).WithSuccess("Đặt hàng thành công", "");
+
+
+        //    }
 
         [HttpPost]
         [Route("thanh-toan")]
@@ -187,14 +315,26 @@ namespace e_mobile_shop.Controllers
 
             if (!String.IsNullOrEmpty(fc["Id"].ToString()))
             {
-                dh.MaKh = fc["Id"];
-                var a = DataAccess.GetUser(dh.MaKh);
-                dh.HoTen = a.HoTen;
-                dh.Dienthoai = a.PhoneNumber;
-                dh.Ghichu = fc["GhiChu"];
-                dh.Email = a.Email;
-                dh.Diachi = a.DiaChi;
-                SessionHelper.SetObjectAsJson(HttpContext.Session, "MaKh", fc["Id"]);
+                if (DataAccess.context.AspNetUsers.Find(fc["Id"]) != null)
+                {
+                    dh.MaKh = fc["Id"];
+                    var a = DataAccess.GetUser(dh.MaKh);
+                    dh.HoTen = a.HoTen;
+                    dh.Dienthoai = a.PhoneNumber;
+                    dh.Ghichu = fc["GhiChu"];
+                    dh.Email = a.Email;
+                    dh.Diachi = a.DiaChi;
+                    SessionHelper.SetObjectAsJson(HttpContext.Session, "MaKh", fc["Id"]);
+                }
+                else
+                {
+                    dh.MaKh = "null" + (DataAccess.context.DonHang.Count() + 1).ToString();
+                    dh.HoTen = fc["HoTen"];
+                    dh.Diachi = fc["DiaChi"];
+                    dh.Ghichu = fc["GhiChu"];
+                    dh.Email = fc["Email"];
+                    dh.Dienthoai = fc["DienThoai"];
+                }
             }
             else
             {
@@ -233,14 +373,14 @@ namespace e_mobile_shop.Controllers
                 strCtdh = strCtdh + "<td style='text-align:center'>" + ++index + "</td><td>" +
                     DataAccess.context.SanPham.Find(item.MaSp).TenSp + "</td><td  style='text-align:center'>"
                     + item.SoLuong + "</td><td  style='text-align:center'>"
-                    + ((DataAccess.context.SanPham.Find(item.MaSp).GiaGoc * item.SoLuong).HasValue? 
-                    (DataAccess.context.SanPham.Find(item.MaSp).GiaGoc * item.SoLuong).Value.ToString("N0"):"NULL") + "</td><tr>";
+                    + ((DataAccess.context.SanPham.Find(item.MaSp).GiaGoc * item.SoLuong).HasValue ?
+                    (DataAccess.context.SanPham.Find(item.MaSp).GiaGoc * item.SoLuong).Value.ToString("N0") : "NULL") + "</td><tr>";
             }
 
             content = content.Replace("{{thongtindonhang}}", HtmlEncoder.Default.Encode(strCtdh));
             content = content.Replace("{{madh}}", dh.MaDh.ToUpper());
             content = content.Replace("{{diachi}}", dh.Diachi);
-            content = content.Replace("{{thanhtien}}", dh.Tongtien.HasValue? dh.Tongtien.Value.ToString("N0"): "NULL");
+            content = content.Replace("{{thanhtien}}", dh.Tongtien.HasValue ? dh.Tongtien.Value.ToString("N0") : "NULL");
             content = content.Replace("{{sdt}}", dh.Dienthoai);
 
             AuthMessageSenderOptions Option = new AuthMessageSenderOptions()
@@ -253,7 +393,7 @@ namespace e_mobile_shop.Controllers
             var mailSender = new EmailSender(Option);
 
 
-           mailSender.SendEmailAsync(dh.Email, "Chi tiết đơn hàng ", $"{System.Net.WebUtility.HtmlDecode(content)}");
+            mailSender.SendEmailAsync(dh.Email, "Chi tiết đơn hàng ", $"{System.Net.WebUtility.HtmlDecode(content)}");
 
 
             SessionHelper.DeleteAllSession(HttpContext.Session);
