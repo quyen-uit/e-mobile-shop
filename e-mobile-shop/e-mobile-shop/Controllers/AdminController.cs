@@ -10,6 +10,9 @@ using System.IO;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authorization;
 using e_mobile_shop.Models.Helpers;
+using System.Web.WebPages;
+using Microsoft.AspNetCore.Mvc.DataAnnotations;
+using System.Globalization;
 
 namespace e_mobile_shop.Controllers
 {
@@ -26,11 +29,93 @@ namespace e_mobile_shop.Controllers
         {
             return View();
         }
-
-        public IActionResult QuanLy(string Id)
+        public IActionResult QuanLyUser(string searchValue)
         {
-            return View(DataAccess.ReadSanPham(Id));
+            List<AspNetUsers> list = DataAccess.context.AspNetUsers.ToList();
+            List<AspNetUsers> rs = new List<AspNetUsers>();
+            if (!String.IsNullOrEmpty(searchValue))
+            {
+
+                foreach (var item in list)
+                {
+                    if (item.UserName.ToLower().Contains(searchValue.ToLower().Trim()))
+                        rs.Add(item);
+                    else if (!string.IsNullOrEmpty(item.HoTen) && item.HoTen.ToLower().Contains(searchValue.ToLower().Trim()))
+                    {
+                        rs.Add(item);
+                    }
+                }
+                return View(rs).WithSuccess("Tìm kiếm", searchValue);
+            }
+            return View(list);
         }
+        public IActionResult QuanLyDonHang(string searchValue)
+        {
+            List<DonHang> list = DataAccess.context.DonHang.ToList();
+            List<DonHang> rs = new List<DonHang>();
+            foreach(var i in list)
+            {
+                i.Ghichu = i.NgayDatMua.ToString("HH:mm, dd/MM/yyyy");
+            }
+            if (!String.IsNullOrEmpty(searchValue))
+            {
+
+                foreach (var item in list)
+                {
+                    if (item.MaDh.ToLower().Contains(searchValue.ToLower().Trim()))
+                        rs.Add(item);
+                    else if (!string.IsNullOrEmpty(item.HoTen) && item.HoTen.ToLower().Contains(searchValue.ToLower().Trim()))
+                    {
+                        rs.Add(item);
+                    }
+                }
+                return View(rs).WithSuccess("Tìm kiếm", searchValue);
+            }
+            return View(list);
+        }
+        public IActionResult ChiTietDonHang(string id)
+        {
+        
+            return View(DataAccess.context.DonHang.Where(x=>x.MaDh == id).ToList().FirstOrDefault());
+        }
+        public IActionResult ChinhSuaDonHang(string id)
+        {
+            
+            return View(DataAccess.context.DonHang.Where(x => x.MaDh == id).ToList().FirstOrDefault());
+        }
+
+        [HttpPost]
+        public IActionResult ChinhSuaDonHang( DonHang model, IFormCollection fc)
+        {
+            DonHang dh = DataAccess.GetDonHang(fc["MaDh"]);
+            dh.TinhTrangDh = model.TinhTrangDh;
+            DataAccess.context.DonHang.Update(dh);
+            DataAccess.context.SaveChanges();
+            return RedirectToAction("QuanLyDonHang", "Admin").WithSuccess("Thành công", "Đơn hàng đã được sửa.");
+        }
+        public IActionResult QuanLy(string id, string searchValue)
+        {
+            ViewData["LoaiSp"] = id;
+            var a = DataAccess.ReadSanPham(id);
+            List<SanPham> rs = new List<SanPham>();
+            if (!String.IsNullOrEmpty(searchValue))
+            {
+
+                foreach (var item in a)
+                {
+                    if (item.TenSp.ToLower().Contains(searchValue.ToLower().Trim()) || item.MaSp.ToLower().Contains(searchValue.ToLower().Trim()))
+                        rs.Add(item);
+                }
+                return View(rs).WithSuccess("Tìm kiếm", searchValue);
+            }
+
+
+            return View(a);
+        }
+        //public IActionResult QuanLy(string maloai, string search)
+        //{
+        //    return View(DataAccess.context.SanPham.Where(x => x.MaSp.ToLower().Contains(search.ToLower()) || x.TenSp.ToLower().Contains(search.ToLower())));
+        //}
         public IActionResult QuanLyDienThoai()
         {
             return View(DataAccess.ReadSanPham("LSP0002"));
@@ -44,7 +129,7 @@ namespace e_mobile_shop.Controllers
 
         public IActionResult XoaSanPham(string Id)
         {
-            DataAccess.context.SanPham.Find(Id).IsOnline = 0;
+            DataAccess.context.SanPham.Find(Id).Status = 0;
             DataAccess.context.SaveChanges();
             return RedirectToAction("QuanLy", "Admin", new { id = DataAccess.context.SanPham.Find(Id).LoaiSp }).WithSuccess("Thành công", "Bạn đã xóa sản phẩm khỏi danh sách.");
         }
@@ -56,7 +141,7 @@ namespace e_mobile_shop.Controllers
         }
 
         [HttpPost]
-        public ActionResult ChinhSua(
+        public IActionResult ChinhSua(
             SanPham model, IFormFile AnhDaiDien,
             IFormCollection fc,
             IFormFile productImages1,
@@ -66,7 +151,7 @@ namespace e_mobile_shop.Controllers
             string message = "";
             model.MaSp = fc["MaSp"];
             SanPham a = DataAccess.context.SanPham.Find(fc["MaSp"]);
-            model.Status = string.IsNullOrEmpty(fc["status"]) ? 0 : 1;
+           
 
             if (AnhDaiDien == null)
             {
@@ -76,8 +161,10 @@ namespace e_mobile_shop.Controllers
             {
                 model.AnhDaiDien = UploadedFile(AnhDaiDien, "ProductAvatar");
             }
-            if (true)
+            
+            if (ModelState.IsValid)
             {
+                model.Status = string.IsNullOrEmpty(fc["status"]) ? 0 : 1;
                 DataAccess.context.Entry(a).CurrentValues.SetValues(model);
                 DataAccess.context.SaveChanges();
 
@@ -118,7 +205,7 @@ namespace e_mobile_shop.Controllers
                 //    temp = null;
 
                 //}
-                return RedirectToAction("QuanLy", "Admin", new { id = model.LoaiSp });
+                return RedirectToAction("QuanLy", "Admin", new { id = model.LoaiSp }).WithSuccess("Thành công", "Sản phẩm đã được sửa");
             }
             else
             {
@@ -128,7 +215,7 @@ namespace e_mobile_shop.Controllers
 
 
         [HttpPost]
-        public ActionResult Them(SanPham model,
+        public IActionResult Them(SanPham model,
             IFormFile AnhDaiDien,
             IFormCollection fc,
             IFormFile productImages1,
@@ -201,10 +288,12 @@ namespace e_mobile_shop.Controllers
                 //    else break;
 
                 //}
-                return RedirectToAction("QuanLy", "Admin", new { id = model.LoaiSp });
+                return RedirectToAction("QuanLy", "Admin", new { id = model.LoaiSp }).WithSuccess("Thành công", "Sản phẩm đã được sửa");
             }
             else
             {
+                ModelState.AddModelError("", "aaa");
+                ViewData["MaLoai"] = model.LoaiSp;
                 return View(model);
             }
         }

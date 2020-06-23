@@ -15,11 +15,11 @@
         color: red
     }
 
-    img {
+    .img {
         padding-top: 5px;
     }
 </style>
-@{ 
+@{
     var str = "";
     if (Model.Status == 0)
     {
@@ -31,13 +31,13 @@
 
 <body>
     <div class="col-lg-12">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                Thêm @Model.TenSp
+        <div class="panel panel-primary">
+            <div class="panel-heading primary">
+              Chỉnh sửa @Model.TenSp
             </div>
             <div class="panel-body">
                 <form enctype="multipart/form-data" role="form" asp-action="ChinhSua" asp-controller="Admin" method="post">
-
+                    <input type="hidden" class="form-control" asp-for="Status" />
                     <div class="checkbox">
                         <label>
                             <input type="checkbox" asp-for="@Model.Isnew" />Sản phẩm mới
@@ -45,7 +45,7 @@
                     </div>
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox"  asp-for="@Model.Ishot" />Sản phẩm nổi bật
+                            <input type="checkbox" asp-for="@Model.Ishot" />Sản phẩm nổi bật
                         </label>
                     </div>
                     <div class="checkbox">
@@ -54,80 +54,77 @@
                             <input type="checkbox" name="status" @str />Hoạt động
                         </label>
                     </div>
-                    <div class="form-group">
-                        <label asp-for="TenSp">Tên sản phẩm</label>
-                        <input class="form-control" asp-for="TenSp">
-                        <span asp-validation-for="TenSp"></span>
-                    </div>
-
-                    <div class="form-group">
-                        <label asp-for="MaSp">Mã sản phẩm </label>
-                        <input hidden class="form-control" asp-for="MaSp" />
-                        <input disabled class="form-control" asp-for="MaSp" />
-
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="LoaiSp"> Loại sản phẩm </label>
-                        <input hidden class="form-control" asp-for="LoaiSp" />
-                        <input disabled class="form-control" asp-for="LoaiSp" />
-
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Nsx">Hãng sản xuất</label>
-                        <select class="form-control" asp-for="Nsx" asp-items="@(new SelectList(DataAccess.GetNSX(),"MaNsx","TenNsx"))">
-                        </select>
-
-                    </div>
-
-                    <div class="form-group">
-                        <label asp-for="MaNcc">Nhà cung cấp</label>
-                        <select class="form-control" asp-for="MaNcc" asp-items="@(new SelectList(DataAccess.context.NhaCungCap.ToList(),"MaNcc","TenNcc"))">
-                        </select>
-
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="SoLuong">Số lượng</label>
-                        <input asp-for="SoLuong" class="form-control">
-                        <span asp-validation-for="SoLuong"></span>
-                    </div>
-
-                    <div class="form-group">
-                        <label asp-for="GiaGoc">Giá gốc</label>
-                        <input type="number" asp-for="GiaGoc" class="form-control">
-                        <span asp-validation-for="GiaGoc"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="GiaTien">Giá bán</label>
-                        <input type="number" asp-for="GiaTien" class="form-control">
-                        <span asp-validation-for="GiaTien"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="AnhDaiDien">Ảnh đại diện</label>
-                        <input onchange="loadFile(event)" type="file" asp-for="AnhDaiDien" accept="image/*" class="form-control">
-                        <input asp-for="AnhDaiDien" class="form-control">
-                    </div>
-                    <img id="output" style="width: 150px; height:150px;" src="~/ProductAvatar/@Model.AnhDaiDien" />
-
-                    <div> <label> Ảnh mô tả</label></div>
-
                     <div class="row">
-                        <div class="col-lg-4 ">
-                            <input onchange="loadFile1(event)" type="file" accept="image/*" placeholder="Chọn file" name="productImages1">
-                            <img id="output1" style="width: 150px; height:150px;" src="~/ProductImages/@DataAccess.GetAnhSanPham(Model.MaSp).Anh1" />
+                        <div class="form-group col-lg-6">
+                            <label asp-for="MaSp">Mã sản phẩm </label>
+                            <input type="hidden" class="form-control" asp-for="MaSp" />
+                            <input disabled class="form-control" asp-for="MaSp" />
+
                         </div>
-                        <div class="col-lg-4">
-                            <input onchange="loadFile2(event)" type="file" accept="image/*" name="productImages2">
-                            <img id="output2" style="width: 150px; height:150px;" src="~/ProductImages/@DataAccess.GetAnhSanPham(Model.MaSp).Anh2" />
-                        </div>
-                        <div class="col-lg-4">
-                            <input onchange="loadFile3(event)" type="file" accept="image/*" name="productImages3">
-                            <img id="output3" style="width: 150px; height:150px;" src="~/ProductImages/@DataAccess.GetAnhSanPham(Model.MaSp).Anh3" />
+                        <div class="form-group col-lg-6">
+                            <label asp-for="LoaiSp"> Loại sản phẩm </label>
+                            <input type="hidden" class="form-control" asp-for="LoaiSp" />
+                            <input disabled class="form-control" asp-for="LoaiSp" />
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="form-group col-lg-6">
+                            <label asp-for="TenSp">Tên sản phẩm</label>
+                            <label class="validation-summary-errors">*</label>
+                            <input class="form-control" asp-for="TenSp">
+                            <span asp-validation-for="TenSp"></span>
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <label asp-for="SoLuong">Số lượng</label>
+                            <label class="validation-summary-errors">*</label>
+                            <input asp-for="SoLuong" class="form-control">
+                            <span asp-validation-for="SoLuong"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-6">
+                            <label asp-for="Nsx">Hãng sản xuất</label>
+                            <label class="validation-summary-errors">*</label>
+                            <select class="form-control" asp-for="Nsx" asp-items="@(new SelectList(DataAccess.GetNSX(),"MaNsx","TenNsx"))">
+                            </select>
+
+                        </div>
+
+                        <div class="form-group col-lg-6">
+                            <label asp-for="MaNcc">Nhà cung cấp</label>
+                            <label class="validation-summary-errors">*</label>
+                            <select class="form-control" asp-for="MaNcc" asp-items="@(new SelectList(DataAccess.context.NhaCungCap.ToList(),"MaNcc","TenNcc"))">
+                            </select>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-6">
+                            <label asp-for="GiaGoc">Giá gốc</label>
+                            <label class="validation-summary-errors">*</label>
+                            <input type="number" asp-for="GiaGoc" class="form-control">
+                            <span asp-validation-for="GiaGoc"></span>
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <label asp-for="GiaTien">Giá bán</label>
+                            <label class="validation-summary-errors">*</label>
+                            <input type="number" asp-for="GiaTien" class="form-control">
+                            <span asp-validation-for="GiaTien"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div disable class="form-group col-lg-6">
+                            <label asp-for="@Model.SoLuotXemSp">Số lượt xem </label>
+                            <input disabled asp-for="SoLuotXemSp" class="form-control">
+                            <input type="hidden" asp-for="SoLuotXemSp" class="form-control">
+                        </div>
+                    </div>
+
 
 
                     <div class="form-group">
                         <label>Mô tả</label>
+                        <label class="validation-summary-errors">*</label>
                         <textarea class="form-control" rows="3" asp-for="MoTa"></textarea>
                         <script>
                             CKEDITOR.replace('MoTa');
@@ -147,17 +144,44 @@
             </div>
         </div>*@
                     <div class="form-group">
-                        @foreach (var item in DataAccess.ReadThongSo(Model.LoaiSp))
-                        {
-                            <div class="form-group">
-                                <label>@item.TenThongSo</label>
-                                <input name="@item.MaThongSo" type="text" class="form-control" value="@DataAccess.GetTenTSKT(Model.MaSp,item.MaThongSo)">
-                            </div>
-                        }
+                        <div class="row">
+                            @foreach (var item in DataAccess.ReadThongSo(Model.LoaiSp))
+                            {
+                                <div class="form-group col-lg-6">
+                                    <label>@item.TenThongSo</label>
+                                    @*<label class="validation-summary-errors">*</label>*@
+                                    <input name="@item.MaThongSo" type="text" class="form-control" value="@DataAccess.GetTenTSKT(Model.MaSp,item.MaThongSo)">
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="AnhDaiDien">Ảnh đại diện</label>
+                        <label class="validation-summary-errors">*</label>
+                        <input onchange="loadFile(event)" type="file" asp-for="AnhDaiDien" accept="image/*" class="form-control">
+                        <input type="hidden" asp-for="AnhDaiDien" class="form-control">
+                    </div>
+                    <img id="output" style="width: 150px; height:150px;" src="~/ProductAvatar/@Model.AnhDaiDien" />
+
+                    <div> <label> Ảnh mô tả</label></div>
+                    <label class="validation-summary-errors">*</label>
+
+                    <div class="row">
+                        <div class="col-lg-4 ">
+                            <input onchange="loadFile1(event)" type="file" accept="image/*" placeholder="Chọn file" name="productImages1">
+                            <img id="output1" style="width: 150px; height:150px;" src="~/ProductImages/@DataAccess.GetAnhSanPham(Model.MaSp).Anh1" />
+                        </div>
+                        <div class="col-lg-4">
+                            <input onchange="loadFile2(event)" type="file" accept="image/*" name="productImages2">
+                            <img id="output2" style="width: 150px; height:150px;" src="~/ProductImages/@DataAccess.GetAnhSanPham(Model.MaSp).Anh2" />
+                        </div>
+                        <div class="col-lg-4">
+                            <input onchange="loadFile3(event)" type="file" accept="image/*" name="productImages3">
+                            <img id="output3" style="width: 150px; height:150px;" src="~/ProductImages/@DataAccess.GetAnhSanPham(Model.MaSp).Anh3" />
+                        </div>
                     </div>
                     <br />
-                    <button type="submit" name="submit" class="btn btn-default">Submit Button</button>
-                    <button type="reset" class="btn btn-default">Reset Button</button>
+                    <button type="submit" name="submit" class="btn btn-success  btn-block p-2">Chỉnh sửa</button>
                 </form>
             </div>
         </div>
@@ -192,7 +216,6 @@
         var loadFile1 = function (event) {
             var image = document.getElementById('output1');
             image.src = URL.createObjectURL(event.target.files[0]);
-
         };
         var loadFile2 = function (event) {
             var image = document.getElementById('output2');

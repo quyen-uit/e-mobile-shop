@@ -9,130 +9,235 @@
         pointer-events: none;
         border-radius: 0px !important;
     }
-    td{
-        padding:5px;
+
+    td {
+        padding: 5px;
     }
-  .form-control{
-     color: black;
-      border:none;
-      
-      background-color: lightgray;
-  }
+
+    .form-control {
+        color: black;
+        border: none;
+        background-color: lightgray;
+    }
 </style>
-<h1>Thông tin chi tiết</h1>
+@{
+    var str = "";
+    if (Model.Status == 0)
+    {
+        str = "";
+    }
+    else str = "checked";
+}
+<body>
+    <div class="col-lg-12">
+        <div class="panel panel-primary">
+            <div class="panel-heading primary">
+                Chi tiết @Model.TenSp
+            </div>
+            <div class="panel-body">
+                <form enctype="multipart/form-data" role="form" asp-action="ChinhSua" asp-controller="Admin" method="put">
 
-<div>
-    <div class="panel panel-default">
+                    <div class="checkbox">
+                        <label>
+                            <input disabled type="checkbox" asp-for="@Model.Isnew" />Sản phẩm mới
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input disabled type="checkbox" asp-for="@Model.Ishot" />Sản phẩm nổi bật
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
 
-        <div class="panel-body">
-            <form enctype="multipart/form-data" role="form" asp-action="ChinhSua" asp-controller="Admin" method="post">
-                <div class="form-group">
-                    <label asp-for="@Model.TenSp">Tên sản phẩm</label>
-                    <input class="form-control" asp-for="@Model.TenSp" name="TenSp">
-                    <input type="hidden" name="Id" value="@Model.MaSp" />
-                    <span asp-validation-for="@Model.TenSp"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="@Model.LoaiSp"> Loại sản phẩm </label>
-
-                    <input class="form-control" asp-for="@Model.LoaiSp" type="text" id="textType" />
-
-                </div>
-                <div class="form-group">
-                    <label asp-for="@Model.Nsx">Hãng sản xuất</label>
-                    <input asp-for="@Model.Nsx" class="form-control" maxlength="5">
-                    <span asp-validation-for="@Model.Nsx"></span>
-                </div>
-               
-                <div class="form-group">
-                    <label asp-for="@Model.SoLuong">Số lượng</label>
-                    <input asp-for="@Model.SoLuong" class="form-control">
-                    <span asp-validation-for="@Model.SoLuong"></span>
-                </div>
-
-                <div class="form-group">
-                    <label asp-for="@Model.GiaGoc">Giá gốc</label>
-                    <input type="number" asp-for="@Model.GiaGoc" class="form-control">
-                    <span asp-validation-for="@Model.GiaGoc"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="@Model.GiaTien">Giá bán</label>
-                    <input type="number" asp-for="@Model.GiaTien" class="form-control">
-                    <span asp-validation-for="@Model.GiaTien"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="@Model.AnhDaiDien">Ảnh đại diện</label>
-                    <div class="row"><img src=@Url.Content("~/ProductAvatar/" +Model.AnhDaiDien ) width="150" height="150" /></div>
-                </div>
-
-
-                <div class="form-group">
-                    <label class="pt-5"> Ảnh mô tả </label>
+                            <input disabled type="checkbox" name="status" @str />Hoạt động
+                        </label>
+                    </div>
                     <div class="row">
-                        <div class="col-lg-4">
-                            <img src=@Url.Content("~/ProductImages/" +DataAccess.GetAnhSanPham(Model.MaSp).Anh1) width="150" height="150" />
+                        <div class="form-group col-lg-6">
+                            <label asp-for="MaSp">Mã sản phẩm </label>
+                            <input type="hidden" class="form-control" asp-for="MaSp" />
+                            <input disabled class="form-control" asp-for="MaSp" />
+
                         </div>
-                        <div class="col-lg-4">
-                            <img src=@Url.Content("~/ProductImages/" +DataAccess.GetAnhSanPham(Model.MaSp).Anh2) width="150" height="150" />
+                        <div class="form-group col-lg-6">
+                            <label asp-for="LoaiSp"> Loại sản phẩm </label>
+                            <input type="hidden" class="form-control" asp-for="LoaiSp" />
+                            <input disabled class="form-control" asp-for="LoaiSp" />
                         </div>
-                        <div class="col-lg-4">
-                            <img src=@Url.Content("~/ProductImages/" +DataAccess.GetAnhSanPham(Model.MaSp).Anh3) width="150" height="150" />
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-6">
+                            <label asp-for="TenSp">Tên sản phẩm</label>
+
+                            <input disabled class="form-control" asp-for="TenSp">
+                            <span asp-validation-for="TenSp"></span>
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <label asp-for="SoLuong">Số lượng</label>
+
+                            <input disabled asp-for="SoLuong" class="form-control">
+                            <span asp-validation-for="SoLuong"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-6">
+                            <label asp-for="Nsx">Hãng sản xuất</label>
+
+                            <select disabled class="form-control" asp-for="Nsx" asp-items="@(new SelectList(DataAccess.GetNSX(),"MaNsx","TenNsx"))">
+                            </select>
+
+                        </div>
+
+                        <div class="form-group col-lg-6">
+                            <label asp-for="MaNcc">Nhà cung cấp</label>
+
+                            <select disabled class="form-control" asp-for="MaNcc" asp-items="@(new SelectList(DataAccess.context.NhaCungCap.ToList(),"MaNcc","TenNcc"))">
+                            </select>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-6">
+                            <label asp-for="GiaGoc">Giá gốc</label>
+
+                            <input disabled type="number" asp-for="GiaGoc" class="form-control">
+                            <span asp-validation-for="GiaGoc"></span>
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <label asp-for="GiaTien">Giá bán</label>
+
+                            <input disabled type="number" asp-for="GiaTien" class="form-control">
+                            <span asp-validation-for="GiaTien"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div disable class="form-group col-lg-6">
+                            <label asp-for="@Model.SoLuotXemSp">Số lượt xem </label>
+                            <input disabled asp-for="SoLuotXemSp" class="form-control">
+                            <input type="hidden" asp-for="SoLuotXemSp" class="form-control">
                         </div>
                     </div>
 
-                </div>
 
-                <div class="form-group">
-                    <label>Mô tả</label>
-                    <textarea class="form-control" rows="3" asp-for="@Model.MoTa"></textarea>
-                    <script>
-                        CKEDITOR.replace('MoTa');
-                    </script>
+
+                    <div class="form-group">
+                        <label>Mô tả</label>
+                      
+                        <textarea disabled class="form-control" rows="3" asp-for="MoTa"></textarea>
+                        <script>
+                            CKEDITOR.replace('MoTa');
+                        </script>
+                    </div>
+                    @*<div class="form-group">
+                <label>Thông số kĩ thuật  </label>
+
+                <div id="czContainer">
+                    <div id="first">
+                        <div class="recordset">
+                            <input placeholder="Tên thuộc tính" class="form-group ml-2" type="text" id="attribute_1_name" name="attribute_1_name">
+
+                            <input placeholder="Giá trị" class="form-group" type="text" id="attribute_1_value" name="attribute_1_value">
+                        </div>
+                    </div>
                 </div>
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                    Xem chi tiết cấu hình 
-                </button>
-                <br />
-                <button type="submit" name="submit" class="btn btn-default">Submit Button</button>
-                <button type="reset" class="btn btn-default">Reset Button</button>
-            </form>
+            </div>*@
+                    <div class="form-group">
+                        <div class="row">
+                            @foreach (var item in DataAccess.ReadThongSo(Model.LoaiSp))
+                            {
+                                <div class="form-group col-lg-6">
+                                    <label>@item.TenThongSo</label>
+                                    @*<label class="validation-summary-errors">*</label>*@
+                                    <input disabled name="@item.MaThongSo" type="text" class="form-control" value="@DataAccess.GetTenTSKT(Model.MaSp,item.MaThongSo)">
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="AnhDaiDien">Ảnh đại diện</label>
+                        @*<label class="validation-summary-errors">*</label>*@
+                        @*<input  onchange="loadFile(event)" type="file" asp-for="AnhDaiDien" accept="image/*" class="form-control">
+                <input type="hidden" asp-for="AnhDaiDien" class="form-control">*@
+                    </div>
+                    <img id="output" style="width: 150px; height:150px;" src="~/ProductAvatar/@Model.AnhDaiDien" />
+
+                    <div> <label> Ảnh mô tả</label></div>
+                    @*<label class="validation-summary-errors">*</label>*@
+
+                    <div class="row">
+                        <div class="col-lg-4 ">
+                            @*<input onchange="loadFile1(event)" type="file" accept="image/*" placeholder="Chọn file" name="productImages1">*@
+                            <img id="output1" style="width: 150px; height:150px;" src="~/ProductImages/@DataAccess.GetAnhSanPham(Model.MaSp).Anh1" />
+                        </div>
+                        <div class="col-lg-4">
+                            @*<input onchange="loadFile2(event)" type="file" accept="image/*" name="productImages2">*@
+                            <img id="output2" style="width: 150px; height:150px;" src="~/ProductImages/@DataAccess.GetAnhSanPham(Model.MaSp).Anh2" />
+                        </div>
+                        <div class="col-lg-4">
+                            @*<input onchange="loadFile3(event)" type="file" accept="image/*" name="productImages3">*@
+                            <img id="output3" style="width: 150px; height:150px;" src="~/ProductImages/@DataAccess.GetAnhSanPham(Model.MaSp).Anh3" />
+                        </div>
+                    </div>
+                    <br />
+                    
+                </form>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <button onclick="location.href='@Url.Action("QuanLy", "Admin", new { id = Model.LoaiSp })';return false;"  type="button" class="btn btn-primary  btn-block p-2">Quay lại danh sách
+                    </div>
+                    <div class="col-lg-6">
+                        
+                          <button onclick="location.href='@Url.Action( "ChinhSua","Admin", new {  id = Model.MaSp })';return false;"  type="button" class="btn btn-success  btn-block p-2">Chỉnh sửa
+                        
+                    </div>
+
+                </div>           
         </div>
     </div>
-</div>
 
-<div>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-    <a asp-action="Index">Back to List</a>
-</div>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="~/Admin/js/jquery.czMore-1.5.3.2.js"></script>
+    <script>
+        $("#czContainer").czMore({
 
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content" >
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h3 class="modal-title" id="exampleModalLabel">Chi tiết cấu hình</h3>
+            // maximum number of form fields allowed
+            max: 5,
 
-            </div>
-            <div style="padding: 10px;">
-                <table class="modal-body" border="1" style=" width:100%;">
-                    @foreach (var item1 in DataAccess.GetThongSoKiThuat(Model.MaSp))
-                    {
-                        <tr class="mb-1 ">
+            // minimum number of form fields allowed
+            min: 0,
 
-                            <td style="text-transform:uppercase">@DataAccess.context.ThongSo.Find(item1.ThongSo).TenThongSo</td>
-                            <td style="text-transform:uppercase">@item1.GiaTri</td>
-                        </tr>
-                    }
+            // uses your own CSS styles
+            styleOverride: false,
 
-                </table>
-            </div>
+            // change the prefix name of the text field
+            countFieldPrefix: '_czMore_txtCount'
+
+        });
+
+        var loadFile = function (event) {
+            var image = document.getElementById('output');
+            image.src = URL.createObjectURL(event.target.files[0]);
+
+        };
 
 
-            <div class="modal-footer">
-                <button style="border-radius:0px;" type="button" class="btn btn-primary" data-dismiss="modal">Đóng </button>
-            </div>
-        </div>
-    </div>
-</div>
+        var loadFile1 = function (event) {
+            var image = document.getElementById('output1');
+            image.src = URL.createObjectURL(event.target.files[0]);
+        };
+        var loadFile2 = function (event) {
+            var image = document.getElementById('output2');
+            image.src = URL.createObjectURL(event.target.files[0]);
+
+        };
+        var loadFile3 = function (event) {
+            var image = document.getElementById('output3');
+            image.src = URL.createObjectURL(event.target.files[0]);
+
+        };
+        function changeType() {
+            document.getElementById("textType").value = document.getElementById("typeSelection").value;
+        }
+    </script>
+</body>

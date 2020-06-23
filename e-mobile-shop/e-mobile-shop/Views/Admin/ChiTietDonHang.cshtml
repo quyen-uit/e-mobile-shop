@@ -1,0 +1,169 @@
+﻿
+@{
+    ViewData["Title"] = "ChiTietDonHang";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+    <style>
+        .dataTables_filter, .dataTables_info, .dataTables_info, .dataTables_paginate, .paging_simple_numbers, .dataTables_length, .paginate_button, .page-item, .previous  {
+            display: none;
+        }
+        
+    </style>
+@model DonHang
+    <body>
+        <div class="col-lg-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading primary">
+                    Chi tiết đơn hàng @Model.MaDh
+                </div>
+                <div class="panel-body">
+                    <form enctype="multipart/form-data" role="form" asp-controller="Admin" method="put">
+
+                        @*<div class="checkbox">
+                <label>
+                    <input disabled type="checkbox" asp-for="@Model." />Sản phẩm mới
+                </label>
+            </div>
+            <div class="checkbox">
+                <label>
+                    <input disabled type="checkbox" asp-for="@Model.Ishot" />Sản phẩm nổi bật
+                </label>
+            </div>*@
+                        <div class="row">
+                            <div class="form-group col-lg-6">
+                                <label asp-for="@Model.MaDh">Mã đơn hàng </label>
+                                <input disabled class="form-control" asp-for="MaDh" />
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label asp-for="@Model.NgayDatMua">Thời gian đặt hàng </label>
+                                <input type="text" disabled class="form-control" asp-for="NgayDatMua" />
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="form-group col-lg-6">
+                                <label asp-for="@Model.HoTen">Tên khách hàng </label>
+                                <input disabled class="form-control" asp-for="HoTen" />
+                            </div>
+                            @if (!Model.MaKh.ToLower().Contains("null"))
+                            {
+                                <div class="form-group col-lg-6">
+                                    <label asp-for="@Model.MaKh">Mã khách hàng </label>
+                                    <input disabled class="form-control" asp-for="MaKh" />
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="form-group col-lg-6">
+                                    <label>Mã khách hàng </label>
+                                    <input disabled class="form-control" value="Khách" />
+                                </div>
+                            }
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-lg-6">
+                                <label asp-for="@Model.Tongtien">Tổng tiền </label>
+                                <input disabled class="form-control" asp-for="Tongtien" />
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label asp-for="@Model.PtgiaoDich">Phương thức giao dịch </label>
+                                <input disabled class="form-control" asp-for="PtgiaoDich" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-lg-6">
+                                <label asp-for="@Model.Diachi">Địa chỉ </label>
+                                <input disabled class="form-control" asp-for="Diachi" />
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label asp-for="@Model.PhiVanChuyen">Phí vận chuyên </label>
+                                <input disabled class="form-control" asp-for="PhiVanChuyen" />
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-lg-6">
+                                <label asp-for="@Model.TinhTrangDh">Trạng thái đơn hàng</label>
+
+                                <select disabled class="form-control" asp-for="@Model.TinhTrangDh" asp-items="@(new SelectList(DataAccess.context.TrangThaiDonHang.ToList(),"Id","TenTrangThai"))">
+                                </select>
+
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label asp-for="@Model.Dienthoai">Số điện thoại </label>
+                                <input disabled class="form-control" asp-for="Dienthoai" />
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="form-group col-lg-6">
+                                <label asp-for="@Model.Email">Email</label>
+                                <input disabled class="form-control" asp-for="Email" />
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label asp-for="@Model.Ghichu">Ghi chú</label>
+                                <input disabled class="form-control" asp-for="Ghichu" />
+                            </div>
+                        </div>
+                        <br />
+
+                    </form>
+                    <label asp-for="@Model.HoTen">Chi tiết đơn hàng </label>
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dataTable" width="98%" cellspacing="0">
+
+                                <thead>
+                                    <tr>
+                                        <th>Tên sản phẩm</th>
+                                        <th>Hình ảnh</th>
+                                        <th>Số lượng</th>
+                                        <th>Tổng tiền</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+
+                                    @foreach (var item in DataAccess.context.ChiTietDonHang.Where(x => x.MaDh == Model.MaDh).ToList())
+                                    {
+
+                                        <tr>
+                                            <td style="        vertical-align: middle">@DataAccess.GetSanPham(item.MaSp).TenSp</td>
+
+                                            <td style="vertical-align:middle">
+                                                <img style="width: 50px; height:50px;" src="~/ProductAvatar/@DataAccess.GetSanPham(item.MaSp).AnhDaiDien" />
+                                            </td>
+                                            <td style="vertical-align:middle">@item.SoLuong</td>
+                                            <td style="vertical-align:middle">@item.ThanhTien</td>
+
+                                        </tr>
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <button onclick="location.href='@Url.Action("QuanLyDonHang", "Admin" )';return false;" type="button" class="btn btn-primary  btn-block p-2">Quay lại danh sách
+                        </div>
+                        <div class="col-lg-6">
+
+                            <button onclick="location.href='@Url.Action( "ChinhSuaDonHang","Admin", new { id = Model.MaDh})';return false;" type="button" class="btn btn-success  btn-block p-2">Chỉnh sửa
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <script>
+                $('#dataTable').dataTable({
+                    "bInfo": false, //Dont display info e.g. "Showing 1 to 4 of 4 entries"
+                    "paging": false,//Dont want paging                
+                    "bPaginate": false,//Dont want paging      
+                })
+            </script>
+
+    </body>
+

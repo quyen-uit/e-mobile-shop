@@ -261,88 +261,86 @@
             <div class="navbar-default navbar-static-side" role="navigation">
                 <div class="sidebar-collapse">
                     <ul class="nav" id="side-menu">
-                        <li class="sidebar-search">
-                            <div class="input-group custom-search-form">
-                                <input type="text" class="form-control" placeholder="Search...">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button">
-                                        <i class="fa fa-search"></i>
-                                    </button>
-                                </span>
-                            </div>
-                            <!-- /input-group -->
-                        </li>
-
+                        @*<li class="sidebar-search">
+            <div class="input-group custom-search-form">
+                <input type="text" class="form-control" placeholder="Search...">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </span>
+            </div>
+             /input-group
+        </li>*@
                         <li>
-                            <a href="#"><i class="fa fa-wrench fa-fw"></i>Quản lý<span class="fa arrow"></span></a>
+                            <a asp-action="QuanLyDonHang" asp-controller="Admin" style="color:darkgreen; background-color: aliceblue"><i class="fa fa-shopping-cart fa-fw"></i> Quản lý đơn hàng</a>
+                        </li>
+                        <li>
+                            <a asp-action="QuanLyUser" asp-controller="Admin" style="color:darkgreen; background-color: aliceblue"><i class="fa fa-user fa-fw"></i> Quản lý người dùng </a>
+                        </li>
+                        <li>
+                            <a style="color:darkgreen; background-color: aliceblue" href="#"><i class="fa fa-wrench fa-fw"></i> Quản lý sản phẩm<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level collapse" style="height: auto;">
                                 <li>
-                                    <a asp-action="QuanLy" asp-controller="Admin" asp-route-id="LSP0002">Điện thoại</a>
+                                    <a asp-action="QuanLy" asp-controller="Admin" asp-route-id="LSP0002"><i class="fa fa-mobile-phone fa-fw"></i> Điện thoại</a>
                                 </li>
                                 <li>
-                                    <a asp-action="QuanLy" asp-controller="Admin" asp-route-id="LSP0008">Laptop</a>
+                                    <a asp-action="QuanLy" asp-controller="Admin" asp-route-id="LSP0008"><i class="fa fa-laptop fa-fw"></i> Laptop</a>
                                 </li>
                                 <li>
-                                    <a asp-action="QuanLy" asp-controller="Admin" asp-route-id="LSP0007">Tablet</a>
+                                    <a asp-action="QuanLy" asp-controller="Admin" asp-route-id="LSP0007"><i class="fa fa-tablet fa-fw"></i> Máy tính bảng</a>
                                 </li>
 
                                 <li>
-                                    <a asp-action="TestDynamic" asp-controller="Admin"> Test dymanic</a>
-                                </li>
-                                <li>
-                                    <a href="#"><i class="fa fa-wrench fa-fw"></i>Phụ kiện<span class="fa arrow"></span></a>
-                                    <ul class="nav nav-second-level collapse" style="height: auto;">
+                                    <a style="color:darkgreen; background-color: aliceblue" href="#"><i class="fa fa-wrench fa-fw"></i> Phụ kiện<span class="fa arrow"></span></a>
+                                    <ul class="nav nav-third-level collapse" style="height: auto;">
                                         <li>
-                                            <a asp-action="QuanLy" asp-controller="Admin" asp-route-id="LSP0001">Tai nghe</a>
+                                            <a asp-action="QuanLy" asp-controller="Admin" asp-route-id="LSP0001"><i class="fa fa-headphones fa-fw"></i> Tai nghe</a>
                                         </li>
                                         <li>
-                                            <a asp-action="QuanLy" asp-controller="Admin" asp-route-id="LSP0004">Cáp sạc</a>
+                                            <a asp-action="QuanLy" asp-controller="Admin" asp-route-id="LSP0004"><i class="fa fa-pinterest fa-fw"></i> Cáp sạc</a>
                                         </li>
                                         <li>
-                                            <a asp-action="QuanLy" asp-controller="Admin" asp-route-id="LSP0004">Thẻ nhớ</a>
+                                            <a asp-action="QuanLy" asp-controller="Admin" asp-route-id="LSP0003"><i class="fa fa-plus-square fa-fw"></i> Thẻ nhớ</a>
                                         </li>
                                         <li>
-                                            <a asp-action="QuanLy" asp-controller="Admin" asp-route-id="LSP0005">Ốp lưng</a>
+                                            <a asp-action="QuanLy" asp-controller="Admin" asp-route-id="LSP0005"><i class="fa fa-mobile fa-fw"></i> Ốp lưng</a>
                                         </li>
-                                        <li>
-                                            <a asp-action="TestDynamic" asp-controller="Admin"> Test dymanic</a>
-                                        </li>
+
                                     </ul>
                                 </li>
                             </ul>
 
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-wrench fa-fw"></i>Thêm mới<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level collapse" style="height: auto;">
+                            <a style="color:darkgreen; background-color: aliceblue" href="#"><i class="fa fa-plus fa-fw"></i> Thêm mới<span class="fa arrow"></span></a>
+                            <ul class="nav nav-third-level collapse" style="height: auto;">
                                 <li>
-                                    <a asp-action="Them" asp-controller="Admin" asp-route-id="LSP0002">Điện thoại</a>
+                                    <a asp-action="Them" asp-controller="Admin" asp-route-id="LSP0002"><i class="fa fa-mobile-phone fa-fw"></i> Điện thoại</a>
                                 </li>
                                 <li>
-                                    <a asp-action="Them" asp-controller="Admin" asp-route-id="LSP0007">Máy tính bảng</a>
+                                    <a asp-action="Them" asp-controller="Admin" asp-route-id="LSP0007"><i class="fa fa-tablet fa-fw"></i> Máy tính bảng</a>
                                 </li>
 
                                 <li>
-                                    <a asp-action="Them" asp-controller="Admin" asp-route-id="LSP0008">Laptop</a>
+                                    <a asp-action="Them" asp-controller="Admin" asp-route-id="LSP0008"><i class="fa fa-laptop fa-fw"></i> Laptop</a>
                                 </li>
                                 <li>
-                                    <a href="#"><i class="fa fa-wrench fa-fw"></i>Phụ kiện<span class="fa arrow"></span></a>
+                                    <a style="color:darkgreen ; background-color: aliceblue" href="#"><i class="fa fa-wrench fa-fw"></i> Phụ kiện<span class="fa arrow"></span></a>
                                     <ul class="nav nav-second-level collapse" style="height: auto;">
                                         <li>
-                                            <a asp-action="Them" asp-controller="Admin" asp-route-id="LSP0001">Tai nghe</a>
+                                            <a asp-action="Them" asp-controller="Admin" asp-route-id="LSP0001"><i class="fa fa-headphones fa-fw"></i> Tai nghe</a>
                                         </li>
                                         <li>
-                                            <a asp-action="Them" asp-controller="Admin" asp-route-id="LSP0004">Cáp sạc</a>
+                                            <a asp-action="Them" asp-controller="Admin" asp-route-id="LSP0004"><i class="fa fa-pinterest fa-fw"></i> Cáp sạc</a>
                                         </li>
                                         <li>
-                                            <a asp-action="Them" asp-controller="Admin" asp-route-id="LSP0003">Thẻ nhớ</a>
+                                            <a asp-action="Them" asp-controller="Admin" asp-route-id="LSP0003"><i class="fa fa-plus-square fa-fw"></i> Thẻ nhớ</a>
                                         </li>
                                         <li>
-                                            <a asp-action="Them" asp-controller="Admin" asp-route-id="LSP0005">Ốp lưng</a>
+                                            <a asp-action="Them" asp-controller="Admin" asp-route-id="LSP0005"><i class="fa fa-mobile fa-fw"></i> Ốp lưng</a>
                                         </li>
-                                        <li>
-                                            <a asp-action="TestDynamic" asp-controller="Admin"> Test dymanic</a>
-                                        </li>
+
                                     </ul>
                                 </li>
                                 <li>
@@ -351,11 +349,7 @@
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
-                        <li>
-                            <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Thêm <span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                            </ul>
-                        </li>
+
                     </ul>
                     <!-- /#side-menu -->
                 </div>
@@ -364,7 +358,7 @@
             <!-- /.navbar-static-side -->
         </nav>
 
-        <div id="page-wrapper">
+        <div id="page-wrapper" style="padding-top: 15px">
             @RenderBody()
         </div>
         <!-- /#page-wrapper -->

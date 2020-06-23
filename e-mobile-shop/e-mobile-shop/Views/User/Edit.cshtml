@@ -1,0 +1,93 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model AspNetUsers
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <!-- Core CSS - Include with every page -->
+    <link href="~/Admin/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/Admin/font-awesome/css/font-awesome.css" rel="stylesheet">
+
+
+</head>
+<body>
+    <br />
+    <div class="col-lg-12">
+        <div class="panel panel-primary">
+            <div class="panel-heading primary">
+                Chỉnh sửa thông tin tài khoản
+            </div>
+            <div class="panel-body">
+                <form enctype="multipart/form-data" role="form" asp-action="Edit" asp-controller="User" method="post">
+                    <div class="row">
+                        <div class="form-group col-lg-6">
+                            <label asp-for="@Model.UserName">Username </label>
+                            <input type="hidden" class="form-control" asp-for="UserName" />
+                            <input disabled class="form-control" asp-for="UserName" />
+
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <label asp-for="@Model.Email"> Email </label>
+                            <input type="hidden" class="form-control" asp-for="Email" />
+                            <input disabled class="form-control" asp-for="Email" />
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-lg-6">
+                            <label asp-for="@Model.HoTen">Họ tên </label>
+                            <input class="form-control" asp-for="HoTen" />
+
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <label asp-for="@Model.Cmnd"> CMND </label>
+ 
+                            <input class="form-control" asp-for="Cmnd" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-6">
+                            <label asp-for="@Model.PhoneNumber">Số điện thoại </label>
+                            <input class="form-control" asp-for="PhoneNumber" />
+
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <label asp-for="@Model.DiaChi"> Địa chỉ </label>
+
+                            <input class="form-control" asp-for="DiaChi" />
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-6">
+                            <label asp-for="@Model.NgaySinh">Ngày sinh </label>
+                            <input class="form-control" asp-for="NgaySinh" />
+
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <label asp-for="@Model.GioiTinh"> Giới tính </label>               
+                            <input class="form-control" asp-for="GioiTinh" />
+                        </div>
+                    </div>
+                    <br />
+                    <button type="submit" name="submit" class="btn btn-success  btn-block p-2">Chỉnh sửa</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- SB Admin Scripts - Include with every page -->
+
+</body>
+
+
