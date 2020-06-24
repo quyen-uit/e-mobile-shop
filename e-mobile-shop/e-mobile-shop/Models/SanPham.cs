@@ -25,8 +25,8 @@ namespace e_mobile_shop.Models
         public string AnhNen { get; set; }
         public string AnhKhac { get; set; }
         public int? SoLuong { get; set; }
-        public bool Isnew { get; set; }
-        public bool Ishot { get; set; }
+        public bool? Isnew { get; set; }
+        public bool? Ishot { get; set; }
         public int? Status { get; set; }
         public int? IsOnline { get; set; }
         public string MaNcc { get; set; }

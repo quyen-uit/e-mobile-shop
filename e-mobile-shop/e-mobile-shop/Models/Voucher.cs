@@ -10,6 +10,7 @@ namespace e_mobile_shop.Models
         public string VoucherName { get; set; }
         public int? VoucherDiscount { get; set; }
         public string VoucherType { get; set; }
+        public int? Status { get; set; }
 
         public virtual VoucherType VoucherTypeNavigation { get; set; }
     }

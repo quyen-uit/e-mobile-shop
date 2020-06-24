@@ -1,18 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using e_mobile_shop.Models;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
 using System.IO;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Authorization;
 using e_mobile_shop.Models.Helpers;
-using System.Web.WebPages;
-using Microsoft.AspNetCore.Mvc.DataAnnotations;
-using System.Globalization;
+
 
 namespace e_mobile_shop.Controllers
 {
@@ -55,7 +50,7 @@ namespace e_mobile_shop.Controllers
             List<DonHang> rs = new List<DonHang>();
             foreach(var i in list)
             {
-                i.Ghichu = i.NgayDatMua.ToString("HH:mm, dd/MM/yyyy");
+                i.Ghichu = i.NgayDatMua.Value.ToString("HH:mm, dd/MM/yyyy");
             }
             if (!String.IsNullOrEmpty(searchValue))
             {

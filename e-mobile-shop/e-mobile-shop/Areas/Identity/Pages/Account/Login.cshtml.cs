@@ -68,12 +68,14 @@ namespace e_mobile_shop.Areas.Identity.Pages.Account
                 ModelState.AddModelError(string.Empty, ErrorMessage);
             }
 
+
+            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             returnUrl = returnUrl ?? Url.Content("~/");
 
             // Clear the existing external cookie to ensure a clean login process
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
-            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+           
 
             ReturnUrl = returnUrl;
         }
@@ -112,7 +114,13 @@ namespace e_mobile_shop.Areas.Identity.Pages.Account
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ModelState.AddModelError(string.Empty, "Sai thông tin đăng nhập.");
+                    if(ExternalLogins ==null)
+                    {
+                        ExternalLogins = new List<AuthenticationScheme>();
+                        ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+                    }
+                   
                     return Page();
                 }
             }

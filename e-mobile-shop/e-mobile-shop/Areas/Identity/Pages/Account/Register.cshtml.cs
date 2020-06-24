@@ -16,8 +16,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using e_mobile_shop.Models;
-using Newtonsoft.Json;
-using System.Web.Helpers;
+
 
 namespace e_mobile_shop.Areas.Identity.Pages.Account
 {
@@ -45,7 +44,6 @@ namespace e_mobile_shop.Areas.Identity.Pages.Account
         public InputModel Input { get; set; }
 
         public string ReturnUrl { get; set; }
-      
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
         public class InputModel
@@ -125,6 +123,7 @@ namespace e_mobile_shop.Areas.Identity.Pages.Account
                     NgaySinh =Input.NgaySinh,
                     CMND =Input.CMND,
                     Avatar =Input.Avatar,
+                    PhoneNumber=Input.SDT,
                     GioiTinh=Input.GioiTinh,
                     DiaChi= Input.DiaChi + "," 
                     + DataAccess.context.Ward.Find(Input.XaPhuong).Name + "," 
@@ -144,7 +143,7 @@ namespace e_mobile_shop.Areas.Identity.Pages.Account
                     _logger.LogInformation("User created a new account with password.");
                     AspNetUserRoles userrole = new AspNetUserRoles()
                     {
-                        RoleId = DataAccess.context.AspNetRoles.Where(x => x.Name == "Khách hàng").FirstOrDefault().Id,
+                        RoleId = DataAccess.context.AspNetRoles.FirstOrDefault(x => x.Name == "Khách hàng")?.Id,
                         UserId = user.Id
                     };
                      DataAccess.context.AspNetUserRoles.Add(userrole);

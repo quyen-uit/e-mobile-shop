@@ -1,12 +1,15 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using BotDetect.Web;
 using e_mobile_shop.Data;
 using e_mobile_shop.Models;
 using e_mobile_shop.Models.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -73,6 +76,9 @@ namespace e_mobile_shop
                 option.SendGridUser = DataAccess.context.Parameters.Find("1").Value;
                 option.SendGridKey = DataAccess.context.Parameters.Find("2").Value;
             });
+
+           
+
             services.AddRouting(options => options.LowercaseUrls = true);
         }
 
