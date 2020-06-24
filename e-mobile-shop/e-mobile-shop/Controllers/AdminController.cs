@@ -55,7 +55,7 @@ namespace e_mobile_shop.Controllers
             List<DonHang> rs = new List<DonHang>();
             foreach(var i in list)
             {
-                i.Ghichu = i.NgayDatMua.ToString("HH:mm, dd/MM/yyyy");
+                i.Ghichu = i.NgayDatMua.Value.ToString("HH:mm, dd/MM/yyyy");
             }
             if (!String.IsNullOrEmpty(searchValue))
             {
@@ -320,7 +320,48 @@ namespace e_mobile_shop.Controllers
         {
             return View();
         }
+        public IActionResult QuanLyKhuyenMai(string searchValue)
+        {
+            List<Voucher> list = DataAccess.context.Voucher.ToList();
+            List<Voucher> rs = new List<Voucher>();
+       
+            if (!String.IsNullOrEmpty(searchValue))
+            {
 
+                foreach (var item in list)
+                {
+                    if (item.VoucherId.ToLower().Contains(searchValue.ToLower().Trim()))
+                        rs.Add(item);
+                    else if (!string.IsNullOrEmpty(item.VoucherName) && item.VoucherName.ToLower().Contains(searchValue.ToLower().Trim()))
+                    {
+                        rs.Add(item);
+                    }
+                }
+                return View(rs).WithSuccess("Tìm kiếm", searchValue);
+            }
+            return View(list);
+        }
+        public IActionResult XoaKhuyenMai(string Id)
+        {
+            DataAccess.context.Voucher.Find(Id).Status = 0;
+            DataAccess.context.SaveChanges();
+            return RedirectToAction("QuanLyKhuyenMai", "Admin").WithSuccess("Thành công", "Bạn đã xóa sản phẩm khỏi danh sách.");
+        }
+        public IActionResult ThemKhuyenMai( )
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult ThemKhuyenMai(Voucher model)
+        {
+            if(ModelState.IsValid)
+            {
+                DataAccess.context.Voucher.Add(model);
+                DataAccess.context.SaveChanges();
+                return RedirectToAction("QuanLyKhuyenMai", "Admin").WithSuccess("Thành công", "Đã thêm khuyến mãi mới.");
+            }
+            return View(model);
+        }
 
         public IActionResult Detail(string id)
         {

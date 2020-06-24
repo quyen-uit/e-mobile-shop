@@ -273,10 +273,16 @@
              /input-group
         </li>*@
                         <li>
+                            <a asp-action="Index" asp-controller="Admin" style="color:darkgreen; background-color: aliceblue"><i class="fa fa-shopping-cart fa-fw"></i> Dashboard</a>
+                        </li>
+                        <li>
                             <a asp-action="QuanLyDonHang" asp-controller="Admin" style="color:darkgreen; background-color: aliceblue"><i class="fa fa-shopping-cart fa-fw"></i> Quản lý đơn hàng</a>
                         </li>
                         <li>
                             <a asp-action="QuanLyUser" asp-controller="Admin" style="color:darkgreen; background-color: aliceblue"><i class="fa fa-user fa-fw"></i> Quản lý người dùng </a>
+                        </li>
+                        <li>
+                            <a asp-action="QuanLyKhuyenMai" asp-controller="Admin" style="color:darkgreen; background-color: aliceblue"><i class="fa fa-user fa-fw"></i> Quản lý khuyến mãi </a>
                         </li>
                         <li>
                             <a style="color:darkgreen; background-color: aliceblue" href="#"><i class="fa fa-wrench fa-fw"></i> Quản lý sản phẩm<span class="fa arrow"></span></a>
@@ -316,6 +322,9 @@
                             <a style="color:darkgreen; background-color: aliceblue" href="#"><i class="fa fa-plus fa-fw"></i> Thêm mới<span class="fa arrow"></span></a>
                             <ul class="nav nav-third-level collapse" style="height: auto;">
                                 <li>
+                                    <a asp-action="ThemKhuyenMai" asp-controller="Admin" ><i class="fa fa-mobile-phone fa-fw"></i> Khuyến mãi</a>
+                                </li>
+                                <li>
                                     <a asp-action="Them" asp-controller="Admin" asp-route-id="LSP0002"><i class="fa fa-mobile-phone fa-fw"></i> Điện thoại</a>
                                 </li>
                                 <li>
@@ -343,9 +352,7 @@
 
                                     </ul>
                                 </li>
-                                <li>
-                                    <a href="#">Tin tức, khuyến mãi</a>
-                                </li>
+
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>

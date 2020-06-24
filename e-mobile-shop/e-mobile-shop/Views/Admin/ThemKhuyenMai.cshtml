@@ -1,0 +1,57 @@
+﻿
+@{
+    ViewData["Title"] = "ThemKhuyenMai";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@model Voucher
+<body>
+        <div class="col-lg-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading primary">
+                    Thêm khuyến mãi
+                </div>
+                <div class="panel-body">
+                    <form enctype="multipart/form-data" role="form" asp-action="ThemKhuyenMai" asp-controller="Admin" method="post">
+
+                        @*<div class="checkbox">
+                            <label>
+                                <input disabled type="checkbox" asp-for="@Model." />Sản phẩm mới
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input disabled type="checkbox" asp-for="@Model.Ishot" />Sản phẩm nổi bật
+                            </label>
+                        </div>*@
+                        <div class="row">
+                            <div class="form-group col-lg-6">
+                                <label asp-for="@Model.VoucherCode">Mã khuyến mãi </label>
+                                <input class="form-control" asp-for="@Model.VoucherCode" />
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label asp-for="@Model.VoucherName">Tên khuyến mãi </label>
+                                <input class="form-control" asp-for="@Model.VoucherName" />
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="form-group col-lg-6">
+                                <label asp-for="@Model.VoucherType">Loại khuyến mãi </label>
+                                <select class="form-control" asp-for="@Model.VoucherType" asp-items="@(new SelectList(DataAccess.context.VoucherType.ToList(),"VoucherTypeId","VoucherTypeName"))">
+                                </select>
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label asp-for="@Model.VoucherDiscount">Giá trị</label>
+                                <input class="form-control" asp-for="@Model.VoucherDiscount" />
+                            </div>
+                        </div>
+                       
+                        <br />
+                        <button type="submit" name="submit" class="btn btn-success  btn-block p-2">Thêm</button>
+                    </form>
+
+                </div>
+            </div>
+
+
+    </body>

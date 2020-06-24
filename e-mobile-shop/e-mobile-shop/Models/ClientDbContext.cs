@@ -38,6 +38,7 @@ namespace e_mobile_shop.Models
         public virtual DbSet<ThongSo> ThongSo { get; set; }
         public virtual DbSet<ThongSoKiThuat> ThongSoKiThuat { get; set; }
         public virtual DbSet<TrangThaiDonHang> TrangThaiDonHang { get; set; }
+        public virtual DbSet<TrangThaiSanPham> TrangThaiSanPham { get; set; }
         public virtual DbSet<Voucher> Voucher { get; set; }
         public virtual DbSet<VoucherType> VoucherType { get; set; }
         public virtual DbSet<Ward> Ward { get; set; }
@@ -588,11 +589,23 @@ namespace e_mobile_shop.Models
                 entity.Property(e => e.TenTrangThai).HasMaxLength(50);
             });
 
+            modelBuilder.Entity<TrangThaiSanPham>(entity =>
+            {
+                entity.Property(e => e.Id)
+                    .HasColumnName("ID")
+                    .ValueGeneratedNever();
+
+                entity.Property(e => e.TenTrangThai).HasMaxLength(50);
+            });
+
             modelBuilder.Entity<Voucher>(entity =>
             {
                 entity.Property(e => e.VoucherId)
-                    .HasMaxLength(10)
-                    .IsFixedLength();
+                    .HasMaxLength(6)
+                    .IsFixedLength()
+                    .HasDefaultValueSql("([dbo].[AUTO_MAVC]())");
+
+                entity.Property(e => e.Status).HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.VoucherCode).HasMaxLength(20);
 
