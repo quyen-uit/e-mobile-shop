@@ -1,0 +1,60 @@
+﻿
+@using e_mobile_shop.Areas.Identity.Data
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<AppUser> UserManager
+@inject SignInManager<AppUser> SignInManager
+
+<style>
+
+    .author-comment {
+        padding-left: 3rem;
+    }
+
+        .author-comment p:after {
+            content: '';
+            position: absolute;
+            width: 0 !important;
+            height: 0 !important;
+            border-radius: 50%;
+            background-color: #ffffff;
+            border: 2px solid #f3f3f3;
+            left: -8px;
+            top: 18px;
+        }
+
+    .comment p {
+        background-color: #f3f3f3 !important;
+    }
+</style>
+
+@model List<TraLoi>
+@foreach (var traloi in Model)
+{
+<li class="comment author-comment d-flex  flex-column-reverse  m-0 mt-2">
+
+    <div class="info" style=" font-size: 12px;">
+        <a href="#">
+            @DataAccess.context.AspNetUsers.SingleOrDefault(x => x.Id == traloi.MaKh).HoTen  
+            @if (DataAccess.GetRoleName(traloi.MaKh) == "Quản trị viên")
+                {
+                    <i class="fas fa-user-cog"></i>
+                } <span>3 hours ago</span>
+        </a>
+
+    </div>
+
+    <p style="font-size: 12px; color: black">@traloi.NoiDung</p>
+
+    @if (UserManager.GetUserId(User) != null)
+    {
+        if (UserManager.GetUserId(User) == traloi.MaKh || DataAccess.GetRoleName(UserManager.GetUserId(User)) == "Quản trị viên")
+        {
+            <a asp-controller="User" asp-action="DeleteReply" asp-route-id="@traloi.Id" asp-route-maSp="@DataAccess.context.BinhLuan.SingleOrDefault(x=>x.MaBl==traloi.MaBinhLuan).MaSp "> Xóa </a>
+
+        }
+    }
+
+
+</li>
+
+}

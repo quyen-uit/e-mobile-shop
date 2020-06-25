@@ -50,440 +50,441 @@
 
 <body>
 
-<header>
-    <!-- Template navbar-->
-    <!-- top-header -->
-    <div class="agile-main-top">
-        <div class="container-fluid">
-            <div class="row main-top-w3l py-2">
-                <div class="col-lg-4 header-most-top">
-                    <p class="text-white text-lg-left text-center">
-                        Đưa bạn vào thế giới công nghệ
-                    </p>
-                </div>
-                <div class="col-lg-8 header-right mt-lg-0 mt-2">
-                    <!-- header lists -->
-                    <ul>
-
-
-                        <li class="text-center border-right text-white">
-                            <i class="fas fa-phone mr-2"></i> 0988776599
-                        </li>
-                        <li class="text-center border-right text-white">
-                            <a class="text-white" asp-action="Index" asp-controller="Admin"> <i class="fas fa-user-cog"></i> Admin </a>
-                        </li>
-
-                        <partial name="_LoginPartial"/>
-
-
-                    </ul>
-                    <!-- //header lists -->
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Button trigger modal(select-location) -->
-    <!-- //shop locator (popup) -->
-    <!-- //top-header -->
-    <!-- header-bottom-->
-    <div class="header-bot">
-        <div class="container">
-            <div class="row header-bot_inner_wthreeinfo_header_mid">
-                <!-- logo -->
-                <div class="col-md-3 logo_agile">
-                    <h1 class="text-center">
-                        <a href=@Url.Action("Index", "Home") class="font-weight-bold font-italic">
-                            <img src="~/images/logo2.png" alt=" " class="img-fluid p-3">thegioicongnghe
-                        </a>
-                    </h1>
-                </div>
-                <!-- //logo -->
-                <!-- header-bot -->
-                <div class="col-md-9 header mt-4 mb-md-0 mb-4">
-                    <div class="row">
-                        <!-- search -->
-                        <div class="col-10 agileits_search">
-                            <form class="form-inline" asp-action="Filter" asp-controller="Home" method="get">
-                                <input name="tenSp" class="form-control mr-sm-2" type="search" placeholder="Bạn muốn tìm gì" aria-label="Search" required>
-                                <button class="btn my-2 my-sm-0" type="submit">Tìm</button>
-                            </form>
-                        </div>
-                        <!-- //search -->
-                        <!-- cart details -->
-                        <div class="col-2 top_nav_right text-center mt-sm-0 mt-2">
-                            <a class="btn w3view-cart" asp-controller="GioHang" asp-action="XemGioHang" name="submit" value="">
-
-                                <i style="font-size: 30px" class="fas fa-cart-arrow-down"></i>
-                                @DataAccess.soCtdh
-                            </a>
-
-                        </div>
-                        <!-- //cart details -->
+    <header>
+        <!-- Template navbar-->
+        <!-- top-header -->
+        <div class="agile-main-top">
+            <div class="container-fluid">
+                <div class="row main-top-w3l py-2">
+                    <div class="col-lg-4 header-most-top">
+                        <p class="text-white text-lg-left text-center">
+                            Đưa bạn vào thế giới công nghệ
+                        </p>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- shop locator (popup) -->
-    <!-- //header-bottom -->
-    <!-- navigation -->
-    <div class="navbar-inner">
-        <div class="container">
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <div class="agileits-navi_search">
-                    <form action="#" method="post">
-                        <div id="agileinfo-nav_search" name="agileinfo_search" class="border dropdown p-1" required="">
-                            <button style="font-size: 15px;" class="btn dropdown-toggle" type="button" data-toggle="dropdown" id="drmn" value="">Danh mục Sản phẩm</button>
-                            <div class="dropdown-menu" style="width: 100%; border-radius: 0px; background-color: #F8F9FA" aria-labeledby="drmn">
-                                @foreach (var item in DataAccess.ReadLoaiSp())
-                                {
-                                    <a type="button" style="text-align: left; border-radius: 0px;" class="btn btn-block p-0 " asp-action="DanhSach" asp-controller="SanPham" asp-route-id="@item.MaLoai">
-                                        <p style="color: black" class="p-2">@item.TenLoai</p>
-                                    </a>
-                                }
-                                <a type="button" style="text-align: left; border-radius: 0px;" class="btn btn-block p-0 " asp-action="Filter" asp-controller="Home">
-                                    <p style="color: black;" class="p-2">Tất cả sản phẩm</p>
-                                </a>
-                            </div>
-
-                        </div>
-                    </form>
-                </div>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav ml-auto text-center mr-xl-5">
-                        <li class="nav-item active mr-lg-2 mb-lg-0 mb-2">
-                            <a class="nav-link" href="@Url.Action("Index", "Home")">
-                                Trang chủ
-                                <span class="sr-only">(current)</span>
-                            </a>
-                        </li>
-                        <li class="nav-item mr-lg-2 mb-lg-0 mb-2">
-                            <a class="nav-link " asp-controller="SanPham" asp-action="DanhSach" asp-route-id="LSP0002" role="button" aria-haspopup="true" aria-expanded="false">
-                                Điện thoại
-                            </a>
-
-                        </li>
-                        <li class="nav-item  mr-lg-2 mb-lg-0 mb-2">
-                            <a class="nav-link " asp-controller="SanPham" asp-action="DanhSach" asp-route-id="LSP0007" role="button" aria-haspopup="true" aria-expanded="false">
-                                Máy tính bảng
-                            </a>
-
-                        </li>
-                        <li class="nav-item mr-lg-2 mb-lg-0 mb-2">
-                            <a class="nav-link" asp-controller="SanPham" asp-action="DanhSach" asp-route-id="LSP0008">Laptop</a>
-                        </li>
-                        <li class="nav-item mr-lg-2 mb-lg-0 mb-2">
-                            <a class="nav-link" asp-controller="SanPham" asp-action="DanhSach" asp-route-id="LSP0001">Phụ kiện</a>
-                        </li>
-                        <li class="nav-item mr-lg-2 mb-lg-0 mb-2">
-                            <a class="nav-link " href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                                Tin tức
-                            </a>
-
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="contact.html">Hỗ trợ </a>
-                        </li>
-
-                    </ul>
-                </div>
-            </nav>
-        </div>
-    </div>
-    <!-- //navigation -->
-    <!-- End template navbar-->
-</header>
-@RenderBody()
-
-
-<!-- footer -->
-<footer>
-    <div class="footer-top-first">
-        <div class="container py-md-5 py-sm-4 py-3">
-            <!-- footer first section -->
-            <h2 class="footer-top-head-w3l font-weight-bold mb-2">Về chúng tôi :</h2>
-            <p class="footer-main mb-4">
-                Sứ mệnh của chúng tôi là cung cấp những dịch vụ tốt nhất, các sản phẩm có chất lượng tốt nhất và phù hợp nhất với
-                nhu cầu của khách hàng. Bên cạnh đó, với dịch vụ chăm sóc khách hàng tận tâm, thân thiện sẽ làm hài lòng quý khách
-                cho dù quáy khách là mẫu người khó tính nhất.
-            </p>
-            <!-- //footer first section -->
-            <!-- footer second section -->
-            <div class="row w3l-grids-footer border-top border-bottom py-sm-4 py-3">
-                <div class="col-md-4 offer-footer">
-                    <div class="row">
-                        <div class="col-4 icon-fot">
-                            <i class="fas fa-dolly"></i>
-                        </div>
-                        <div class="col-8 text-form-footer">
-                            <h3>Giao hàng miễn phí</h3>
-                            <p>hóa đơn trên 400k</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 offer-footer my-md-0 my-4">
-                    <div class="row">
-                        <div class="col-4 icon-fot">
-                            <i class="fas fa-shipping-fast"></i>
-                        </div>
-                        <div class="col-8 text-form-footer">
-                            <h3>Vận chuyển nhanh</h3>
-                            <p>khắp 63 tỉnh thành</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 offer-footer">
-                    <div class="row">
-                        <div class="col-4 icon-fot">
-                            <i class="far fa-thumbs-up"></i>
-                        </div>
-                        <div class="col-8 text-form-footer">
-                            <h3>Top 10</h3>
-                            <p>công ty bán lẻ hàng đầu</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- //footer second section -->
-        </div>
-    </div>
-    <!-- footer third section -->
-    <div class="w3l-middlefooter-sec">
-    <div class="container py-md-5 py-sm-4 py-3">
-        <div class="row footer-info w3-agileits-info">
-            <!-- footer categories -->
-            <div class="col-md-3 col-sm-6 footer-grids">
-                <h3 class="text-white font-weight-bold mb-3">Sản phẩm</h3>
-                <ul>
-                    <li class="mb-3">
-                        <a href="product.html">Điện thoại di động </a>
-                    </li>
-                    <li class="mb-3">
-                        <a href="product.html">Máy tính bảng</a>
-                    </li>
-                    <li class="mb-3">
-                        <a href="product.html">Laptop</a>
-                    </li>
-                    <li class="mb-3">
-                        <a href="product2.html">Phụ kiện</a>
-                    </li>
-                    <li class="mb-3">
-                        <a href="product.html">Tin tức</a>
-                    </li>
-                    <li class="mb-3">
-                        <a href="product.html">Tin tức</a>
-                    </li>
-                </ul>
-            </div>
-            <!-- //footer categories -->
-            <!-- quick links -->
-            <div class="col-md-3 col-sm-6 footer-grids mt-sm-0 mt-4">
-                <h3 class="text-white font-weight-bold mb-3">Liên kết</h3>
-                <ul>
-                    <li class="mb-3">
-                        <a href="about.html">Về chúng tôi</a>
-                    </li>
-                    <li class="mb-3">
-                        <a href="contact.html">Liên hệ</a>
-                    </li>
-                    <li class="mb-3">
-                        <a href="help.html">Website liên quan</a>
-                    </li>
-
-                </ul>
-            </div>
-            <div class="col-md-3 col-sm-6 footer-grids mt-md-0 mt-4">
-                <h3 class="text-white font-weight-bold mb-3">Liên hệ</h3>
-                <ul>
-                    <li class="mb-3">
-                        <i class="fas fa-map-marker"></i> 123 Sebastian, USA.
-                    </li>
-                    <li class="mb-3">
-                        <i class="fas fa-mobile"></i> 0857394951
-                    </li>
-                    <li class="mb-3">
-                        <i class="fas fa-phone"></i> 0937186594
-                    </li>
-                    <li class="mb-3">
-                        <i class="fas fa-envelope-open"></i>
-                        <a href="mailto:example@mail.com"> thanglequoc1912@gmail.com</a>
-                    </li>
-
-                </ul>
-            </div>
-            <div class="col-md-3 col-sm-6 footer-grids w3l-agileits mt-md-0 mt-4">
-                <!-- newsletter -->
-                <div class="footer-grids  w3l-socialmk">
-                    <h3 class="text-white font-weight-bold mb-3">Theo dõi chúng tôi tại </h3>
-                    <div class="social">
+                    <div class="col-lg-8 header-right mt-lg-0 mt-2">
+                        <!-- header lists -->
                         <ul>
-                            <li>
-                                <a class="icon fb" href="#">
-                                    <i class="fab fa-facebook-f"></i>
+
+
+                            <li class="text-center border-right text-white">
+                                <i class="fas fa-phone mr-2"></i> 0988776599
+                            </li>
+                            <li class="text-center border-right text-white">
+                                <a class="text-white" asp-action="Index" asp-controller="Admin"> <i class="fas fa-user-cog"></i> Admin </a>
+                            </li>
+
+                            <partial name="_LoginPartial" />
+
+
+                        </ul>
+                        <!-- //header lists -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Button trigger modal(select-location) -->
+        <!-- //shop locator (popup) -->
+        <!-- //top-header -->
+        <!-- header-bottom-->
+        <div class="header-bot">
+            <div class="container">
+                <div class="row header-bot_inner_wthreeinfo_header_mid">
+                    <!-- logo -->
+                    <div class="col-md-3 logo_agile">
+                        <h1 class="text-center">
+                            <a href=@Url.Action("Index", "Home") class="font-weight-bold font-italic">
+                                <img src="~/images/logo2.png" alt=" " class="img-fluid p-3">thegioicongnghe
+                            </a>
+                        </h1>
+                    </div>
+                    <!-- //logo -->
+                    <!-- header-bot -->
+                    <div class="col-md-9 header mt-4 mb-md-0 mb-4">
+                        <div class="row">
+                            <!-- search -->
+                            <div class="col-10 agileits_search">
+                                <form class="form-inline" asp-action="Filter" asp-controller="Home" method="get">
+                                    <input name="tenSp" class="form-control mr-sm-2" type="search" placeholder="Bạn muốn tìm gì" aria-label="Search" required>
+                                    <button class="btn my-2 my-sm-0" type="submit">Tìm</button>
+                                </form>
+                            </div>
+                            <!-- //search -->
+                            <!-- cart details -->
+                            <div class="col-2 top_nav_right text-center mt-sm-0 mt-2">
+                                <a class="btn w3view-cart" asp-controller="GioHang" asp-action="XemGioHang" name="submit" value="">
+
+                                    <i style="font-size: 30px" class="fas fa-cart-arrow-down"></i>
+                                    @DataAccess.soCtdh
+                                </a>
+
+                            </div>
+                            <!-- //cart details -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- shop locator (popup) -->
+        <!-- //header-bottom -->
+        <!-- navigation -->
+        <div class="navbar-inner">
+            <div class="container">
+                <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                    <div class="agileits-navi_search">
+                        <form action="#" method="post">
+                            <div id="agileinfo-nav_search" name="agileinfo_search" class="border dropdown p-1" required="">
+                                <button style="font-size: 15px;" class="btn dropdown-toggle" type="button" data-toggle="dropdown" id="drmn" value="">Danh mục Sản phẩm</button>
+                                <div class="dropdown-menu" style="width: 100%; border-radius: 0px; background-color: #F8F9FA" aria-labeledby="drmn">
+                                    @foreach (var item in DataAccess.ReadLoaiSp())
+                                    {
+                                        <a type="button" style="text-align: left; border-radius: 0px;" class="btn btn-block p-0 " asp-action="DanhSach" asp-controller="SanPham" asp-route-id="@item.MaLoai">
+                                            <p style="color: black" class="p-2">@item.TenLoai</p>
+                                        </a>
+                                    }
+                                    <a type="button" style="text-align: left; border-radius: 0px;" class="btn btn-block p-0 " asp-action="Filter" asp-controller="Home">
+                                        <p style="color: black;" class="p-2">Tất cả sản phẩm</p>
+                                    </a>
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav ml-auto text-center mr-xl-5">
+                            <li class="nav-item active mr-lg-2 mb-lg-0 mb-2">
+                                <a class="nav-link" href="@Url.Action("Index", "Home")">
+                                    Trang chủ
+                                    <span class="sr-only">(current)</span>
                                 </a>
                             </li>
-                            <li>
-                                <a class="icon tw" href="#">
-                                    <i class="fab fa-twitter"></i>
+                            <li class="nav-item mr-lg-2 mb-lg-0 mb-2">
+                                <a class="nav-link " asp-controller="SanPham" asp-action="DanhSach" asp-route-id="LSP0002" role="button" aria-haspopup="true" aria-expanded="false">
+                                    Điện thoại
                                 </a>
+
                             </li>
-                            <li>
-                                <a class="icon gp" href="#">
-                                    <i class="fab fa-google-plus-g"></i>
+                            <li class="nav-item  mr-lg-2 mb-lg-0 mb-2">
+                                <a class="nav-link " asp-controller="SanPham" asp-action="DanhSach" asp-route-id="LSP0007" role="button" aria-haspopup="true" aria-expanded="false">
+                                    Máy tính bảng
                                 </a>
+
+                            </li>
+                            <li class="nav-item mr-lg-2 mb-lg-0 mb-2">
+                                <a class="nav-link" asp-controller="SanPham" asp-action="DanhSach" asp-route-id="LSP0008">Laptop</a>
+                            </li>
+                            <li class="nav-item mr-lg-2 mb-lg-0 mb-2">
+                                <a class="nav-link" asp-controller="SanPham" asp-action="DanhSach" asp-route-id="LSP0001">Phụ kiện</a>
+                            </li>
+                            <li class="nav-item mr-lg-2 mb-lg-0 mb-2">
+                                <a class="nav-link " href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                    Tin tức
+                                </a>
+
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="contact.html">Hỗ trợ </a>
+                            </li>
+
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <!-- //navigation -->
+        <!-- End template navbar-->
+    </header>
+    @RenderBody()
+
+
+    <!-- footer -->
+    <footer>
+        <div class="footer-top-first">
+            <div class="container py-md-5 py-sm-4 py-3">
+                <!-- footer first section -->
+                <h2 class="footer-top-head-w3l font-weight-bold mb-2">Về chúng tôi :</h2>
+                <p class="footer-main mb-4">
+                    Sứ mệnh của chúng tôi là cung cấp những dịch vụ tốt nhất, các sản phẩm có chất lượng tốt nhất và phù hợp nhất với
+                    nhu cầu của khách hàng. Bên cạnh đó, với dịch vụ chăm sóc khách hàng tận tâm, thân thiện sẽ làm hài lòng quý khách
+                    cho dù quáy khách là mẫu người khó tính nhất.
+                </p>
+                <!-- //footer first section -->
+                <!-- footer second section -->
+                <div class="row w3l-grids-footer border-top border-bottom py-sm-4 py-3">
+                    <div class="col-md-4 offer-footer">
+                        <div class="row">
+                            <div class="col-4 icon-fot">
+                                <i class="fas fa-dolly"></i>
+                            </div>
+                            <div class="col-8 text-form-footer">
+                                <h3>Giao hàng miễn phí</h3>
+                                <p>hóa đơn trên 400k</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 offer-footer my-md-0 my-4">
+                        <div class="row">
+                            <div class="col-4 icon-fot">
+                                <i class="fas fa-shipping-fast"></i>
+                            </div>
+                            <div class="col-8 text-form-footer">
+                                <h3>Vận chuyển nhanh</h3>
+                                <p>khắp 63 tỉnh thành</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 offer-footer">
+                        <div class="row">
+                            <div class="col-4 icon-fot">
+                                <i class="far fa-thumbs-up"></i>
+                            </div>
+                            <div class="col-8 text-form-footer">
+                                <h3>Top 10</h3>
+                                <p>công ty bán lẻ hàng đầu</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- //footer second section -->
+            </div>
+        </div>
+        <!-- footer third section -->
+        <div class="w3l-middlefooter-sec">
+            <div class="container py-md-5 py-sm-4 py-3">
+                <div class="row footer-info w3-agileits-info">
+                    <!-- footer categories -->
+                    <div class="col-md-3 col-sm-6 footer-grids">
+                        <h3 class="text-white font-weight-bold mb-3">Sản phẩm</h3>
+                        <ul>
+                            <li class="mb-3">
+                                <a href="product.html">Điện thoại di động </a>
+                            </li>
+                            <li class="mb-3">
+                                <a href="product.html">Máy tính bảng</a>
+                            </li>
+                            <li class="mb-3">
+                                <a href="product.html">Laptop</a>
+                            </li>
+                            <li class="mb-3">
+                                <a href="product2.html">Phụ kiện</a>
+                            </li>
+                            <li class="mb-3">
+                                <a href="product.html">Tin tức</a>
+                            </li>
+                            <li class="mb-3">
+                                <a href="product.html">Tin tức</a>
                             </li>
                         </ul>
                     </div>
+                    <!-- //footer categories -->
+                    <!-- quick links -->
+                    <div class="col-md-3 col-sm-6 footer-grids mt-sm-0 mt-4">
+                        <h3 class="text-white font-weight-bold mb-3">Liên kết</h3>
+                        <ul>
+                            <li class="mb-3">
+                                <a href="about.html">Về chúng tôi</a>
+                            </li>
+                            <li class="mb-3">
+                                <a href="contact.html">Liên hệ</a>
+                            </li>
+                            <li class="mb-3">
+                                <a href="help.html">Website liên quan</a>
+                            </li>
+
+                        </ul>
+                    </div>
+                    <div class="col-md-3 col-sm-6 footer-grids mt-md-0 mt-4">
+                        <h3 class="text-white font-weight-bold mb-3">Liên hệ</h3>
+                        <ul>
+                            <li class="mb-3">
+                                <i class="fas fa-map-marker"></i> 123 Sebastian, USA.
+                            </li>
+                            <li class="mb-3">
+                                <i class="fas fa-mobile"></i> 0857394951
+                            </li>
+                            <li class="mb-3">
+                                <i class="fas fa-phone"></i> 0937186594
+                            </li>
+                            <li class="mb-3">
+                                <i class="fas fa-envelope-open"></i>
+                                <a href="mailto:example@mail.com"> thanglequoc1912@gmail.com</a>
+                            </li>
+
+                        </ul>
+                    </div>
+                    <div class="col-md-3 col-sm-6 footer-grids w3l-agileits mt-md-0 mt-4">
+                        <!-- newsletter -->
+                        <div class="footer-grids  w3l-socialmk">
+                            <h3 class="text-white font-weight-bold mb-3">Theo dõi chúng tôi tại </h3>
+                            <div class="social">
+                                <ul>
+                                    <li>
+                                        <a class="icon fb" href="#">
+                                            <i class="fab fa-facebook-f"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="icon tw" href="#">
+                                            <i class="fab fa-twitter"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="icon gp" href="#">
+                                            <i class="fab fa-google-plus-g"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- //quick links -->
                 </div>
             </div>
-            <!-- //quick links -->
+
+            <!-- //footer third section -->
+        </div>
+
+    </footer>
+    <!-- //footer -->
+    <!-- copyright -->
+    <div class="copy-right py-3">
+        <div class="container">
+            <p class="text-center text-white">
+                © 2018 Electro Store. All rights reserved | Design by
+                <a href="http://w3layouts.com"> W3layouts. | Modified by lqt1912 </a>
+            </p>
         </div>
     </div>
-    
-    <!-- //footer third section --></div>
-
-</footer>
-<!-- //footer -->
-<!-- copyright -->
-<div class="copy-right py-3">
-    <div class="container">
-        <p class="text-center text-white">
-            © 2018 Electro Store. All rights reserved | Design by
-            <a href="http://w3layouts.com"> W3layouts. | Modified by lqt1912 </a>
-        </p>
-    </div>
-</div>
-<!-- //copyright -->
-<!-- js-files -->
-<!-- jquery -->
-<script src="~/js/jquery-2.2.3.min.js"></script>
-<!-- //jquery -->
-<!-- nav smooth scroll -->
-<script>
-    $(document).ready(function() {
-        $(".dropdown").hover(
-            function() {
-                $('.dropdown-menu', this).stop(true, true).slideDown("fast");
-                $(this).toggleClass('open');
-            },
-            function() {
-                $('.dropdown-menu', this).stop(true, true).slideUp("fast");
-                $(this).toggleClass('open');
-            }
-        );
-    });
-</script>
-<!-- //nav smooth scroll -->
-<!-- popup modal (for location)-->
-<script src="~/js/jquery.magnific-popup.js"></script>
-<script>
-    $(document).ready(function() {
-        $('.popup-with-zoom-anim').magnificPopup({
-            type: 'inline',
-            fixedContentPos: false,
-            fixedBgPos: true,
-            overflowY: 'auto',
-            closeBtnInside: true,
-            preloader: false,
-            midClick: true,
-            removalDelay: 300,
-            mainClass: 'my-mfp-zoom-in'
-        });
-
-    });
-</script>
-<!-- //popup modal (for location)-->
-<!-- cart-js -->
-@*<script src="~/js/minicart.js"></script>
+    <!-- //copyright -->
+    <!-- js-files -->
+    <!-- jquery -->
+    <script src="~/js/jquery-2.2.3.min.js"></script>
+    <!-- //jquery -->
+    <!-- nav smooth scroll -->
     <script>
-        paypals.minicarts.render(); //use only unique class names other than paypals.minicarts.Also Replace same class name in css and minicart.min.js
-
-        paypals.minicarts.cart.on('checkout', function (evt) {
-            var items = this.items(),
-                len = items.length,
-                total = 0,
-                i;
-
-            // Count the number of each item in the cart
-            for (i = 0; i < len; i++) {
-                total += items[i].get('quantity');
-            }
-
-            if (total < 3) {
-                alert('The minimum order quantity is 3. Please add more to your shopping cart before checking out');
-                evt.preventDefault();
-            }
+        $(document).ready(function () {
+            $(".dropdown").hover(
+                function () {
+                    $('.dropdown-menu', this).stop(true, true).slideDown("fast");
+                    $(this).toggleClass('open');
+                },
+                function () {
+                    $('.dropdown-menu', this).stop(true, true).slideUp("fast");
+                    $(this).toggleClass('open');
+                }
+            );
         });
-    </script>*@
-<!-- //cart-js -->
-<!-- scroll seller -->
-@*<script src="~/js/scroll.js"></script>*@
-<!-- //scroll seller -->
-<!-- smoothscroll -->
-@*<script src="~/js/SmoothScroll.min.js"></script>*@
-<!-- //smoothscroll -->
-<!-- start-smooth-scrolling -->
-<script src="~/js/move-top.js"></script>
-<script src="~/js/easing.js"></script>
-<script>
-    jQuery(document).ready(function($) {
-        $(".scroll").click(function(event) {
-            event.preventDefault();
+    </script>
+    <!-- //nav smooth scroll -->
+    <!-- popup modal (for location)-->
+    <script src="~/js/jquery.magnific-popup.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.popup-with-zoom-anim').magnificPopup({
+                type: 'inline',
+                fixedContentPos: false,
+                fixedBgPos: true,
+                overflowY: 'auto',
+                closeBtnInside: true,
+                preloader: false,
+                midClick: true,
+                removalDelay: 300,
+                mainClass: 'my-mfp-zoom-in'
+            });
 
-            $('html,body').animate({
+        });
+    </script>
+    <!-- //popup modal (for location)-->
+    <!-- cart-js -->
+    @*<script src="~/js/minicart.js"></script>
+        <script>
+            paypals.minicarts.render(); //use only unique class names other than paypals.minicarts.Also Replace same class name in css and minicart.min.js
+
+            paypals.minicarts.cart.on('checkout', function (evt) {
+                var items = this.items(),
+                    len = items.length,
+                    total = 0,
+                    i;
+
+                // Count the number of each item in the cart
+                for (i = 0; i < len; i++) {
+                    total += items[i].get('quantity');
+                }
+
+                if (total < 3) {
+                    alert('The minimum order quantity is 3. Please add more to your shopping cart before checking out');
+                    evt.preventDefault();
+                }
+            });
+        </script>*@
+    <!-- //cart-js -->
+    <!-- scroll seller -->
+    @*<script src="~/js/scroll.js"></script>*@
+    <!-- //scroll seller -->
+    <!-- smoothscroll -->
+    @*<script src="~/js/SmoothScroll.min.js"></script>*@
+    <!-- //smoothscroll -->
+    <!-- start-smooth-scrolling -->
+    <script src="~/js/move-top.js"></script>
+    <script src="~/js/easing.js"></script>
+    <script>
+        jQuery(document).ready(function ($) {
+            $(".scroll").click(function (event) {
+                event.preventDefault();
+
+                $('html,body').animate({
                     scrollTop: $(this.hash).offset().top
                 },
-                1000);
+                    1000);
+            });
         });
-    });
-</script>
-<!-- //end-smooth-scrolling -->
-<!-- smooth-scrolling-of-move-up -->
-<script>
-    $(document).ready(function() {
-        /*
-        var defaults = {
-            containerID: 'toTop', // fading element id
-            containerHoverID: 'toTopHover', // fading element hover id
-            scrollSpeed: 1200,
-            easingType: 'linear'
-        };
-        */
-        $().UItoTop({
-            easingType: 'easeOutQuart'
+    </script>
+    <!-- //end-smooth-scrolling -->
+    <!-- smooth-scrolling-of-move-up -->
+    <script>
+        $(document).ready(function () {
+            /*
+            var defaults = {
+                containerID: 'toTop', // fading element id
+                containerHoverID: 'toTopHover', // fading element hover id
+                scrollSpeed: 1200,
+                easingType: 'linear'
+            };
+            */
+            $().UItoTop({
+                easingType: 'easeOutQuart'
+            });
+
         });
+    </script>
+    <!-- //smooth-scrolling-of-move-up -->
+    <!-- for bootstrap working -->
+    <script src="~/js/bootstrap.js"></script>
+    <!-- //for bootstrap working -->
+    <!-- //js-files -->
 
-    });
-</script>
-<!-- //smooth-scrolling-of-move-up -->
-<!-- for bootstrap working -->
-<script src="~/js/bootstrap.js"></script>
-<!-- //for bootstrap working -->
-<!-- //js-files -->
-
-<script src="~/js/jquery.flexslider.js"></script>
-<script>
-    // Can also be used with $(document).ready()
-    $(window).load(function() {
-        $('.flexslider').flexslider({
-            animation: "slide",
-            controlNav: "thumbnails"
+    <script src="~/js/jquery.flexslider.js"></script>
+    <script>
+        // Can also be used with $(document).ready()
+        $(window).load(function () {
+            $('.flexslider').flexslider({
+                animation: "slide",
+                controlNav: "thumbnails"
+            });
         });
-    });
-</script>
+    </script>
 
 
-<script src="~/js/site.js"></script>
-<!-- imagezoom -->
-<script src="~/js/imagezoom.js"></script>
+    <script src="~/js/site.js"></script>
+    <!-- imagezoom -->
+    <script src="~/js/imagezoom.js"></script>
 
-<!-- //imagezoom -->
-@RenderSection("Scripts", false)
+    <!-- //imagezoom -->
+    @RenderSection("Scripts", false)
 
 </body>
 </html>

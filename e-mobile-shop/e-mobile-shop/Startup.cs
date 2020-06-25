@@ -7,6 +7,7 @@ using BotDetect.Web;
 using e_mobile_shop.Data;
 using e_mobile_shop.Models;
 using e_mobile_shop.Models.Services;
+using e_mobile_shop.Models.Services.Hubs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -80,6 +81,7 @@ namespace e_mobile_shop
            
 
             services.AddRouting(options => options.LowercaseUrls = true);
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -98,12 +100,15 @@ namespace e_mobile_shop
             app.UseSession();
             app.UseAuthentication();
             app.UseAuthorization();
+
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
+                endpoints.MapHub<Chat>("/chat");
             });
         }
     }

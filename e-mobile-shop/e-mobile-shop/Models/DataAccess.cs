@@ -509,5 +509,11 @@ namespace e_mobile_shop.Models
             var a = context.AspNetUsers.Find(id);
             return a != null;
         }
+        public static string GetRoleName(string id)
+        {
+            var b = context.AspNetUserRoles.SingleOrDefault(x => x.UserId == id);
+            var res = context.AspNetRoles.SingleOrDefault(x => x.Id == b.RoleId);
+            return res.Name;
+        }
     }
 }

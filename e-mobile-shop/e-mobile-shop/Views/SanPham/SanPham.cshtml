@@ -4,12 +4,17 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@using e_mobile_shop.Areas.Identity.Data
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<AppUser> UserManager
+@inject SignInManager<AppUser> SignInManager
 @model SanPham
 <style>
-    td{
+    td {
         padding: 5px;
     }
-    .flex-control-thumbs li img{
+
+    .flex-control-thumbs li img {
         max-height: 120px;
     }
 </style>
@@ -179,113 +184,44 @@
         <h3 class="tittle-w3l  mb-lg-5 mb-sm-4 mb-3">
             Bình luận
         </h3>
-        <ul class="comment-section border " style="width: 100%">
+        <div style="max-height: 600px; overflow:scroll">
+            @await Component.InvokeAsync("BinhLuan", new { Id = Model.MaSp })
+        </div>
+        <div class="mb-2 p-3" id="">
+            @if (UserManager.GetUserId(User) == null)
+            {
+                <p style=" font-size: 15px;"><a asp-area="Identity" asp-page="/Account/Login"> Đăng nhập</a> để bình luận</p>
+            }
+            else
+            {
+                <div> Thêm bình luận </div>
+            <form class="form-inline " asp-action="Comment" asp-route-maSp="@Model.MaSp" asp-controller="User" asp-route-userId="@UserManager.GetUserId(User)">
+                <textarea type="text" name="Comment" class="form-control w-100"></textarea>
+                <button class="btn btn-primary radius-0 mt-2" type="submit"> Gửi</button>
 
-            <li class="comment user-comment">
-
-                <div class="info">
-                    <a href="#">Anie Silverston</a>
-                    <span>4 hours ago</span>
-                </div>
-
-                <a class="avatar" href="#">
-                    <img src="~/images/avatar_user_1.jpg" width="35" alt="Profile Avatar" title="Anie Silverston" />
-                </a>
-
-                <p>Suspendisse gravida sem?</p>
-
-            </li>
-            <li class="comment user-comment">
-
-                <div class="info">
-                    <a href="#">Anie Silverston</a>
-                    <span>4 hours ago</span>
-                </div>
-
-                <a class="avatar" href="#">
-                    <img src="~/images/avatar_user_1.jpg" width="35" alt="Profile Avatar" title="Anie Silverston" />
-                </a>
-
-                <p>Suspendisse gravida sem?</p>
-
-            </li>
-            <li class="comment user-comment">
-
-                <div class="info">
-                    <a href="#">Anie Silverston</a>
-                    <span>4 hours ago</span>
-                </div>
-
-                <a class="avatar" href="#">
-                    <img src="~/images/avatar_user_1.jpg" width="35" alt="Profile Avatar" title="Anie Silverston" />
-                </a>
-
-                <p>Suspendisse gravida sem?</p>
-
-            </li>
-
-            <li class="comment author-comment">
-
-                <div class="info">
-                    <a href="#">Jack Smith</a>
-                    <span>3 hours ago</span>
-                </div>
-
-                <a class="avatar" href="#">
-                    <img src="~/images/avatar_author.jpg" width="35" alt="Profile Avatar" title="Jack Smith" />
-                </a>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse gravida sem sit amet molestie portitor.</p>
-
-            </li>
-
-            <li class="comment user-comment">
-
-                <div class="info">
-                    <a href="#">Bradley Jones</a>
-                    <span>1 hour ago</span>
-                </div>
-
-                <a class="avatar" href="#">
-                    <img src="~/images/avatar_user_2.jpg" width="35" alt="Profile Avatar" title="Bradley Jones" />
-                </a>
-
-                <p>Suspendisse gravida sem sit amet molestie portitor?</p>
-
-            </li>
-
-            <li class="comment author-comment">
-
-                <div class="info">
-                    <a href="#">Jack Smith</a>
-                    <span>1 hour ago</span>
-                </div>
-
-                <a class="avatar" href="#">
-                    <img src="~/images/avatar_author.jpg" width="35" alt="Profile Avatar" title="Jack Smith" />
-                </a>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisee gravida sem sit amet molestie porttitor.</p>
-
-            </li>
-
-            <li class="write-new">
-
-                <form action="#" method="post">
-
-                    <textarea placeholder="Write your comment here" name="comment"></textarea>
-
-                    <div>
-                        <img src="~/images/avatar_user_2.jpg" width="35" alt="Profile of Bradley Jones" title="Bradley Jones" />
-                        <button type="submit">Submit</button>
-                    </div>
-
-                </form>
-
-            </li>
-
-        </ul>
+            </form>
+            }
+        </div>
 
     </div>
 </div>
 <!-- //Single Page -->
+
+<script>
+    function ReplyComment(mabl) {
+        var x = document.getElementById(mabl.toString());
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    }
+    function CancelReply(mabl) {
+        var x = document.getElementById(mabl.toString());
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    }
+</script>

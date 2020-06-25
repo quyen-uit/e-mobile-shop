@@ -1,0 +1,101 @@
+﻿@model List<BinhLuan>
+@using e_mobile_shop.Areas.Identity.Data
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<AppUser> UserManager
+@inject SignInManager<AppUser> SignInManager
+<style>
+    .info {
+        text-align: left !important;
+    }
+
+    .comment.author-comment {
+        color: #60686d;
+        justify-content: flex-start;
+    }
+
+    .user-comment p:after {
+        display: none !important;
+    }
+
+    .comment p {
+        line-height: 1;
+        padding: 2px 10px;
+        width: 50%;
+        position: relative;
+        word-wrap: break-word;
+    }
+
+    .comment .info a {
+        display: contents !important;
+        text-decoration: none;
+        color: #656c71;
+        font-weight: bold;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        padding: 10px 0 3px 0;
+    }
+</style>
+
+@foreach (var binhluan in Model)
+{
+
+    <li class="comment user-comment d-flex flex-column  m-2 border mb-3 " style="background-color: #f3f3f3;">
+        <div class="info p-2">
+            <a href="#">
+                @DataAccess.context.AspNetUsers.SingleOrDefault(x => x.Id == binhluan.MaKh).HoTen
+                @if (DataAccess.GetRoleName(binhluan.MaKh) == "Quản trị viên")
+                {
+                    <i class="fas fa-user-cog"></i>
+                }
+                <span> 3 giờ trước </span>
+            </a>
+
+        </div>
+
+        <div class="p-0">
+            <p style="color: black">@binhluan.NoiDung</p>
+
+
+            @if (UserManager.GetUserId(User) == null)
+            {
+                <p style=" font-size: 12px;"><a asp-area="Identity" asp-page="/Account/Login"> Đăng nhập</a> để bình luận</p>
+            }
+            else
+            {
+                <a style="text-decoration:underline; color: blue; cursor:pointer" onclick="ReplyComment('@binhluan.MaBl')" class=" p-0 m-0 ml-2"> Trả lời  </a>
+               
+                @if (UserManager.GetUserId(User) == binhluan.MaKh || DataAccess.GetRoleName(UserManager.GetUserId(User)) == "Quản trị viên")
+                {
+                    <a style="text-decoration:underline; color: blue; cursor:pointer" class="ml-2"
+                       asp-action="DeleteComment"
+                       asp-controller="User"
+                       asp-route-maSp="@binhluan.MaSp"
+                       asp-route-id="@binhluan.MaBl"> Xóa </a>
+                }
+
+            }
+
+        </div>
+
+        <ul>@await Component.InvokeAsync("TraLoiBinhLuan", new { Id = binhluan.MaBl })</ul>
+
+        <div style="padding-left:3rem; display:none" class="mb-2" id="@binhluan.MaBl">
+            <div class="info" style=" font-size: 12px;">
+                <a href="#">Trả lời   </a>
+            </div>
+
+            <form class="form-inline" asp-action="ReplyComment" asp-controller="User" asp-route-userId="@UserManager.GetUserId(User)" asp-route-maSp="@binhluan.MaSp" asp-route-maBl="@binhluan.MaBl">
+                <input type="text" name="ReplyComment" class="form-control" />
+                <button class="btn btn-primary radius-0" type="submit"> Gửi</button>
+
+            </form>
+            <a style="text-decoration:underline; color: blue; cursor:pointer" onclick="CancelReply('@binhluan.MaBl')"> Hủy</a>
+        </div>
+
+
+
+    </li>
+
+
+}

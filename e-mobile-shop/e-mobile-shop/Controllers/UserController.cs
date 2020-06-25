@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using e_mobile_shop.Models;
 using e_mobile_shop.Models.Helpers;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace e_mobile_shop.Controllers
@@ -46,5 +48,54 @@ namespace e_mobile_shop.Controllers
 
             }
         }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult ReplyComment(string userId, string maBl,string maSp, IFormCollection fc )
+        {
+            TraLoi tl = new TraLoi()
+            {
+                MaBinhLuan = maBl,
+                NoiDung = fc["ReplyComment"],
+                MaKh = userId,
+                NgayDang = DateTime.Now
+            };
+
+            DataAccess.context.TraLoi.Add(tl);
+            DataAccess.context.SaveChanges();
+            return RedirectToAction("SanPham", "SanPham", new { Id = maSp });
+        }
+        public IActionResult DeleteReply(string id, string maSp)
+        {
+            DataAccess.context.TraLoi.SingleOrDefault(x => x.Id == id).TrangThai = 0;
+            DataAccess.context.SaveChanges();
+            return RedirectToAction("SanPham", "SanPham", new { Id = maSp });
+        }
+
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult Comment(string userId,  string maSp, IFormCollection fc)
+        {
+            BinhLuan tl = new BinhLuan()
+            {
+                NoiDung = fc["Comment"],
+                MaKh = userId,
+                NgayDang = DateTime.Now,
+                MaSp=maSp
+            };
+
+            DataAccess.context.BinhLuan.Add(tl);
+            DataAccess.context.SaveChanges();
+            return RedirectToAction("SanPham", "SanPham", new { Id = maSp });
+        }
+
+        public IActionResult DeleteComment(string id, string maSp)
+        {
+            DataAccess.context.BinhLuan.SingleOrDefault(x => x.MaBl == id).Status = 0;
+            DataAccess.context.SaveChanges();
+            return RedirectToAction("SanPham", "SanPham", new { Id = maSp });
+        }
+
     }
 }
