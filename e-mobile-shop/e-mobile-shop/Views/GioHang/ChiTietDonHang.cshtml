@@ -3,6 +3,8 @@
 @{
     ViewData["Title"] = "ChiTietDonHang";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var context = new ClientDbContext();
+    var dataAccess = new DataAccess();
 }
 
 @Html.Partial("_StatusMessages")
@@ -18,10 +20,10 @@
             {
                 <div class="row border m-1 ">
                     <div class="col-3 " style=" margin:auto; text-align:center">
-                        <img src=@Url.Content("~/ProductAvatar/" + @DataAccess.GetSanPham(item.MaSp).AnhDaiDien) style="max-width:70px; max-height: 70px" />
+                        <img src=@Url.Content("~/ProductAvatar/" + @dataAccess.GetSanPham(item.MaSp).AnhDaiDien) style="max-width:70px; max-height: 70px" />
                     </div>
                     <div class="col-5 ">
-                        <div class="p-2"> <strong>   @DataAccess.GetSanPham(item.MaSp).TenSp </strong> </div>
+                        <div class="p-2"> <strong>   @dataAccess.GetSanPham(item.MaSp).TenSp </strong> </div>
                         <div class="p-2">
                             Số lượng: <span><input disabled size="1" value="@item.SoLuong" /> </span>
                         </div>
@@ -31,7 +33,7 @@
                             <p style="font-size: 13px"> Thành tiền </p>
                         </div>
                         <div class="p-2  " style="font-size: 12px">
-                            <strong style="font-size: 13px">  @((DataAccess.context.SanPham.Find(item.MaSp).GiaGoc * item.SoLuong).Value.ToString("N0"))</strong>
+                            <strong style="font-size: 13px">  @((context.SanPham.Find(item.MaSp).GiaGoc * item.SoLuong).Value.ToString("N0"))</strong>
                         </div>
 
                     </div>
@@ -45,7 +47,7 @@
                     Tổng cộng
                 </div>
                 <div class="col-6">
-                    <span style="color:blue">  @DataAccess.context.DonHang.Find(Model[0].MaDh).Tongtien.Value.ToString("N0") </span>
+                    <span style="color:blue">  @context.DonHang.Find(Model[0].MaDh).Tongtien.Value.ToString("N0") </span>
                 </div>
                 <div class="col-6">
                     Giảm giá
@@ -57,7 +59,7 @@
                     Cần thanh toán
                 </div>
                 <div class="col-6"> 
-                    <strong style="color:red"> @DataAccess.GetDonHang(Model[0].MaDh).Tongtien.Value.ToString("N0") VNĐ </strong>
+                    <strong style="color:red"> @dataAccess.GetDonHang(Model[0].MaDh).Tongtien.Value.ToString("N0") VNĐ </strong>
                 </div>
             </div>
             <div class="row ">
@@ -66,14 +68,14 @@
                     <form style="width:100%">
                         <div class="col-12 p-1 ">
                            
-                              <input disabled style="width: 100%" placeholder="Họ và tên" value="@DataAccess.GetDonHang(Model[0].MaDh).HoTen" />
+                              <input disabled style="width: 100%" placeholder="Họ và tên" value="@dataAccess.GetDonHang(Model[0].MaDh).HoTen" />
                        
                         </div>
                         <div class="col-12 p-1 ">
-                            <input disabled style="width: 100%" placeholder="Điện thoại " value="@DataAccess.GetDonHang(Model[0].MaDh).Dienthoai" />
+                            <input disabled style="width: 100%" placeholder="Điện thoại " value="@dataAccess.GetDonHang(Model[0].MaDh).Dienthoai" />
                         </div>
                         <div class="col-12 p-1 pt-2">
-                            <input disabled style="width: 100%" placeholder="Địa chỉ giao hàng" value="@DataAccess.GetDonHang(Model[0].MaDh).Diachi" />
+                            <input disabled style="width: 100%" placeholder="Địa chỉ giao hàng" value="@dataAccess.GetDonHang(Model[0].MaDh).Diachi" />
                         </div>
 
                     </form>

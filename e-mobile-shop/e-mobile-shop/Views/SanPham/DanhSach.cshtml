@@ -10,6 +10,8 @@
     ViewData["LoaiSp"] = Model[0].LoaiSp;
     var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
     var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+    var context = new ClientDbContext();
+    var dataAccess = new DataAccess();
 }
 <!-- top Products -->
 <div class="ads-grid py-sm-1 py-4">
@@ -23,7 +25,7 @@
             }
             else
             {
-                <span> @DataAccess.GetLoaiSp(Model[0].LoaiSp).Substring(0, 1)</span>@DataAccess.GetLoaiSp(Model[0].LoaiSp).Substring(1, DataAccess.GetLoaiSp(Model[0].LoaiSp).ToString().Length - 1)
+                <span> @dataAccess.GetLoaiSp(Model[0].LoaiSp).Substring(0, 1)</span>@dataAccess.GetLoaiSp(Model[0].LoaiSp).Substring(1, dataAccess.GetLoaiSp(Model[0].LoaiSp).ToString().Length - 1)
 
             }
 
@@ -185,7 +187,7 @@
                     <div class="left-side py-2 border mt-5">
                         <h3 class="text-center" style="color:black; font-weight:bold;"> Chọn loại sản phẩm </h3>
                         <div>
-                            @foreach (var item in DataAccess.ReadLoaiSp())
+                            @foreach (var item in dataAccess.ReadLoaiSp())
                             {
                                 <a type="button text-type-sp" style="text-align:left; border-radius:0px;"
                                    asp-action="Filter"
@@ -204,7 +206,7 @@
                         <h3 class="text-center" style="color:black; font-weight:bold;"> Hãng sản xuất  </h3>
                         <div class="d-flex">
                             <div class="row m-0 ">
-                                @foreach (var item in DataAccess.context.NhaSanXuat)
+                                @foreach (var item in context.NhaSanXuat)
                                 {
                                     @if (!String.IsNullOrEmpty(item.Avatar))
                                     {

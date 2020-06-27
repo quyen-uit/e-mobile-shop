@@ -10,9 +10,14 @@ namespace e_mobile_shop.Controllers.Components
 {
     public class TraLoiBinhLuanViewComponent : ViewComponent
     {
+        private readonly ClientDbContext context;
+        public TraLoiBinhLuanViewComponent(ClientDbContext _context)
+        {
+            context = _context;
+        }
         public async Task<IViewComponentResult> InvokeAsync(string Id)
         {
-            var result = DataAccess.context.TraLoi.Where(x => x.MaBinhLuan == Id && x.TrangThai!=0 ).ToListAsync();
+            var result = context.TraLoi.Where(x => x.MaBinhLuan == Id && x.TrangThai!=0 ).ToListAsync();
             return View(await result);
         }
     }

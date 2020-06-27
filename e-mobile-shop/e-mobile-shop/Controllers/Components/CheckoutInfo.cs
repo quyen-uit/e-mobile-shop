@@ -10,9 +10,14 @@ namespace e_mobile_shop.Controllers.Components
 {
     public class CheckoutInfoViewComponent:ViewComponent
     {
+        private readonly ClientDbContext context;
+        public CheckoutInfoViewComponent(ClientDbContext _context)
+        {
+            context = _context;
+        }
         public async Task<IViewComponentResult> InvokeAsync(string Id)
         {
-            var result = DataAccess.context.AspNetUsers.Where(x => x.Id.Equals(Id)).ToListAsync();
+            var result = context.AspNetUsers.Where(x => x.Id.Equals(Id)).ToListAsync();
 
             return View(await result);
         }

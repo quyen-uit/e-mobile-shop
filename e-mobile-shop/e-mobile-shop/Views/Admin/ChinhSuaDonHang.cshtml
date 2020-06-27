@@ -2,6 +2,8 @@
 @{
     ViewData["Title"] = "ChinhSuaDonHang";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    var context = new ClientDbContext();
+    var dataAccess = new DataAccess();
 }
 
 
@@ -82,7 +84,7 @@
                         <div class="form-group col-lg-6">
                             <label asp-for="@Model.TinhTrangDh">Trạng thái đơn hàng</label>
 
-                            <select  class="form-control" asp-for="@Model.TinhTrangDh" asp-items="@(new SelectList(DataAccess.context.TrangThaiDonHang.ToList(),"Id","TenTrangThai"))">
+                            <select  class="form-control" asp-for="@Model.TinhTrangDh" asp-items="@(new SelectList(context.TrangThaiDonHang.ToList(),"Id","TenTrangThai"))">
                             </select>
 
                         </div>

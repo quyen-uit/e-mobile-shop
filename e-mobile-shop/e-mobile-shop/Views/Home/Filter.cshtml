@@ -8,7 +8,8 @@
 
 @model PaginatedList<SanPham>
 @{
-
+    var context = new ClientDbContext();
+    var dataAccess = new DataAccess();
     var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
     var nextDisabled = !Model.HasNextPage ? "disabled" : "";
 }
@@ -134,7 +135,7 @@
                    asp-route-sortOrder="@ViewData["CurrentSort"]"
                    asp-route-currentFilter="@ViewData["CurrentFilter"]"
                    asp-route-hangSx="@ViewData["HangSx"]">
-                    @DataAccess.GetLoaiSp(ViewData["LoaiSp"].ToString()) <i class="fas fa-times"></i>
+                    @dataAccess.GetLoaiSp(ViewData["LoaiSp"].ToString()) <i class="fas fa-times"></i>
                 </a>
             }
 
@@ -148,7 +149,7 @@
                    asp-route-sortOrder="@ViewData["CurrentSort"]"
                    asp-route-currentFilter="@ViewData["CurrentFilter"]"
                    asp-route-hangSx="">
-                    @DataAccess.context.NhaSanXuat.Find(ViewData["HangSx"].ToString()).TenNsx <i class="fas fa-times"></i>
+                    @context.NhaSanXuat.Find(ViewData["HangSx"].ToString()).TenNsx <i class="fas fa-times"></i>
                 </a>
             }
 
@@ -356,7 +357,7 @@
 
                     <div class="dropdown-menu p-3" aria-labelledby="dropdownMenuLink">
 
-                        @foreach (var item in DataAccess.ReadLoaiSp())
+                        @foreach (var item in dataAccess.ReadLoaiSp())
                         {
                             <a type="button text-type-sp" style="text-align:left; border-radius:0px;"
                                asp-action="Filter"
@@ -622,7 +623,7 @@
                         <div class="left-side py-2 border mt-5">
                             <h3 class="text-center" style="color:black; font-weight:bold;"> Loại sản phẩm </h3>
                             <div>
-                                @foreach (var item in DataAccess.ReadLoaiSp())
+                                @foreach (var item in dataAccess.ReadLoaiSp())
                                 {
                                     <a type="button text-type-sp" style="text-align:left; border-radius:0px;"
                                        asp-action="Filter"
@@ -644,7 +645,7 @@
                             <h3 class="text-center" style="color:black; font-weight:bold;"> Hãng sản xuất  </h3>
                             <div class="d-flex">
                                 <div class="row m-0 ">
-                                    @foreach (var item in DataAccess.context.NhaSanXuat)
+                                    @foreach (var item in context.NhaSanXuat)
                                     {
                                         @if (!String.IsNullOrEmpty(item.Avatar))
                                         {

@@ -2,6 +2,8 @@
 @{
     ViewData["Title"] = "SanPham";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var context = new ClientDbContext();
+    var dataAccess = new DataAccess();
 }
 
 @using e_mobile_shop.Areas.Identity.Data
@@ -34,22 +36,22 @@
                     <div class="flexslider">
                         <ul class="slides">
 
-                            <li data-thumb="../../ProductImages/@DataAccess.GetAnhSanPham(Model.MaSp).Anh1" class="data-thumb">
+                            <li data-thumb="../../ProductImages/@dataAccess.GetAnhSanPham(Model.MaSp).Anh1" class="data-thumb">
                                 <div class="thumb-image">
-                                    <img src="~/ProductImages/@DataAccess.GetAnhSanPham(Model.MaSp).Anh1" id="" data-imagezoom="true" class="img-fluid w-100" alt="2">
+                                    <img src="~/ProductImages/@dataAccess.GetAnhSanPham(Model.MaSp).Anh1" id="" data-imagezoom="true" class="img-fluid w-100" alt="2">
                                 </div>
                             </li>
 
-                            <li data-thumb="../../ProductImages/@DataAccess.GetAnhSanPham(Model.MaSp).Anh2" class="data-thumb">
+                            <li data-thumb="../../ProductImages/@dataAccess.GetAnhSanPham(Model.MaSp).Anh2" class="data-thumb">
                                 <div class="thumb-image">
-                                    <img src="~/ProductImages/@DataAccess.GetAnhSanPham(Model.MaSp).Anh2" id="" data-imagezoom="true" class="img-fluid w-100" alt="2">
+                                    <img src="~/ProductImages/@dataAccess.GetAnhSanPham(Model.MaSp).Anh2" id="" data-imagezoom="true" class="img-fluid w-100" alt="2">
                                 </div>
                             </li>
 
 
-                            <li data-thumb="../../ProductImages/@DataAccess.GetAnhSanPham(Model.MaSp).Anh3" class="data-thumb">
+                            <li data-thumb="../../ProductImages/@dataAccess.GetAnhSanPham(Model.MaSp).Anh3" class="data-thumb">
                                 <div class="thumb-image">
-                                    <img src="~/ProductImages/@DataAccess.GetAnhSanPham(Model.MaSp).Anh3" id="" data-imagezoom="true" class="img-fluid w-100" alt="2">
+                                    <img src="~/ProductImages/@dataAccess.GetAnhSanPham(Model.MaSp).Anh3" id="" data-imagezoom="true" class="img-fluid w-100" alt="2">
                                 </div>
                             </li>
                         </ul>
@@ -68,7 +70,7 @@
                 <div class="single-infoagile">
                     <ul>
                         <li class="mb-3">
-                            <span style="text-transform: uppercase">Hãng sản xuất: @DataAccess.context.NhaSanXuat.Find(Model.Nsx).TenNsx </span>
+                            <span style="text-transform: uppercase">Hãng sản xuất: @context.NhaSanXuat.Find(Model.Nsx).TenNsx </span>
                         </li>
                         <li class="mb-3">
                             Còn
@@ -87,12 +89,12 @@
                     <br />
 
                     <ul>
-                        @foreach (var item in DataAccess.GetThongSoKiThuat(Model.MaSp).Take(8))
+                        @foreach (var item in dataAccess.GetThongSoKiThuat(Model.MaSp).Take(8))
                         {
                             if (item.GiaTri.Length <= 50)
                             {
                                 <li class="mb-1">
-                                    <span style="text-transform:uppercase">@DataAccess.context.ThongSo.Find(item.ThongSo).TenThongSo</span>  : <span style="text-transform:uppercase">@item.GiaTri</span>
+                                    <span style="text-transform:uppercase">@context.ThongSo.Find(item.ThongSo).TenThongSo</span>  : <span style="text-transform:uppercase">@item.GiaTri</span>
                                 </li>
                             }
 
@@ -116,20 +118,20 @@
                                 <div class="modal-body">
                                     <table style="width:100% ">
                                         @{
-                                            var lst = DataAccess.GetThongSoKiThuat(Model.MaSp);
+                                            var lst = dataAccess.GetThongSoKiThuat(Model.MaSp);
                                             for (int i = 0; i < lst.Count(); i++)
                                             {
                                                 if (i % 2 == 0)
                                                 {
                                                     <tr class="mb-1 border-bottom">
-                                                        <td style="text-transform:uppercase; width: 40%">@DataAccess.context.ThongSo.Find(lst[i].ThongSo).TenThongSo</td>
+                                                        <td style="text-transform:uppercase; width: 40%">@context.ThongSo.Find(lst[i].ThongSo).TenThongSo</td>
                                                         <td style="text-transform:uppercase">@lst[i].GiaTri</td>
                                                     </tr>
                                                 }
                                                 else
                                                 {
                                                     <tr class="mb-1 border-bottom" style="background-color:aliceblue">
-                                                        <td style="text-transform:uppercase; width: 40%">@DataAccess.context.ThongSo.Find(lst[i].ThongSo).TenThongSo</td>
+                                                        <td style="text-transform:uppercase; width: 40%">@context.ThongSo.Find(lst[i].ThongSo).TenThongSo</td>
                                                         <td style="text-transform:uppercase">@lst[i].GiaTri</td>
                                                     </tr>
                                                 }

@@ -10,16 +10,21 @@ namespace e_mobile_shop.Controllers.Components
 {
     public class SanPhamTheoGiaViewComponent : ViewComponent
     {
+        private readonly ClientDbContext context;
+        public SanPhamTheoGiaViewComponent(ClientDbContext _context)
+        {
+            context = _context;
+        }
         public async Task<IViewComponentResult> InvokeAsync(string giaTien)
         {
             if (!String.IsNullOrEmpty(giaTien))
             {
-                var result = (from t in DataAccess.context.SanPham
+                var result = (from t in context.SanPham
                               where t.GiaGoc <= int.Parse(giaTien)
                               select t).ToListAsync();
                 return View(await result);
             }
-            else return View( await DataAccess.context.SanPham.ToListAsync());
+            else return View( await context.SanPham.ToListAsync());
 
            
         }

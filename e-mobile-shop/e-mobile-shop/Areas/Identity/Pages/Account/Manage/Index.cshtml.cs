@@ -15,13 +15,14 @@ namespace e_mobile_shop.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
-
+        private readonly ClientDbContext context;
         public IndexModel(
             UserManager<AppUser> userManager,
-            SignInManager<AppUser> signInManager)
+            SignInManager<AppUser> signInManager, ClientDbContext _context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            context = _context;
         }
 
         public string Username { get; set; }
@@ -45,7 +46,7 @@ namespace e_mobile_shop.Areas.Identity.Pages.Account.Manage
             var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
             var userId = await _userManager.GetUserIdAsync(user);
-            var a = DataAccess.context.AspNetUsers.Find(userId);
+            var a = context.AspNetUsers.Find(userId);
 
             ViewData["UserId"] = userId;
             Username = userId;

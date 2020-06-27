@@ -3,6 +3,8 @@
 @{
     ViewData["Title"] = "Them";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    var context = new ClientDbContext();
+    var dataAccess = new DataAccess();
 
 }
 <style>
@@ -81,7 +83,7 @@
                                 Hãng sản xuất
                                 <label class="validation-summary-errors">*</label>
                             </label>
-                            <select class="form-control" asp-for="Nsx" asp-items="@(new SelectList(DataAccess.GetNSX(),"MaNsx","TenNsx"))">
+                            <select class="form-control" asp-for="Nsx" asp-items="@(new SelectList(dataAccess.GetNSX(),"MaNsx","TenNsx"))">
                             </select>
 
                         </div>
@@ -90,7 +92,7 @@
                                 Nhà cung cấp
                                 <label class="validation-summary-errors">*</label>
                             </label>
-                            <select class="form-control" asp-for="MaNcc" asp-items="@(new SelectList(DataAccess.context.NhaCungCap.ToList(),"MaNcc","TenNcc"))">
+                            <select class="form-control" asp-for="MaNcc" asp-items="@(new SelectList(context.NhaCungCap.ToList(),"MaNcc","TenNcc"))">
                             </select>
 
                         </div>
@@ -143,7 +145,7 @@
                         </div>*@
                     <div class="form-group">
                         <div class="row">
-                            @foreach (var item in DataAccess.ReadThongSo(ViewData["MaLoai"].ToString()))
+                            @foreach (var item in dataAccess.ReadThongSo(ViewData["MaLoai"].ToString()))
                             {
                                 <div class="form-group col-lg-6">
                                     <label>

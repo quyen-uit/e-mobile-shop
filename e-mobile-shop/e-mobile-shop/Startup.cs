@@ -38,6 +38,9 @@ namespace e_mobile_shop
 
             services.AddDbContext<eShopDbContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("eShopDbContextConnection")), ServiceLifetime.Transient);
+           
+            services.AddDbContext<ClientDbContext>(options =>
+                   options.UseSqlServer(Configuration.GetConnectionString("eShopDbContextConnection")), ServiceLifetime.Transient);
 
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddControllersWithViews().AddNewtonsoftJson(options =>  options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
@@ -54,29 +57,29 @@ namespace e_mobile_shop
 
                 options.SignIn.RequireConfirmedEmail = true;
             });
-            services.AddAuthentication().AddGoogle(options => {
-                //IConfigurationSection googleAuthNSection =
-                //    Configuration.GetSection("Authentication:Google");
+            //services.AddAuthentication().AddGoogle(options => {
+            //    //IConfigurationSection googleAuthNSection =
+            //    //    Configuration.GetSection("Authentication:Google");
 
-                //options.ClientId = googleAuthNSection["ClientId"];
-                //options.ClientSecret = googleAuthNSection["ClientSecret"];
-                options.ClientId = DataAccess.context.Parameters.Find("4").Value;
-                options.ClientSecret = DataAccess.context.Parameters.Find("3").Value;
-            });
-            services.AddAuthentication().AddFacebook(facebookOptions =>
-            {
-                //facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
-                //facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
-                facebookOptions.AppId = DataAccess.context.Parameters.Find("6").Value;
-                facebookOptions.AppSecret = DataAccess.context.Parameters.Find("5").Value;
-            });
+            //    //options.ClientId = googleAuthNSection["ClientId"];
+            //    //options.ClientSecret = googleAuthNSection["ClientSecret"];
+            //    options.ClientId = DataAccess.context.Parameters.Find("4").Value;
+            //    options.ClientSecret = DataAccess.context.Parameters.Find("3").Value;
+            //});
+            //services.AddAuthentication().AddFacebook(facebookOptions =>
+            //{
+            //    //facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
+            //    //facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
+            //    facebookOptions.AppId = DataAccess.context.Parameters.Find("6").Value;
+            //    facebookOptions.AppSecret = DataAccess.context.Parameters.Find("5").Value;
+            //});
 
-            services.AddTransient<IEmailSender, EmailSender>();
+            //services.AddTransient<IEmailSender, EmailSender>();
 
-            services.Configure<AuthMessageSenderOptions>(option => { 
-                option.SendGridUser = DataAccess.context.Parameters.Find("1").Value;
-                option.SendGridKey = DataAccess.context.Parameters.Find("2").Value;
-            });
+            //services.Configure<AuthMessageSenderOptions>(option => { 
+            //    option.SendGridUser = DataAccess.context.Parameters.Find("1").Value;
+            //    option.SendGridKey = DataAccess.context.Parameters.Find("2").Value;
+            //});
 
            
 

@@ -2,10 +2,13 @@
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @model List<SanPham>
-
+@{ 
+    var context = new ClientDbContext();
+    var dataAccess = new DataAccess();
+}
 
 <div class="product-sec1 px-sm-4 px-3 py-sm-5  py-3 mb-4">
-    <h3 class="heading-tittle  font-italic">@DataAccess.GetLoaiSp(Model[1].LoaiSp) nổi bật </h3>
+    <h3 class="heading-tittle  font-italic">@dataAccess.GetLoaiSp(Model[1].LoaiSp) nổi bật </h3>
     <div class="row">
         @foreach (var item in Model)
         {

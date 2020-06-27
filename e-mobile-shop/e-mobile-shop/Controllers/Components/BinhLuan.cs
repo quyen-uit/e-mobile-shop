@@ -10,9 +10,14 @@ namespace e_mobile_shop.Controllers.Components
 {
     public class BinhLuanViewComponent:ViewComponent
     {
+        private readonly ClientDbContext context;
+        public BinhLuanViewComponent(ClientDbContext _context)
+        {
+            context = _context;
+        }
         public async Task<IViewComponentResult> InvokeAsync(string Id)
         {
-            var result = DataAccess.context.BinhLuan.Where(x => x.MaSp == Id && x.Status!=0).ToListAsync();
+            var result = context.BinhLuan.Where(x => x.MaSp == Id && x.Status!=0).ToListAsync();
             return View(await result);  
         }
     }

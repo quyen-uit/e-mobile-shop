@@ -12,6 +12,13 @@ namespace e_mobile_shop.Controllers
 {
     public class SanPhamController : Controller
     {
+        private readonly ClientDbContext context;
+        private readonly DataAccess dataAccess;
+        public SanPhamController(ClientDbContext _context)
+        {
+            context = _context;
+            dataAccess = new DataAccess();
+        }
         public IActionResult Index()
         {
             return View();
@@ -20,21 +27,21 @@ namespace e_mobile_shop.Controllers
         [Route("chi-tiet/{id}")]
         public IActionResult SanPham(string Id)
         {
-            return View(DataAccess.GetSanPham(Id));
+            return View(dataAccess.GetSanPham(Id));
         }
 
         [Route("danh-sach/{id}")]
         public async Task<IActionResult> DanhSach(int? pageNumber, string Id)
         {
-            var sanphams = from s in DataAccess.context.SanPham select s ;
+            var sanphams = from s in context.SanPham select s ;
 
             if (Id != "LSP0001")
             {
-                sanphams= DataAccess.context.SanPham.Where(x => x.LoaiSp == Id);
+                sanphams= context.SanPham.Where(x => x.LoaiSp == Id);
             }
             else
             {
-                 sanphams = DataAccess.context.SanPham.Where(x => x.LoaiSp != "LSP0002" && x.LoaiSp != "LSP0007" && x.LoaiSp != "LSP0008");
+                 sanphams = context.SanPham.Where(x => x.LoaiSp != "LSP0002" && x.LoaiSp != "LSP0007" && x.LoaiSp != "LSP0008");
             }
 
             int pageSize = 16;
@@ -43,7 +50,7 @@ namespace e_mobile_shop.Controllers
         }
         public IActionResult DanhSach1(string Id)
         {
-            return View(DataAccess.ReadSanPham(Id));
+            return View(dataAccess.ReadSanPham(Id));
         }
 
     }

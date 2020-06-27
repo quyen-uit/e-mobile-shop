@@ -3,7 +3,10 @@
 @using Microsoft.AspNetCore.Identity
 @inject UserManager<AppUser> UserManager
 @inject SignInManager<AppUser> SignInManager
-
+@{ 
+    var context = new ClientDbContext();
+    var dataAccess = new DataAccess();
+}
 <style>
 
     .author-comment {
@@ -34,8 +37,8 @@
 
     <div class="info" style=" font-size: 12px;">
         <a href="#">
-            @DataAccess.context.AspNetUsers.SingleOrDefault(x => x.Id == traloi.MaKh).HoTen  
-            @if (DataAccess.GetRoleName(traloi.MaKh) == "Quản trị viên")
+            @context.AspNetUsers.SingleOrDefault(x => x.Id == traloi.MaKh).HoTen  
+            @if (dataAccess.GetRoleName(traloi.MaKh) == "Quản trị viên")
                 {
                     <i class="fas fa-user-cog"></i>
                 } <span>3 hours ago</span>
@@ -47,9 +50,9 @@
 
     @if (UserManager.GetUserId(User) != null)
     {
-        if (UserManager.GetUserId(User) == traloi.MaKh || DataAccess.GetRoleName(UserManager.GetUserId(User)) == "Quản trị viên")
+        if (UserManager.GetUserId(User) == traloi.MaKh || dataAccess.GetRoleName(UserManager.GetUserId(User)) == "Quản trị viên")
         {
-            <a asp-controller="User" asp-action="DeleteReply" asp-route-id="@traloi.Id" asp-route-maSp="@DataAccess.context.BinhLuan.SingleOrDefault(x=>x.MaBl==traloi.MaBinhLuan).MaSp "> Xóa </a>
+            <a asp-controller="User" asp-action="DeleteReply" asp-route-id="@traloi.Id" asp-route-maSp="@context.BinhLuan.SingleOrDefault(x=>x.MaBl==traloi.MaBinhLuan).MaSp "> Xóa </a>
 
         }
     }

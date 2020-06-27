@@ -2,6 +2,8 @@
 @{
     ViewData["Title"] = "ChiTietDonHang";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    var context = new ClientDbContext();
+    var dataAccess = new DataAccess();
 }
 
     <style>
@@ -86,7 +88,7 @@
                             <div class="form-group col-lg-6">
                                 <label asp-for="@Model.TinhTrangDh">Trạng thái đơn hàng</label>
 
-                                <select disabled class="form-control" asp-for="@Model.TinhTrangDh" asp-items="@(new SelectList(DataAccess.context.TrangThaiDonHang.ToList(),"Id","TenTrangThai"))">
+                                <select disabled class="form-control" asp-for="@Model.TinhTrangDh" asp-items="@(new SelectList(context.TrangThaiDonHang.ToList(),"Id","TenTrangThai"))">
                                 </select>
 
                             </div>
@@ -125,14 +127,14 @@
 
                                 <tbody>
 
-                                    @foreach (var item in DataAccess.context.ChiTietDonHang.Where(x => x.MaDh == Model.MaDh).ToList())
+                                    @foreach (var item in context.ChiTietDonHang.Where(x => x.MaDh == Model.MaDh).ToList())
                                     {
 
                                         <tr>
-                                            <td style="        vertical-align: middle">@DataAccess.GetSanPham(item.MaSp).TenSp</td>
+                                            <td style="        vertical-align: middle">@dataAccess.GetSanPham(item.MaSp).TenSp</td>
 
                                             <td style="vertical-align:middle">
-                                                <img style="width: 50px; height:50px;" src="~/ProductAvatar/@DataAccess.GetSanPham(item.MaSp).AnhDaiDien" />
+                                                <img style="width: 50px; height:50px;" src="~/ProductAvatar/@dataAccess.GetSanPham(item.MaSp).AnhDaiDien" />
                                             </td>
                                             <td style="vertical-align:middle">@item.SoLuong</td>
                                             <td style="vertical-align:middle">@item.ThanhTien</td>

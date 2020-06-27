@@ -2,6 +2,8 @@
 @{
     ViewData["Title"] = "QuanLySanPham";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    var context = new ClientDbContext();
+    var dataAccess = new DataAccess();
 }
 <style>
     .dataTables_filter, .dataTables_info {
@@ -17,7 +19,7 @@
             <div class=" panel-heading ">
                 <div class="row">
                     <div class="col-lg-6">
-                        <h4>Quản lý @DataAccess.GetLoaiSp(ViewData["LoaiSp"].ToString())</h4>
+                        <h4>Quản lý @dataAccess.GetLoaiSp(ViewData["LoaiSp"].ToString())</h4>
 
                     </div>
                     <div class="col-lg-6">

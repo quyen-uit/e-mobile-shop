@@ -16,12 +16,23 @@ namespace e_mobile_shop.Controllers
 {
     public class GioHangController : Controller
     {
+
+        private readonly ClientDbContext context;
+        private DataAccess dataAccess;
+
+        public GioHangController(ClientDbContext _context)
+        {
+            context = _context;
+            dataAccess = new DataAccess();
+
+        }
         [Route("xem-gio-hang")]
         [HttpPost]
         public IActionResult XemGioHang(IFormCollection fc)
         {
             var giohang = HttpContext.Session.GetObjectFromJson<List<ChiTietDonHang>>("GioHang");
             if (giohang == null) giohang = new List<ChiTietDonHang>();
+
             double? thanhTien = 0;
             double? giaTriDonHang = 0;
 
@@ -41,7 +52,7 @@ namespace e_mobile_shop.Controllers
             else
                 ViewBag.Vouchers = listVoucher;
 
-            var _voucher = DataAccess.context.Voucher.SingleOrDefault(x => x.VoucherCode == fc["voucher"].ToString());
+            var _voucher = context.Voucher.SingleOrDefault(x => x.VoucherCode == fc["voucher"].ToString());
 
             if (_voucher != null)
             {
@@ -152,7 +163,7 @@ namespace e_mobile_shop.Controllers
                 MaSp = fc["SanPham"],
                 MaCtdh = "001",
                 SoLuong = int.Parse(fc["SoLuong"]),
-                ThanhTien = (double?) DataAccess.GetSanPham(fc["SanPham"]).GiaGoc
+                ThanhTien = (double?) dataAccess.GetSanPham(fc["SanPham"]).GiaGoc
             };
 
             if (HttpContext.Session.GetObjectFromJson<List<ChiTietDonHang>>("GioHang") == null)
@@ -160,10 +171,11 @@ namespace e_mobile_shop.Controllers
                 var gh = new List<ChiTietDonHang>();
                 gh.Add(ctdh1);
 
-                ViewBag.Added = 1;
+                dataAccess.soCtdh = gh.Count();
+               ViewBag.Added = 1;
                 HttpContext.Session.SetObjectAsJson("GioHang", gh);
-                DataAccess.soCtdh = gh.Count();
                 return RedirectToAction("SanPham", "SanPham", new {Id = ctdh1.MaSp}).WithSuccess("", "Đã thêm vào giỏ");
+                
             }
             else
             {
@@ -173,18 +185,19 @@ namespace e_mobile_shop.Controllers
                 if (index != -1)
                 {
                     gh[index].SoLuong += int.Parse(fc["SoLuong"]);
-                    gh[index].ThanhTien = (double?) (DataAccess.GetSanPham(ctdh1.MaSp).GiaGoc * gh[index].SoLuong);
+                    gh[index].ThanhTien = (double?) (dataAccess.GetSanPham(ctdh1.MaSp).GiaGoc * int.Parse(fc["SoLuong"]));
                 }
                 else
                 {
                     gh.Add(ctdh1);
-                    DataAccess.soCtdh = gh.Count();
-                }
 
+                }
+                dataAccess.soCtdh = gh.Count();
                 ViewBag.Added = 1;
                 HttpContext.Session.SetObjectAsJson("GioHang", gh);
                 return RedirectToAction("SanPham", "SanPham", new {Id = ctdh1.MaSp}).WithSuccess("", "Đã thêm vào giỏ");
             }
+           
         }
 
 
@@ -194,7 +207,6 @@ namespace e_mobile_shop.Controllers
             var gh = HttpContext.Session.GetObjectFromJson<List<ChiTietDonHang>>("GioHang");
             gh.RemoveAt(id);
             HttpContext.Session.SetObjectAsJson("GioHang", gh);
-            DataAccess.soCtdh--;
             return RedirectToAction("XemGioHang", "GioHang").WithSuccess("", "Xóa thành công");
         }
 
@@ -204,6 +216,7 @@ namespace e_mobile_shop.Controllers
             var gh = HttpContext.Session.GetObjectFromJson<List<ChiTietDonHang>>("GioHang");
 
             gh[id].SoLuong = int.Parse(fc["SoLuong-" + id]);
+            dataAccess.soCtdh = gh.Count();
             HttpContext.Session.SetObjectAsJson("GioHang", gh);
             return RedirectToAction("XemGioHang", "GioHang").WithSuccess("", "Chỉnh sửa thành công");
         }
@@ -217,10 +230,10 @@ namespace e_mobile_shop.Controllers
 
             if (!string.IsNullOrEmpty(fc["Id"].ToString()))
             {
-                if (DataAccess.context.AspNetUsers.Find(fc["Id"]) != null)
+                if (context.AspNetUsers.Find(fc["Id"]) != null)
                 {
                     dh.MaKh = fc["Id"];
-                    var a = DataAccess.GetUser(dh.MaKh);
+                    var a = dataAccess.GetUser(dh.MaKh);
                     dh.HoTen = a.HoTen;
                     dh.Dienthoai = a.PhoneNumber;
                     dh.Ghichu = fc["GhiChu"];
@@ -230,7 +243,7 @@ namespace e_mobile_shop.Controllers
                 }
                 else
                 {
-                    dh.MaKh = "null" + (DataAccess.context.DonHang.Count() + 1);
+                    dh.MaKh = "null" + (context.DonHang.Count() + 1);
                     dh.HoTen = fc["HoTen"];
                     dh.Diachi = fc["DiaChi"];
                     dh.Ghichu = fc["GhiChu"];
@@ -240,7 +253,7 @@ namespace e_mobile_shop.Controllers
             }
             else
             {
-                dh.MaKh = "null" + (DataAccess.context.DonHang.Count() + 1);
+                dh.MaKh = "null" + (context.DonHang.Count() + 1);
                 dh.HoTen = fc["HoTen"];
                 dh.Diachi = fc["DiaChi"];
                 dh.Ghichu = fc["GhiChu"];
@@ -255,9 +268,10 @@ namespace e_mobile_shop.Controllers
             dh.GiamGia = double.Parse(fc["GiamGia"]);
            
             dh.Ghichu = fc["GhiChu"];
+            dh.TinhTrangDh = 1;
             //dh.Diachi = fc["DiaChi"];
-            DataAccess.context.DonHang.Add(dh);
-            DataAccess.context.SaveChanges();
+            context.DonHang.Add(dh);
+            context.SaveChanges();
 
 
             var content = System.IO.File.ReadAllText("GioHang.html");
@@ -268,18 +282,18 @@ namespace e_mobile_shop.Controllers
             var gh = HttpContext.Session.GetObjectFromJson<List<ChiTietDonHang>>("GioHang");
             foreach (var item in gh)
             {
-                item.MaCtdh = (DataAccess.context.ChiTietDonHang.ToList().Count + 1).ToString();
+                item.MaCtdh = (context.ChiTietDonHang.ToList().Count + 1).ToString();
                 item.MaDh = dh.MaDh;
-                DataAccess.context.SanPham.Find(item.MaSp).SoLuong =
-                    DataAccess.context.SanPham.Find(item.MaSp).SoLuong - item.SoLuong;
-                DataAccess.context.ChiTietDonHang.Add(item);
-                DataAccess.context.SaveChanges();
+                context.SanPham.Find(item.MaSp).SoLuong =
+                    context.SanPham.Find(item.MaSp).SoLuong - item.SoLuong;
+                context.ChiTietDonHang.Add(item);
+                context.SaveChanges();
                 strCtdh = strCtdh + "<tr>";
                 strCtdh = strCtdh + "<td style='text-align:center'>" + ++index + "</td><td>" +
-                          DataAccess.context.SanPham.Find(item.MaSp).TenSp + "</td><td  style='text-align:center'>"
+                          context.SanPham.Find(item.MaSp).TenSp + "</td><td  style='text-align:center'>"
                           + item.SoLuong + "</td><td  style='text-align:center'>"
-                          + ((DataAccess.context.SanPham.Find(item.MaSp).GiaGoc * item.SoLuong).HasValue
-                              ? (DataAccess.context.SanPham.Find(item.MaSp).GiaGoc * item.SoLuong)?.ToString("N0")
+                          + ((context.SanPham.Find(item.MaSp).GiaGoc * item.SoLuong).HasValue
+                              ? (context.SanPham.Find(item.MaSp).GiaGoc * item.SoLuong)?.ToString("N0")
                               : "NULL") + "</td><tr>";
             }
 
@@ -293,8 +307,8 @@ namespace e_mobile_shop.Controllers
             content = content.Replace("{{thanhtoan}}", (- dh.GiamGia.Value + dh.Tongtien.Value).ToString("N0"));
             var Option = new AuthMessageSenderOptions
             {
-                SendGridKey = DataAccess.context.Parameters.Find("2").Value,
-                SendGridUser = DataAccess.context.Parameters.Find("1").Value
+                SendGridKey = context.Parameters.Find("2").Value,
+                SendGridUser = context.Parameters.Find("1").Value
             };
 
             var mailSender = new EmailSender(Option);
@@ -302,9 +316,8 @@ namespace e_mobile_shop.Controllers
 
             mailSender.SendEmailAsync(dh.Email, "Chi tiết đơn hàng ", $"{WebUtility.HtmlDecode(content)}");
 
-
+            dataAccess.soCtdh = 0;
             HttpContext.Session.DeleteAllSession();
-            DataAccess.soCtdh = 0;
 
             return RedirectToAction("ChiTietDonHang", "GioHang", new {id = dh.MaDh})
                 .WithSuccess("Đặt hàng thành công", "");
@@ -314,7 +327,7 @@ namespace e_mobile_shop.Controllers
         [Route("danh-sach-don-hang/{id}")]
         public async Task<IActionResult> DanhSachDonHang(int? pageNumber, string id)
         {
-            var donhangs = from d in DataAccess.context.DonHang where d.MaKh == id select d;
+            var donhangs = from d in context.DonHang where d.MaKh == id select d;
             var pageSize = 5;
             return View(await PaginatedList<DonHang>.CreateAsync(donhangs.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
@@ -323,7 +336,7 @@ namespace e_mobile_shop.Controllers
         public IActionResult ChiTietDonHang(string id)
         {
             if (id != null)
-                return View(DataAccess.context.ChiTietDonHang.Where(x => x.MaDh == id).ToList());
+                return View(context.ChiTietDonHang.Where(x => x.MaDh == id).ToList());
             return RedirectToAction("Index", "Home");
         }
     }

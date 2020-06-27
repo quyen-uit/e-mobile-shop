@@ -3,6 +3,10 @@
 @using Microsoft.AspNetCore.Identity
 @inject UserManager<AppUser> UserManager
 @inject SignInManager<AppUser> SignInManager
+@{ 
+    var context = new ClientDbContext();
+    var dataAccess = new DataAccess();
+}
 <style>
     .info {
         text-align: left !important;
@@ -43,29 +47,26 @@
     <li class="comment user-comment d-flex flex-column  m-2 border mb-3 " style="background-color: #f3f3f3;">
         <div class="info p-2">
             <a href="#">
-                @DataAccess.context.AspNetUsers.SingleOrDefault(x => x.Id == binhluan.MaKh).HoTen
-                @if (DataAccess.GetRoleName(binhluan.MaKh) == "Quản trị viên")
+                @context.AspNetUsers.SingleOrDefault(x => x.Id == binhluan.MaKh).HoTen
+                @if (dataAccess.GetRoleName(binhluan.MaKh) == "Quản trị viên")
                 {
                     <i class="fas fa-user-cog"></i>
                 }
                 <span> 3 giờ trước </span>
             </a>
-
         </div>
 
         <div class="p-0">
             <p style="color: black">@binhluan.NoiDung</p>
-
-
             @if (UserManager.GetUserId(User) == null)
             {
                 <p style=" font-size: 12px;"><a asp-area="Identity" asp-page="/Account/Login"> Đăng nhập</a> để bình luận</p>
-            }
+           
+                }
             else
             {
                 <a style="text-decoration:underline; color: blue; cursor:pointer" onclick="ReplyComment('@binhluan.MaBl')" class=" p-0 m-0 ml-2"> Trả lời  </a>
-               
-                @if (UserManager.GetUserId(User) == binhluan.MaKh || DataAccess.GetRoleName(UserManager.GetUserId(User)) == "Quản trị viên")
+                @if (UserManager.GetUserId(User) == binhluan.MaKh || dataAccess.GetRoleName(UserManager.GetUserId(User)) == "Quản trị viên")
                 {
                     <a style="text-decoration:underline; color: blue; cursor:pointer" class="ml-2"
                        asp-action="DeleteComment"
@@ -73,9 +74,7 @@
                        asp-route-maSp="@binhluan.MaSp"
                        asp-route-id="@binhluan.MaBl"> Xóa </a>
                 }
-
             }
-
         </div>
 
         <ul>@await Component.InvokeAsync("TraLoiBinhLuan", new { Id = binhluan.MaBl })</ul>

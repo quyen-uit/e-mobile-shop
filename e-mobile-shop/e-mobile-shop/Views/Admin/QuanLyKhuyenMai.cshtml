@@ -2,6 +2,8 @@
 @{
     ViewData["Title"] = "QuanLyKhuyenMai";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    var context = new ClientDbContext();
+    var dataAccess = new DataAccess();
 }
 @model  List<Voucher>
 <body>
@@ -55,7 +57,7 @@
                                     <td style="vertical-align:middle">@item.VoucherCode</td>
                                     <td style="vertical-align:middle">@item.VoucherName</td>
                                     <td style="vertical-align:middle">@item.VoucherDiscount</td>
-                                    <td style="vertical-align:middle">@DataAccess.context.VoucherType.Find(item.VoucherType).VoucherTypeName</td>
+                                    <td style="vertical-align:middle">@context.VoucherType.Find(item.VoucherType).VoucherTypeName</td>
                                     @if(item.Status==1)
                                     {
                                 <td class="text-center" style="vertical-align:middle">Hoạt động</td>

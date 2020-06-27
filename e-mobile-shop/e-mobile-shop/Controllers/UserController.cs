@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using e_mobile_shop.Models;
 using e_mobile_shop.Models.Helpers;
+using e_mobile_shop.Models.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,19 +13,25 @@ namespace e_mobile_shop.Controllers
 {
     public class UserController : Controller
     {
+        private readonly ClientDbContext context;
+             
+        public UserController(ClientDbContext _context)
+        {
+            context = _context;
+        }
         public IActionResult Index()
         {
             return View();
         }
         public IActionResult Edit(string id)
         {
-            return View(e_mobile_shop.Models.DataAccess.context.AspNetUsers.Find(id));
+            return View(context.AspNetUsers.Find(id));
         }
         [HttpPost]
         public IActionResult Edit(AspNetUsers model)
         {
 
-            AspNetUsers user = DataAccess.context.AspNetUsers.Find(model.Id);
+            AspNetUsers user = context.AspNetUsers.Find(model.Id);
             
             AspNetUsers newModel = user;
             newModel.HoTen = model.HoTen;
@@ -39,8 +46,8 @@ namespace e_mobile_shop.Controllers
             
             if(ModelState.IsValid)
             {
-                DataAccess.context.Entry(user).CurrentValues.SetValues(newModel);
-                DataAccess.context.SaveChanges();
+                context.Entry(user).CurrentValues.SetValues(newModel);
+                context.SaveChanges();
                 return View(model).WithSuccess("", "Chỉnh sửa thành công");
             }else
             {
@@ -61,14 +68,14 @@ namespace e_mobile_shop.Controllers
                 NgayDang = DateTime.Now
             };
 
-            DataAccess.context.TraLoi.Add(tl);
-            DataAccess.context.SaveChanges();
+            context.TraLoi.Add(tl);
+            context.SaveChanges();
             return RedirectToAction("SanPham", "SanPham", new { Id = maSp });
         }
         public IActionResult DeleteReply(string id, string maSp)
         {
-            DataAccess.context.TraLoi.SingleOrDefault(x => x.Id == id).TrangThai = 0;
-            DataAccess.context.SaveChanges();
+            context.TraLoi.SingleOrDefault(x => x.Id == id).TrangThai = 0;
+            context.SaveChanges();
             return RedirectToAction("SanPham", "SanPham", new { Id = maSp });
         }
 
@@ -85,17 +92,33 @@ namespace e_mobile_shop.Controllers
                 MaSp=maSp
             };
 
-            DataAccess.context.BinhLuan.Add(tl);
-            DataAccess.context.SaveChanges();
+            context.BinhLuan.Add(tl);
+            context.SaveChanges();
             return RedirectToAction("SanPham", "SanPham", new { Id = maSp });
         }
 
         public IActionResult DeleteComment(string id, string maSp)
         {
-            DataAccess.context.BinhLuan.SingleOrDefault(x => x.MaBl == id).Status = 0;
-            DataAccess.context.SaveChanges();
+            context.BinhLuan.SingleOrDefault(x => x.MaBl == id).Status = 0;
+            context.SaveChanges();
             return RedirectToAction("SanPham", "SanPham", new { Id = maSp });
         }
 
+        [HttpPost]
+        public IActionResult EmailContact( string userId, IFormCollection fc)
+        {
+            var Option = new AuthMessageSenderOptions
+            {
+                SendGridKey = context.Parameters.Find("2").Value,
+                SendGridUser = context.Parameters.Find("1").Value
+            };
+
+            var mailSender = new EmailSender(Option);
+
+
+            mailSender.SendEmailAsync("thanglequoc1912@gmail.com", fc["TieuDe"].ToString(), fc["NoiDung"]);
+
+            return RedirectToAction("Contact","Home").WithSuccess("","Gửi email thành công, chúng tôi sẽ phản hồi sớm nhất");
+        }
     }
 }

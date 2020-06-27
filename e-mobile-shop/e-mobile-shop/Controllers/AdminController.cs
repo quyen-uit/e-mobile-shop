@@ -14,9 +14,13 @@ namespace e_mobile_shop.Controllers
     public class AdminController : Controller
     {
         private readonly IWebHostEnvironment webHostEnvironment;
-        public AdminController(IWebHostEnvironment hostEnvironment)
+        private readonly ClientDbContext context;
+        private readonly DataAccess dataAccess;
+        public AdminController(IWebHostEnvironment hostEnvironment, ClientDbContext _context)
         {
             webHostEnvironment = hostEnvironment;
+            context = _context;
+            dataAccess =new  DataAccess();
         }
 
         // [Authorize(Roles = "Quản trị viên")]
@@ -26,7 +30,7 @@ namespace e_mobile_shop.Controllers
         }
         public IActionResult QuanLyUser(string searchValue)
         {
-            List<AspNetUsers> list = DataAccess.context.AspNetUsers.ToList();
+            List<AspNetUsers> list = context.AspNetUsers.ToList();
             List<AspNetUsers> rs = new List<AspNetUsers>();
             if (!String.IsNullOrEmpty(searchValue))
             {
@@ -46,7 +50,7 @@ namespace e_mobile_shop.Controllers
         }
         public IActionResult QuanLyDonHang(string searchValue)
         {
-            List<DonHang> list = DataAccess.context.DonHang.ToList();
+            List<DonHang> list = context.DonHang.ToList();
             List<DonHang> rs = new List<DonHang>();
             foreach(var i in list)
             {
@@ -71,27 +75,27 @@ namespace e_mobile_shop.Controllers
         public IActionResult ChiTietDonHang(string id)
         {
         
-            return View(DataAccess.context.DonHang.Where(x=>x.MaDh == id).ToList().FirstOrDefault());
+            return View(context.DonHang.Where(x=>x.MaDh == id).ToList().FirstOrDefault());
         }
         public IActionResult ChinhSuaDonHang(string id)
         {
             
-            return View(DataAccess.context.DonHang.Where(x => x.MaDh == id).ToList().FirstOrDefault());
+            return View(context.DonHang.Where(x => x.MaDh == id).ToList().FirstOrDefault());
         }
 
         [HttpPost]
         public IActionResult ChinhSuaDonHang( DonHang model, IFormCollection fc)
         {
-            DonHang dh = DataAccess.GetDonHang(fc["MaDh"]);
+            DonHang dh = dataAccess.GetDonHang(fc["MaDh"]);
             dh.TinhTrangDh = model.TinhTrangDh;
-            DataAccess.context.DonHang.Update(dh);
-            DataAccess.context.SaveChanges();
+            context.DonHang.Update(dh);
+            context.SaveChanges();
             return RedirectToAction("QuanLyDonHang", "Admin").WithSuccess("Thành công", "Đơn hàng đã được sửa.");
         }
         public IActionResult QuanLy(string id, string searchValue)
         {
             ViewData["LoaiSp"] = id;
-            var a = DataAccess.ReadSanPham(id);
+            var a = dataAccess.ReadSanPham(id);
             List<SanPham> rs = new List<SanPham>();
             if (!String.IsNullOrEmpty(searchValue))
             {
@@ -109,29 +113,29 @@ namespace e_mobile_shop.Controllers
         }
         //public IActionResult QuanLy(string maloai, string search)
         //{
-        //    return View(DataAccess.context.SanPham.Where(x => x.MaSp.ToLower().Contains(search.ToLower()) || x.TenSp.ToLower().Contains(search.ToLower())));
+        //    return View(context.SanPham.Where(x => x.MaSp.ToLower().Contains(search.ToLower()) || x.TenSp.ToLower().Contains(search.ToLower())));
         //}
         public IActionResult QuanLyDienThoai()
         {
-            return View(DataAccess.ReadSanPham("LSP0002"));
+            return View(dataAccess.ReadSanPham("LSP0002"));
         }
         public IActionResult Them(string Id)
         {
             ViewData["MaLoai"] = Id;
-            ViewData["TenLoai"] = DataAccess.context.LoaiSp.Find(Id).TenLoai;
+            ViewData["TenLoai"] = context.LoaiSp.Find(Id).TenLoai;
             return View();
         }
 
         public IActionResult XoaSanPham(string Id)
         {
-            DataAccess.context.SanPham.Find(Id).Status = 0;
-            DataAccess.context.SaveChanges();
-            return RedirectToAction("QuanLy", "Admin", new { id = DataAccess.context.SanPham.Find(Id).LoaiSp }).WithSuccess("Thành công", "Bạn đã xóa sản phẩm khỏi danh sách.");
+            context.SanPham.Find(Id).Status = 0;
+            context.SaveChanges();
+            return RedirectToAction("QuanLy", "Admin", new { id = context.SanPham.Find(Id).LoaiSp }).WithSuccess("Thành công", "Bạn đã xóa sản phẩm khỏi danh sách.");
         }
 
         public IActionResult ChinhSua(string Id)
         {
-            SanPham sp = DataAccess.context.SanPham.Find(Id);
+            SanPham sp = context.SanPham.Find(Id);
             return View(sp);
         }
 
@@ -145,7 +149,7 @@ namespace e_mobile_shop.Controllers
         {
             string message = "";
             model.MaSp = fc["MaSp"];
-            SanPham a = DataAccess.context.SanPham.Find(fc["MaSp"]);
+            SanPham a = context.SanPham.Find(fc["MaSp"]);
            
 
             if (AnhDaiDien == null)
@@ -160,10 +164,10 @@ namespace e_mobile_shop.Controllers
             if (ModelState.IsValid)
             {
                 model.Status = string.IsNullOrEmpty(fc["status"]) ? 0 : 1;
-                DataAccess.context.Entry(a).CurrentValues.SetValues(model);
-                DataAccess.context.SaveChanges();
+                context.Entry(a).CurrentValues.SetValues(model);
+                context.SaveChanges();
 
-                AnhSanPham pic = DataAccess.context.AnhSanPham.Where(x => x.MaSp == model.MaSp).FirstOrDefault();
+                AnhSanPham pic = context.AnhSanPham.Where(x => x.MaSp == model.MaSp).FirstOrDefault();
                 if (productImages1 != null)
                     pic.Anh1 = UploadedFile(productImages1, "ProductImages");
                 if (productImages2 != null)
@@ -171,21 +175,21 @@ namespace e_mobile_shop.Controllers
                 if (productImages3 != null)
                     pic.Anh3 = UploadedFile(productImages3, "ProductImages");
 
-                DataAccess.context.AnhSanPham.Update(pic);
-                DataAccess.context.SaveChanges();
+                context.AnhSanPham.Update(pic);
+                context.SaveChanges();
 
-                // List<ThongSoKiThuat> listTSKT = DataAccess.ReadThongSoKiThuat(model.MaSp);
+                // List<ThongSoKiThuat> listTSKT = ReadThongSoKiThuat(model.MaSp);
 
-                foreach (var tskt in DataAccess.ReadThongSoKiThuat(model.MaSp))
+                foreach (var tskt in dataAccess.ReadThongSoKiThuat(model.MaSp))
                 {
                     tskt.GiaTri = fc[tskt.ThongSo];
-                    DataAccess.context.Update(tskt);
-                    DataAccess.context.SaveChanges();
+                    context.Update(tskt);
+                    context.SaveChanges();
 
                 }
 
                 //ThongSoKiThuat temp;
-                //foreach (var ts in DataAccess.ReadThongSo(model.LoaiSp))
+                //foreach (var ts in ReadThongSo(model.LoaiSp))
                 //{
                 //    temp = new ThongSoKiThuat()
                 //    {
@@ -195,8 +199,8 @@ namespace e_mobile_shop.Controllers
 
                 //    };
 
-                //    DataAccess.context.ThongSoKiThuat.Add(temp);
-                //    DataAccess.context.SaveChanges();
+                //    context.ThongSoKiThuat.Add(temp);
+                //    context.SaveChanges();
                 //    temp = null;
 
                 //}
@@ -223,13 +227,13 @@ namespace e_mobile_shop.Controllers
             if (ModelState.IsValid)
             {
 
-                //  model.MaSp = (DataAccess.context.SanPham.ToList().Count() + 1).ToString();
+                //  model.MaSp = (context.SanPham.ToList().Count() + 1).ToString();
 
                 model.AnhDaiDien = UploadedFile(AnhDaiDien, "ProductAvatar");
                 model.SoLuotXemSp = 0;
 
-                DataAccess.context.SanPham.Add(model);
-                DataAccess.context.SaveChanges();
+                context.SanPham.Add(model);
+                context.SaveChanges();
 
                 AnhSanPham pic = new AnhSanPham()
                 {
@@ -240,11 +244,11 @@ namespace e_mobile_shop.Controllers
                     Anh3 = UploadedFile(productImages3, "ProductImages")
                 };
 
-                DataAccess.context.AnhSanPham.Add(pic);
-                DataAccess.context.SaveChanges();
+                context.AnhSanPham.Add(pic);
+                context.SaveChanges();
 
                 ThongSoKiThuat tskt;
-                List<ThongSo> listTS = DataAccess.ReadThongSo(model.LoaiSp).ToList();
+                List<ThongSo> listTS = dataAccess.ReadThongSo(model.LoaiSp).ToList();
                 for (int i = 0; i < listTS.Count(); i++)
                 {
 
@@ -256,8 +260,8 @@ namespace e_mobile_shop.Controllers
 
                     };
 
-                    DataAccess.context.ThongSoKiThuat.AddAsync(tskt);
-                    DataAccess.context.SaveChanges();
+                    context.ThongSoKiThuat.AddAsync(tskt);
+                    context.SaveChanges();
                     tskt = null;
 
                 }
@@ -272,13 +276,13 @@ namespace e_mobile_shop.Controllers
                 //    {
                 //        var thongSoKiThuat = new ThongSoKiThuat()
                 //        {
-                //            MaTskt = (DataAccess.context.ThongSoKiThuat.ToList().Count() + 1).ToString(),
+                //            MaTskt = (context.ThongSoKiThuat.ToList().Count() + 1).ToString(),
                 //            ThuocTinh = fc[param],
                 //            GiaTri = fc[param2],
                 //            MaSp = model.MaSp
                 //        };
-                //        DataAccess.context.ThongSoKiThuat.Add(thongSoKiThuat);
-                //        DataAccess.context.SaveChanges();
+                //        context.ThongSoKiThuat.Add(thongSoKiThuat);
+                //        context.SaveChanges();
                 //    }
                 //    else break;
 
@@ -317,7 +321,7 @@ namespace e_mobile_shop.Controllers
         }
         public IActionResult QuanLyKhuyenMai(string searchValue)
         {
-            List<Voucher> list = DataAccess.context.Voucher.ToList();
+            List<Voucher> list = context.Voucher.ToList();
             List<Voucher> rs = new List<Voucher>();
        
             if (!String.IsNullOrEmpty(searchValue))
@@ -338,8 +342,8 @@ namespace e_mobile_shop.Controllers
         }
         public IActionResult XoaKhuyenMai(string Id)
         {
-            DataAccess.context.Voucher.Find(Id).Status = 0;
-            DataAccess.context.SaveChanges();
+            context.Voucher.Find(Id).Status = 0;
+            context.SaveChanges();
             return RedirectToAction("QuanLyKhuyenMai", "Admin").WithSuccess("Thành công", "Bạn đã xóa sản phẩm khỏi danh sách.");
         }
         public IActionResult ThemKhuyenMai( )
@@ -351,8 +355,8 @@ namespace e_mobile_shop.Controllers
         {
             if(ModelState.IsValid)
             {
-                DataAccess.context.Voucher.Add(model);
-                DataAccess.context.SaveChanges();
+                context.Voucher.Add(model);
+                context.SaveChanges();
                 return RedirectToAction("QuanLyKhuyenMai", "Admin").WithSuccess("Thành công", "Đã thêm khuyến mãi mới.");
             }
             return View(model);
@@ -360,7 +364,7 @@ namespace e_mobile_shop.Controllers
 
         public IActionResult Detail(string id)
         {
-            return View(DataAccess.context.SanPham.Find(id));
+            return View(context.SanPham.Find(id));
         }
 
     }
