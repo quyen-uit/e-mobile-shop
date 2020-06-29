@@ -3,61 +3,65 @@
 @using Microsoft.AspNetCore.Identity
 @inject UserManager<AppUser> UserManager
 @inject SignInManager<AppUser> SignInManager
-@{ 
+@{
     var context = new ClientDbContext();
     var dataAccess = new DataAccess();
 }
-<style>
 
-    .author-comment {
-        padding-left: 3rem;
-    }
-
-        .author-comment p:after {
-            content: '';
-            position: absolute;
-            width: 0 !important;
-            height: 0 !important;
-            border-radius: 50%;
-            background-color: #ffffff;
-            border: 2px solid #f3f3f3;
-            left: -8px;
-            top: 18px;
-        }
-
-    .comment p {
-        background-color: #f3f3f3 !important;
-    }
-</style>
 
 @model List<TraLoi>
 @foreach (var traloi in Model)
 {
-<li class="comment author-comment d-flex  flex-column-reverse  m-0 mt-2">
+    @*<li class="comment author-comment d-flex  flex-column-reverse  m-0 mt-2">
 
-    <div class="info" style=" font-size: 12px;">
-        <a href="#">
-            @context.AspNetUsers.SingleOrDefault(x => x.Id == traloi.MaKh).HoTen  
-            @if (dataAccess.GetRoleName(traloi.MaKh) == "Quản trị viên")
+        <div class="info" style=" font-size: 12px;">
+            <a href="#">
+                @context.AspNetUsers.SingleOrDefault(x => x.Id == traloi.MaKh).HoTen
+                @if (dataAccess.GetRoleName(traloi.MaKh) == "Quản trị viên")
                 {
                     <i class="fas fa-user-cog"></i>
                 } <span>3 hours ago</span>
-        </a>
+            </a>
 
+        </div>
+
+        <p style="font-size: 12px; color: black">@traloi.NoiDung</p>
+
+       
+
+    </li>*@
+
+    <div class="media mt-3">
+        <a class="pr-3" href="#">
+            <img src="https://via.placeholder.com/48" alt="Generic placeholder image">
+        </a>
+        <div class="media-body">
+            <h5 class="mt-0">
+                <strong href="#">
+                    @context.AspNetUsers.SingleOrDefault(x => x.Id == traloi.MaKh).HoTen
+                    @if (dataAccess.GetRoleName(traloi.MaKh) == "Quản trị viên")
+                    {
+                        <i class="fas fa-user-cog"></i>
+                    }
+                    <p style="font-weight:100; font-size: 12px;">3 hours ago</p>
+                </strong>
+            </h5>
+
+            @traloi.NoiDung
+
+        <div>
+            @if (UserManager.GetUserId(User) != null)
+            {
+                if (UserManager.GetUserId(User) == traloi.MaKh || dataAccess.GetRoleName(UserManager.GetUserId(User)) == "Quản trị viên")
+                {
+                    <a asp-controller="User" asp-action="DeleteReply" asp-route-id="@traloi.Id" asp-route-maSp="@context.BinhLuan.SingleOrDefault(x=>x.MaBl==traloi.MaBinhLuan).MaSp "> Xóa </a>
+
+                }
+            }
+        </div>
+
+        </div>
     </div>
 
-    <p style="font-size: 12px; color: black">@traloi.NoiDung</p>
-
-    @if (UserManager.GetUserId(User) != null)
-    {
-        if (UserManager.GetUserId(User) == traloi.MaKh || dataAccess.GetRoleName(UserManager.GetUserId(User)) == "Quản trị viên")
-        {
-            <a asp-controller="User" asp-action="DeleteReply" asp-route-id="@traloi.Id" asp-route-maSp="@context.BinhLuan.SingleOrDefault(x=>x.MaBl==traloi.MaBinhLuan).MaSp "> Xóa </a>
-
-        }
-    }
-
-
-</li>
 
 }

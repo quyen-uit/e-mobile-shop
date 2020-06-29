@@ -5,21 +5,17 @@
 }
 
 @model List<AspNetUsers>
-<div class="d-flex pt-3 pl-1 pr-1" style="        background-color: #F0F0F0
-">
-    <div style="width: 60%" class=" border p-0">@await Component.InvokeAsync("Banner")</div>
-    <div style="width: 40%" class="pl-2">
-        <img src="~/398-110copy-398x110.png" class="w-100 pb-1 pt-0" />
-        <img src="~/combo-A3-1-398-110-398x110.png" class="w-100 pt-1 pb-0" />
-    </div>
+<div class="container d-flex pt-3  " >
+        <div style="width: 60%" class=" d-none d-xl-block border p-0">@await Component.InvokeAsync("Banner")</div>
+        <div style="width: 40%" class="d-none d-xl-block ">
+            <img src="~/398-110copy-398x110.png" class="w-100 pb-1 pt-0" />
+            <img src="~/combo-A3-1-398-110-398x110.png" class="w-100 pt-1 pb-0" />
+        </div>
 </div>
 <!-- top Products -->
-<div class="ads-grid py-sm-1 py-1">
-    <div class="container-fluid py-xl-4 py-lg-2">
+    <div class="container p-0">
 
-        <div class="row">
-            <!-- product left -->
-            <div class="agileinfo-ads-display col-lg-9">
+            <div class="agileinfo-ads-display col-lg-12">
                 <div class="wrapper">
                     <!-- first section -->
                     @await Component.InvokeAsync("SanPhamNoiBat", new { Id = "LSP0002" })
@@ -35,109 +31,6 @@
                     <!-- //fourth section -->
                 </div>
             </div>
-            <!-- //product left -->
-            <!-- product right -->
-            <div class="col-lg-3 mt-lg-0 mt-2 p-lg-0">
-                <div class="side-bar p-sm-1 p-1">
+     
 
-                    <br />
-                    <div class="search-hotel border-bottom py-1">
-                        <h3 class="agileits-sear-head mb-3 text-center">Chọn mức giá </h3>
-
-
-                        <div class="" style="width:100%; font-weight:bold">
-                            @for (int i = 0; i < 9; i = i + 2)
-                            {
-
-                                <a class="btn btn-block btn-outline-secondary radius-0 selected-@(i*1000000)-@((i+2)*1000000)"
-                                   asp-action="Filter"
-                                   asp-controller="Home"
-                                   asp-route-loaiSp="@ViewData["LoaiSp"]"
-                                   asp-route-tenSp="@ViewData["tenSp"]"
-                                   asp-route-sortOrder="@ViewData["CurrentSort"]"
-                                   asp-route-giaTien="@(i*1000000)-@((i+2)*1000000)">Từ @(i) đến @((i+2)) triệu</a>
-
-                            }
-                            <a class="btn btn-block btn-outline-secondary radius-0 selected-@(12000000)-@(120000000)"
-                               asp-action="Filter"
-                               asp-controller="Home"
-                               asp-route-loaiSp="@ViewData["LoaiSp"]"
-                               asp-route-tenSp="@ViewData["tenSp"]"
-                               asp-route-sortOrder="@ViewData["CurrentSort"]"
-                               asp-route-giaTien="@(12000000)-@(120000000)">Trên 12 triệu</a>
-                        </div>
-                        <br />
-
-                        <form style="display:none" asp-action="Filter" method="get">
-                            <div class="form-actions no-color">
-                                <div class="d-flex" style="font-size: 15px; margin:5px;">
-                                    <div class="p-2 pl-0"> Nhập giá tiền </div>
-                                    <input class="p-2" style="font-size:10px;" type="text" name="giaTien" value="@ViewData["CurrentFilter"]" />
-                                    <button class="ml-1 p-2" style="background:#F45C5D; border: none" type="submit" value=""> Tìm kiếm </button>
-
-                                </div>
-                            </div>
-                        </form>
-
-                        <br />
-
-
-
-
-
-
-                        <div class="left-side py-2 border mt-1">
-                            <h3 class="text-center" style="color:black; font-weight:bold;"> Chọn loại sản phẩm </h3>
-                            <div>
-                                @foreach (var item in dataAccess.ReadLoaiSp())
-                                {
-                                    <a type="button text-type-sp" style="text-align:left; border-radius:0px;"
-                                       asp-action="Filter"
-                                       asp-controller="Home"
-                                       asp-route-currentFilter="@ViewData["CurrentFilter"]"
-                                       asp-route-tenSp="@ViewData["tenSp"]"
-                                       asp-route-loaiSp="@item.MaLoai"
-                                       asp-route-sortOrder="@ViewData["CurrentSort"]">
-
-                                        <p class="pl-3 ten-loai-sp loaisp-@item.MaLoai"><span style="font-size:10px;" class="fas fa-circle"></span> @item.TenLoai</p>
-                                    </a>
-                                }
-
-                            </div>
-                        </div>
-                        <div class="left-side py-2 border mt-1">
-                            <h3 class="text-center" style="color:black; font-weight:bold;"> Hãng sản xuất  </h3>
-                            <div class="d-flex">
-                                <div class="row m-0 ">
-                                    @foreach (var item in context.NhaSanXuat)
-                                    {
-                                        @if (!String.IsNullOrEmpty(item.Avatar))
-                                        {
-                                            <a class="col-6 mt-2  " type="button text-type-sp" style="text-align:left; border-radius:0px;height: 50px; "
-                                               asp-action="Filter"
-                                               asp-controller="Home"
-                                               asp-route-currentFilter="@ViewData["CurrentFilter"]"
-                                               asp-route-tenSp="@ViewData["tenSp"]"
-                                               asp-route-hangSx="@item.MaNsx"
-                                               asp-route-loaiSp="@ViewData["LoaiSp"]"
-                                               asp-route-sortOrder="@ViewData["CurrentSort"]">
-
-                                                <div class="ten-loai-sp border  " style="height: 50px; width: 100%">
-                                                    <img src="@Html.Raw(item.Avatar)" class="nhasanxuat-@item.MaNsx" style="width: 100%;height:100%;" />
-                                                </div>
-                                            </a>
-                                        }
-
-                                    }
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-                <!-- //product right -->
-            </div>
-        </div>
     </div>
-</div>
-<!-- //top products -->

@@ -48,9 +48,15 @@ namespace e_mobile_shop.Controllers
             }
             return View(list);
         }
-        public IActionResult QuanLyDonHang(string searchValue)
+        public IActionResult QuanLyDonHang(string searchValue, string status)
         {
             List<DonHang> list = context.DonHang.ToList();
+            if(!String.IsNullOrEmpty(status))
+            {
+                list = list.Where(x => x.TinhTrangDh.Value.ToString() == status).ToList();
+            }
+
+
             List<DonHang> rs = new List<DonHang>();
             foreach(var i in list)
             {
@@ -160,7 +166,6 @@ namespace e_mobile_shop.Controllers
             {
                 model.AnhDaiDien = UploadedFile(AnhDaiDien, "ProductAvatar");
             }
-            
             if (ModelState.IsValid)
             {
                 model.Status = string.IsNullOrEmpty(fc["status"]) ? 0 : 1;

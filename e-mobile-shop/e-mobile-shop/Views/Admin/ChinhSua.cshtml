@@ -41,17 +41,16 @@
                     <input type="hidden" class="form-control" asp-for="Status" />
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" asp-for="@Model.Isnew" />Sản phẩm mới
+                            <input type="checkbox" asp-for="@Model.Isnew.Value" />Sản phẩm mới
                         </label>
                     </div>
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" asp-for="@Model.Ishot" />Sản phẩm nổi bật
+                            <input type="checkbox" asp-for="@Model.Ishot.Value" />Sản phẩm nổi bật
                         </label>
                     </div>
                     <div class="checkbox">
                         <label>
-
                             <input type="checkbox" name="status" @str />Hoạt động
                         </label>
                     </div>

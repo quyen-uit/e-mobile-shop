@@ -26,39 +26,28 @@
     @Html.Partial("_StatusMessages")
     <div class="container py-xl-4 py-lg-2 border">
         <!-- tittle heading -->
-        <h3 class="tittle-w3l  mb-lg-5 mb-sm-4 mb-3">
+        <h3 class="tittle-w3l text-center  mb-lg-5 mb-sm-4 mb-3">
             Chi tiết sản phẩm
         </h3>
         <!-- //tittle heading -->
         <div class="row">
             <div class="col-lg-5 col-md-8 single-right-left ">
-                <div class="grid images_3_of_2">
-                    <div class="flexslider">
-                        <ul class="slides">
-
-                            <li data-thumb="../../ProductImages/@dataAccess.GetAnhSanPham(Model.MaSp).Anh1" class="data-thumb">
-                                <div class="thumb-image">
-                                    <img src="~/ProductImages/@dataAccess.GetAnhSanPham(Model.MaSp).Anh1" id="" data-imagezoom="true" class="img-fluid w-100" alt="2">
-                                </div>
-                            </li>
-
-                            <li data-thumb="../../ProductImages/@dataAccess.GetAnhSanPham(Model.MaSp).Anh2" class="data-thumb">
-                                <div class="thumb-image">
-                                    <img src="~/ProductImages/@dataAccess.GetAnhSanPham(Model.MaSp).Anh2" id="" data-imagezoom="true" class="img-fluid w-100" alt="2">
-                                </div>
-                            </li>
 
 
-                            <li data-thumb="../../ProductImages/@dataAccess.GetAnhSanPham(Model.MaSp).Anh3" class="data-thumb">
-                                <div class="thumb-image">
-                                    <img src="~/ProductImages/@dataAccess.GetAnhSanPham(Model.MaSp).Anh3" id="" data-imagezoom="true" class="img-fluid w-100" alt="2">
-                                </div>
-                            </li>
-                        </ul>
-
-                        <div class="clearfix"></div>
-                    </div>
+                <div class="slider slider-for">
+                    <img src="~/ProductImages/@context.AnhSanPham.SingleOrDefault(x=>x.MaSp==Model.MaSp).Anh1" />
+                    <img src="~/ProductImages/@context.AnhSanPham.SingleOrDefault(x=>x.MaSp==Model.MaSp).Anh2" />
+                    <img src="~/ProductImages/@context.AnhSanPham.SingleOrDefault(x=>x.MaSp==Model.MaSp).Anh3" />
+                   
                 </div>
+                <div class="slider slider-nav border mt-3 align-content-center">
+                    <img src="~/ProductImages/@context.AnhSanPham.SingleOrDefault(x=>x.MaSp==Model.MaSp).Anh1" />
+                    <img  src="~/ProductImages/@context.AnhSanPham.SingleOrDefault(x=>x.MaSp==Model.MaSp).Anh2" />
+                    <img  src="~/ProductImages/@context.AnhSanPham.SingleOrDefault(x=>x.MaSp==Model.MaSp).Anh3" />
+
+                </div>
+
+
             </div>
 
             <div class="col-lg-7 single-right-left simpleCart_shelfItem">
@@ -81,15 +70,22 @@
                             Đã có
                             <span class="item_price">@Model.SoLuotXemSp</span> lượt xem sản phẩm
                         </li>
+                        <li class="mb-3">
+                            <form style="font-size: 14px; " asp-action="AddToCartSession" asp-route-maSp="@Model.MaSp" asp-controller="GioHang" class="form-inline  " method="post">
+                                <label>Số lượng</label>
+                                <input type="number" style="width: 60px;" name="SoLuong" id="SoLuong" value="1" class=" form-control ml-1" />
+                                <button class="btn btn-primary radius-0 ml-1" type="submit"> Thêm vào giỏ hàng </button>
+                            </form>
+
+                        </li>
                     </ul>
                 </div>
                 <br />
 
                 <div class="product-single-w3l">
                     <br />
-
                     <ul>
-                        @foreach (var item in dataAccess.GetThongSoKiThuat(Model.MaSp).Take(8))
+                        @foreach (var item in dataAccess.GetThongSoKiThuat(Model.MaSp).Take(10))
                         {
                             if (item.GiaTri.Length <= 50)
                             {
@@ -97,20 +93,20 @@
                                     <span style="text-transform:uppercase">@context.ThongSo.Find(item.ThongSo).TenThongSo</span>  : <span style="text-transform:uppercase">@item.GiaTri</span>
                                 </li>
                             }
-
                         }
                     </ul>
                     <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                        Xem cấu hình chi tiết
-                    </button>
-
+                    <div class="d-flex justify-content-center">
+                        <button type="button" class="btn btn-primary radius-0" style="color: black; background-color: aliceblue; border: 1px dashed gray " data-toggle="modal" data-target="#exampleModal">
+                            <i class="fas fa-plus"></i> Xem cấu hình chi tiết
+                        </button>
+                    </div>
                     <!-- Modal -->
                     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-lg" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel" style="color:black !important">Cấu hình chi tiết </h5>
+                                    <h5 class="modal-title " id="exampleModalLabel" style="color:black !important">Cấu hình chi tiết </h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -147,40 +143,13 @@
                         </div>
                     </div>
 
-                    <p class="my-sm-4 my-3">
-                        <i class="fas fa-retweet mr-3"></i>Net banking & Credit/ Debit/ ATM card
-                    </p>
-                </div>
-                <div class="occasion-cart">
-                    <div class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out">
-                        <form asp-action="AddToCartSession" asp-controller="GioHang" method="post">
-                            <fieldset>
-
-                                <div class="input-group">
-                                    <span class="p-1 pr-2" style="font-size:15px;">Số lượng</span>
-                                    <span class="input-group-btn">
-                                        <button style="border-radius: 0px" type="button" class="btn btn-default btn-number" disabled="disabled" data-type="minus" data-field="quant[1]">
-                                            <i class="fas fa-minus"></i>
-                                        </button>
-                                    </span>
-                                    <input type="text" size="3" name="quant[1]" id="up_down" class="form-control input-number" value="1" min="1" max="10">
-
-                                    <span class="input-group-btn">
-                                        <button style="border-radius: 0px" type="button" class="btn btn-default btn-number" data-type="plus" data-field="quant[1]">
-                                            <i class="fas fa-plus"></i>
-                                        </button>
-                                    </span>
-                                </div>
-                                <div><input type="hidden" name="SanPham" value="@Model.MaSp" /></div>
-                                <input type="hidden" name="SoLuong" id="SoLuong" value="1" />
-                                <input style="border-radius: 0px" type="submit" name="submit" value="Thêm vào giỏ hàng" class="button mt-2" />
-                            </fieldset>
-                        </form>
-                    </div>
 
                 </div>
 
             </div>
+        </div>
+        <div class="row">
+            @Html.Raw(Model.MoTa)
         </div>
 
         <h3 class="tittle-w3l  mb-lg-5 mb-sm-4 mb-3">
@@ -189,19 +158,19 @@
         <div style="max-height: 600px; overflow:scroll">
             @await Component.InvokeAsync("BinhLuan", new { Id = Model.MaSp })
         </div>
-        <div class="mb-2 p-3" id="">
+        <div class="mb-2 p-lg-3 p-1" id="">
             @if (UserManager.GetUserId(User) == null)
             {
                 <p style=" font-size: 15px;"><a asp-area="Identity" asp-page="/Account/Login"> Đăng nhập</a> để bình luận</p>
             }
             else
             {
-                <div> Thêm bình luận </div>
-            <form class="form-inline " asp-action="Comment" asp-route-maSp="@Model.MaSp" asp-controller="User" asp-route-userId="@UserManager.GetUserId(User)">
-                <textarea type="text" name="Comment" class="form-control w-100"></textarea>
-                <button class="btn btn-primary radius-0 mt-2" type="submit"> Gửi</button>
+                <div> <strong style="font-size: 16px;">Thêm bình luận</strong> </div>
+                <form class="form-inline " asp-action="Comment" asp-route-maSp="@Model.MaSp" asp-controller="User" asp-route-userId="@UserManager.GetUserId(User)">
+                    <textarea type="text" name="Comment" class="form-control w-100" rows="5"></textarea>
+                    <button class="btn btn-primary radius-0 mt-2 pl-4 pr-4" style="font-size: 14px;" type="submit"> <strong>Gửi</strong></button>
 
-            </form>
+                </form>
             }
         </div>
 
@@ -217,7 +186,7 @@
         } else {
             x.style.display = "none";
         }
-    }
+    };
     function CancelReply(mabl) {
         var x = document.getElementById(mabl.toString());
         if (x.style.display === "none") {
@@ -225,5 +194,65 @@
         } else {
             x.style.display = "none";
         }
+    };
+   
+</script>
+
+<script>
+    function GetNumberProduct() {
+
+    }
+    function ShowOff() {
+        var result = "&f";
+        $('#rams input:checked').each(function () {
+            result = result + $(this).attr('name') + "-"
+            //selected.push($(this).attr('name'));
+        });
+        result = result + "&j";
+        $('#cpus input:checked').each(function () {
+            result = result + $(this).attr('name') + "-"
+            //selected.push($(this).attr('name'));
+        });
+        result = result + "&w";
+        $('#nhucaus input:checked').each(function () {
+            result = result + $(this).attr('name') + "-"
+        });
+        result = result + "&z";
+
+        $('#specials input:checked').each(function () {
+            result = result + $(this).attr('name') + "-"
+        });
+
+        document.getElementById("input_param").value = result;
+
+        paramslist = $("#input_param").val() + "%" + $("#id_loai_sp").val();
+
+
+
+        $.ajax(
+            {
+                beforeSend: function () {
+                    $('#progress').css('position', 'absolute');
+                    $('#progress').show();
+                },
+                type: 'POST',
+                url: '/Home/GetNumberProduct',
+                data: { paramslist: paramslist },
+                success: function (response) {
+                    var but = $("#btn_submit_param");
+                    but.html("Có " + response + " sản phẩm phù hợp");
+                    but.addClass("text-ajax");
+                    $('#progress').hide(); //hide progress bar
+                    if (response == "0") {
+                        but.prop('disabled', 'true');
+                    } else {
+                        but.removeAttr('disabled');
+                    }
+                },
+                error: function (response) {
+                    alert("ajax fail");
+                }
+            })
+
     }
 </script>

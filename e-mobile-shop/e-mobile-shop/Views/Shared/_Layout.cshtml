@@ -8,40 +8,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - TheGioiCongNghe</title>
 
-    <script>
-        addEventListener("load",
-            function() {
-                setTimeout(hideURLbar, 0);
-            },
-            false);
-
-        function hideURLbar() {
-            window.scrollTo(0, 1);
-        }
-    </script>
-    <!-- //Meta tag Keywords -->
-    <!-- Custom-Files -->
-    <link href="~/css/bootstrap.css" rel="stylesheet" type="text/css" media="all"/>
+    <link href="~/css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
     <!-- Bootstrap css -->
-    <link href="~/css/style.css" rel="stylesheet" type="text/css" media="all"/>
+    <link href="~/css/style.css" rel="stylesheet" type="text/css" media="all" />
     <!-- Main css -->
     <link rel="stylesheet" href="~/css/fontawesome-all.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css" />
     <!-- Font-Awesome-Icons-CSS -->
-    <link href="~/css/popuo-box.css" rel="stylesheet" type="text/css" media="all"/>
+    <link href="~/css/popuo-box.css" rel="stylesheet" type="text/css" media="all" />
     <!-- pop-up-box -->
-    <link href="~/css/menu.css" rel="stylesheet" type="text/css" media="all"/>
-    <link rel="stylesheet" href="~/css/flexslider.css" type="text/css" media="screen"/>
+    <link href="~/css/menu.css" rel="stylesheet" type="text/css" media="all" />
+    <link rel="stylesheet" href="~/css/flexslider.css" type="text/css" media="screen" />
     <!-- menu style -->
     <!-- //Custom-Files -->
 
-    <link href="~/css/comment_area.css" rel="stylesheet"/>
+    <link href="~/css/comment_area.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
 
-
+    <link href="~/css/slick-theme.css" rel="stylesheet" />
     <!-- web fonts -->
     <link href="//fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i&amp;subset=latin-ext" rel="stylesheet">
     <link href="//fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i&amp;subset=cyrillic,cyrillic-ext,greek,greek-ext,latin-ext,vietnamese"
@@ -114,13 +102,13 @@
                             <!-- //search -->
                             <!-- cart details -->
                             <div class="col-2 top_nav_right text-center mt-sm-0 mt-2">
-                                <a class="btn w3view-cart" asp-controller="GioHang" asp-action="XemGioHang" name="submit" value="">
+                                <a class="btn w3view-cart p-0" asp-controller="GioHang" asp-action="XemGioHang" name="submit" value="">
 
                                     <i style="font-size: 30px" class="fas fa-cart-arrow-down"></i>
-                                   @if(dataAccess.soCtdh !=null)
-                                   {
-                                       <span>@dataAccess.soCtdh</span>
-                                   }
+                                    @if (dataAccess.soCtdh != null)
+                                    {
+                                        <span>@dataAccess.soCtdh</span>
+                                    }
                                 </a>
 
                             </div>
@@ -182,14 +170,17 @@
                             <li class="nav-item mr-lg-2 mb-lg-0 mb-2">
                                 <a class="nav-link" asp-controller="SanPham" asp-action="DanhSach" asp-route-id="LSP0008">Laptop</a>
                             </li>
-                            <li class="nav-item mr-lg-2 mb-lg-0 mb-2">
-                                <a class="nav-link" asp-controller="SanPham" asp-action="DanhSach" asp-route-id="LSP0001">Phụ kiện</a>
+                            <li class="nav-item dropdown mr-lg-2 mb-lg-0 mb-2">
+                                <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Phụ kiện</a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" asp-controller="SanPham" asp-action="DanhSach" asp-route-id="LSP0001">Tai nghe</a>
+                                    <a class="dropdown-item" asp-controller="SanPham" asp-action="DanhSach" asp-route-id="LSP0003">Thẻ nhớ</a>
+                                    <a class="dropdown-item" asp-controller="SanPham" asp-action="DanhSach" asp-route-id="LSP0004">Cáp sạc</a>
+                                    <a class="dropdown-item" asp-controller="SanPham" asp-action="DanhSach" asp-route-id="LSP0005">Ốp lưng</a>
+
+                                </div>
                             </li>
-                            @*<li class="nav-item mr-lg-2 mb-lg-0 mb-2">
-                                <a class="nav-link " href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                                    Tin tức
-                                </a>
-                            </li>*@
+                            
                             <li class="nav-item">
                                 <a class="nav-link" asp-controller="Home" asp-action="Contact">Hỗ trợ </a>
                             </li>
@@ -365,129 +356,50 @@
     </div>
     <!-- //copyright -->
     <!-- js-files -->
+    <!-- CSS only -->
+    <!-- JS, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
     <!-- jquery -->
-    <script src="~/js/jquery-2.2.3.min.js"></script>
-    <!-- //jquery -->
-    <!-- nav smooth scroll -->
+
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
     <script>
         $(document).ready(function () {
-            $(".dropdown").hover(
-                function () {
-                    $('.dropdown-menu', this).stop(true, true).slideDown("fast");
-                    $(this).toggleClass('open');
-                },
-                function () {
-                    $('.dropdown-menu', this).stop(true, true).slideUp("fast");
-                    $(this).toggleClass('open');
-                }
-            );
-        });
-    </script>
-    <!-- //nav smooth scroll -->
-    <!-- popup modal (for location)-->
-    <script src="~/js/jquery.magnific-popup.js"></script>
-    <script>
-        $(document).ready(function () {
-            $('.popup-with-zoom-anim').magnificPopup({
-                type: 'inline',
-                fixedContentPos: false,
-                fixedBgPos: true,
-                overflowY: 'auto',
-                closeBtnInside: true,
-                preloader: false,
-                midClick: true,
-                removalDelay: 300,
-                mainClass: 'my-mfp-zoom-in'
+            $('.slider-for').slick({
+                slidesToShow: 1,
+                slidesToScroll: 1,
+                arrows: false,
+                fade: true,
+                asNavFor: '.slider-nav',
+                 autoplay: true,
+                autoplaySpeed: 2000,
+                infinite: true,
+            });
+
+            $('.slider-nav').slick({
+                slidesToShow: 2,
+                slidesToScroll: 2,
+                asNavFor: '.slider-for',
+                arrows: false,
+                dots: false,
+                centerMode: true,
+                focusOnSelect: true,
+                infinite: true,
+            });
+            $('.slick-brand').slick({
+                slidesToShow: 4,
+                slidesToScroll: 4,
+               
+                arrows: true,
+                dots: false,
+                centerMode: true,
+                focusOnSelect: true,
+                infinite: true,
             });
 
         });
     </script>
-    <!-- //popup modal (for location)-->
-    <!-- cart-js -->
-    @*<script src="~/js/minicart.js"></script>
-        <script>
-            paypals.minicarts.render(); //use only unique class names other than paypals.minicarts.Also Replace same class name in css and minicart.min.js
-
-            paypals.minicarts.cart.on('checkout', function (evt) {
-                var items = this.items(),
-                    len = items.length,
-                    total = 0,
-                    i;
-
-                // Count the number of each item in the cart
-                for (i = 0; i < len; i++) {
-                    total += items[i].get('quantity');
-                }
-
-                if (total < 3) {
-                    alert('The minimum order quantity is 3. Please add more to your shopping cart before checking out');
-                    evt.preventDefault();
-                }
-            });
-        </script>*@
-    <!-- //cart-js -->
-    <!-- scroll seller -->
-    @*<script src="~/js/scroll.js"></script>*@
-    <!-- //scroll seller -->
-    <!-- smoothscroll -->
-    @*<script src="~/js/SmoothScroll.min.js"></script>*@
-    <!-- //smoothscroll -->
-    <!-- start-smooth-scrolling -->
-    <script src="~/js/move-top.js"></script>
-    <script src="~/js/easing.js"></script>
-    <script>
-        jQuery(document).ready(function ($) {
-            $(".scroll").click(function (event) {
-                event.preventDefault();
-
-                $('html,body').animate({
-                    scrollTop: $(this.hash).offset().top
-                },
-                    1000);
-            });
-        });
-    </script>
-    <!-- //end-smooth-scrolling -->
-    <!-- smooth-scrolling-of-move-up -->
-    <script>
-        $(document).ready(function () {
-            /*
-            var defaults = {
-                containerID: 'toTop', // fading element id
-                containerHoverID: 'toTopHover', // fading element hover id
-                scrollSpeed: 1200,
-                easingType: 'linear'
-            };
-            */
-            $().UItoTop({
-                easingType: 'easeOutQuart'
-            });
-
-        });
-    </script>
-    <!-- //smooth-scrolling-of-move-up -->
-    <!-- for bootstrap working -->
-    <script src="~/js/bootstrap.js"></script>
-    <!-- //for bootstrap working -->
-    <!-- //js-files -->
-
-    <script src="~/js/jquery.flexslider.js"></script>
-    <script>
-        // Can also be used with $(document).ready()
-        $(window).load(function () {
-            $('.flexslider').flexslider({
-                animation: "slide",
-                controlNav: "thumbnails"
-            });
-        });
-    </script>
-
-
-    <script src="~/js/site.js"></script>
-    <!-- imagezoom -->
-    <script src="~/js/imagezoom.js"></script>
-
-    <!-- //imagezoom -->
     @RenderSection("Scripts", false)
 
 </body>

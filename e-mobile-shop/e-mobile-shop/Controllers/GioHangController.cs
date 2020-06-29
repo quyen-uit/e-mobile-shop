@@ -156,14 +156,14 @@ namespace e_mobile_shop.Controllers
 
 
         [Route("them-vao-gio")]
-        public IActionResult AddToCartSession(IFormCollection fc)
+        public IActionResult AddToCartSession(IFormCollection fc, string maSp)
         {
             var ctdh1 = new ChiTietDonHang
             {
-                MaSp = fc["SanPham"],
+                MaSp = maSp,
                 MaCtdh = "001",
                 SoLuong = int.Parse(fc["SoLuong"]),
-                ThanhTien = (double?) dataAccess.GetSanPham(fc["SanPham"]).GiaGoc
+                ThanhTien = (double?) dataAccess.GetSanPham(maSp).GiaGoc
             };
 
             if (HttpContext.Session.GetObjectFromJson<List<ChiTietDonHang>>("GioHang") == null)

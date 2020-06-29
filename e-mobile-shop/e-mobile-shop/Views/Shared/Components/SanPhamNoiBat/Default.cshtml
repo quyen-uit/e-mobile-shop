@@ -7,50 +7,101 @@
     var dataAccess = new DataAccess();
 }
 
+    <style>
+        .img-container {
+          
+        }
+
+        .image {
+            opacity: 1;
+            display: block;
+            width: 100%;
+            height: auto;
+            transition: .5s ease;
+            backface-visibility: hidden;
+        }
+
+        .middle {
+            transition: .5s ease;
+            opacity: 0;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .img-container:hover .image {
+            opacity: 0.3;
+        }
+
+        .img-container:hover .middle {
+            opacity: 1;
+        }
+
+        .text {
+            background-color: #4CAF50;
+            color: white;
+            font-size: 16px;
+            padding: 16px 32px;
+        }
+        .btn-middle{
+            padding: 15px;
+            text-transform: uppercase;
+        }
+    </style>
+
 <div class="product-sec1 px-sm-4 px-3 py-sm-5  py-3 mb-4">
-    <h3 class="heading-tittle  font-italic">@dataAccess.GetLoaiSp(Model[1].LoaiSp) nổi bật </h3>
+    <h3 class="heading-tittle  font-italic text-center text-lg-left ">@dataAccess.GetLoaiSp(Model[1].LoaiSp)  </h3>
     <div class="row">
         @foreach (var item in Model)
         {
             <div class="col-md-3 col-6 product-men mt-5 border p-2 " >
                 <div class="men-pro-item simpleCart_shelfItem d-flex justify-content-end flex-column" style="height: 100%">
-                    <div class="men-thumb-item text-center" >
-                        <img src=@Url.Content("~/ProductAvatar/" +item.AnhDaiDien ) alt=""  class="d-block w-100 p-4">
-                        <div class="men-cart-pro">
-                            <div class="inner-men-cart-pro">
-                                <a asp-controller="SanPham" asp-action="SanPham" asp-route-id="@item.MaSp" class="link-product-add-cart">Xem thêm</a>
+                    <div class="men-thumb-item text-center">
+                        <a asp-controller="SanPham" asp-action="SanPham" asp-route-id="@item.MaSp">
+                            <div class="img-container">
+                                <img src=@Url.Content("~/ProductAvatar/" +item.AnhDaiDien ) alt="" class="d-block w-100 p-4">
+                                <div class="middle d-block d-xl-block">
+                                    <a class="btn btn-primary btn-middle radius-0" asp-controller="SanPham" asp-action="SanPham" asp-route-id="@item.MaSp">
+                                        Xem chi tiết
+                                    </a>
+                                </div>
                             </div>
-                        </div>
+                        </a>
                     </div>
-                    <div class="item-info-product text-center  mt-4">
-                        <h4 class="pt-1">
-                            <a href="single.html"><span style="font-size: 14px;">@item.TenSp</span></a>
-                        </h4>
-                        <div class="info-product-price my-2">
-                            <span class="item_price">@item.GiaGoc<sup>đ</sup></span>
-                            <del>@item.GiaTien<sup>đ</sup></del>
-                        </div>
-                        <div class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out">
-                            <form action="#" method="post">
-                                <fieldset>
-                                    <input type="hidden" name="cmd" value="_cart" />
-                                    <input type="hidden" name="add" value="1" />
-                                    <input type="hidden" name="business" value=" " />
-                                    <input type="hidden" name="item_name" value="Samsung Galaxy J7" />
-                                    <input type="hidden" name="amount" value="200.00" />
-                                    <input type="hidden" name="discount_amount" value="1.00" />
-                                    <input type="hidden" name="currency_code" value="USD" />
-                                    <input type="hidden" name="return" value=" " />
-                                    <input type="hidden" name="cancel_return" value=" " />
-                                </fieldset>
-                            </form>
-                        </div>
+                        <div class="item-info-product text-center  mt-4">
+                            <h5 class="pt-1 m-0" style="max-width:inherit; overflow: hidden">
+                                @item.TenSp
+                            </h5>
+                            <div class="info-product-price my-2">
+                                <span class="item_price">@item.GiaGoc<sup>đ</sup></span>
+                                <del>@item.GiaTien<sup>đ</sup></del>
+                            </div>
+                            <div class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out">
+                                <form action="#" method="post">
+                                    <fieldset>
+                                        <input type="hidden" name="cmd" value="_cart" />
+                                        <input type="hidden" name="add" value="1" />
+                                        <input type="hidden" name="business" value=" " />
+                                        <input type="hidden" name="item_name" value="Samsung Galaxy J7" />
+                                        <input type="hidden" name="amount" value="200.00" />
+                                        <input type="hidden" name="discount_amount" value="1.00" />
+                                        <input type="hidden" name="currency_code" value="USD" />
+                                        <input type="hidden" name="return" value=" " />
+                                        <input type="hidden" name="cancel_return" value=" " />
+                                    </fieldset>
+                                </form>
+                            </div>
 
-                    </div>
+                        </div>
                 </div>
             </div>
         }
 
-
+        <div class="col-12 d-flex justify-content-end">
+            <a style="line-height: 40px; font-weight: bold" asp-controller="SanPham" asp-action="DanhSach" asp-route-id="@Model[0].LoaiSp">  Xem tất cả @context.SanPham.Where(x=>x.LoaiSp==Model[0].LoaiSp).ToList().Count sản phẩm </a>
+        </div>
     </div>
 </div>

@@ -26,6 +26,18 @@
                                 </span>
                             </div>
                         </form>
+                        <a asp-action="QuanLyDonHang" asp-controller="Admin" asp-route-status="0">
+                            Bị hủy
+                        </a>
+                        <a asp-action="QuanLyDonHang" asp-controller="Admin" asp-route-status="1">
+                            Đang chờ
+                        </a>
+                        <a asp-action="QuanLyDonHang" asp-controller="Admin" asp-route-status="2">
+                            Đang giao
+                        </a>
+                        <a asp-action="QuanLyDonHang" asp-controller="Admin" asp-route-status="3">
+                            Thanh toán
+                        </a>
                     </div>
                 </div>
             </div>
