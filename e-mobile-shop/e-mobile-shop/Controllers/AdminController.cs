@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using Microsoft.AspNetCore.Http;
 using e_mobile_shop.Models.Helpers;
-
+using e_mobile_shop.Models.Repository;
 
 namespace e_mobile_shop.Controllers
 {
@@ -16,13 +16,23 @@ namespace e_mobile_shop.Controllers
         private readonly IWebHostEnvironment webHostEnvironment;
         private readonly ClientDbContext context;
         private readonly DataAccess dataAccess;
-        public AdminController(IWebHostEnvironment hostEnvironment, ClientDbContext _context)
+        private readonly IDonHangRepository _repository;
+
+
+
+      
+        public AdminController(IWebHostEnvironment hostEnvironment, ClientDbContext _context, IDonHangRepository repository)
         {
             webHostEnvironment = hostEnvironment;
             context = _context;
-            dataAccess =new  DataAccess();
+            dataAccess = new DataAccess();
+            _repository = repository;
         }
-
+        [HttpGet]
+        public IActionResult Test()
+        {
+            return Ok(_repository.GetAll());
+        }
         // [Authorize(Roles = "Quản trị viên")]
         public IActionResult Index()
         {

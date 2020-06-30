@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using BotDetect.Web;
 using e_mobile_shop.Data;
 using e_mobile_shop.Models;
+using e_mobile_shop.Models.Repository;
 using e_mobile_shop.Models.Services;
 using e_mobile_shop.Models.Services.Hubs;
 using Microsoft.AspNetCore.Builder;
@@ -81,10 +82,11 @@ namespace e_mobile_shop
             //    option.SendGridKey = DataAccess.context.Parameters.Find("2").Value;
             //});
 
-           
+
+            services.AddSignalR();
+            services.AddTransient<IDonHangRepository, DonHangRepository>();
 
             services.AddRouting(options => options.LowercaseUrls = true);
-            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -111,7 +113,8 @@ namespace e_mobile_shop
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
-                endpoints.MapHub<Chat>("/chat");
+                endpoints.MapHub<SignalServer>("/signalServer");
+
             });
         }
     }

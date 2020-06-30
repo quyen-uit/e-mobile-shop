@@ -9,6 +9,9 @@
 
     <title>TGCN Admin Manager </title>
 
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/css/toastr.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
     <!-- Core CSS - Include with every page -->
     <link href="~/Admin/css/bootstrap.min.css" rel="stylesheet">
     <link href="~/Admin/font-awesome/css/font-awesome.css" rel="stylesheet">
@@ -262,16 +265,16 @@
                 <div class="sidebar-collapse">
                     <ul class="nav" id="side-menu">
                         @*<li class="sidebar-search">
-            <div class="input-group custom-search-form">
-                <input type="text" class="form-control" placeholder="Search...">
-                <span class="input-group-btn">
-                    <button class="btn btn-default" type="button">
-                        <i class="fa fa-search"></i>
-                    </button>
-                </span>
-            </div>
-             /input-group
-        </li>*@
+                                <div class="input-group custom-search-form">
+                                    <input type="text" class="form-control" placeholder="Search...">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default" type="button">
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                                 /input-group
+                            </li>*@
                         <li>
                             <a asp-action="Index" asp-controller="Admin" style="color:darkgreen; background-color: aliceblue"><i class="fa fa-shopping-cart fa-fw"></i> Dashboard</a>
                         </li>
@@ -322,7 +325,7 @@
                             <a style="color:darkgreen; background-color: aliceblue" href="#"><i class="fa fa-plus fa-fw"></i> Thêm mới<span class="fa arrow"></span></a>
                             <ul class="nav nav-third-level collapse" style="height: auto;">
                                 <li>
-                                    <a asp-action="ThemKhuyenMai" asp-controller="Admin" ><i class="fa fa-mobile-phone fa-fw"></i> Khuyến mãi</a>
+                                    <a asp-action="ThemKhuyenMai" asp-controller="Admin"><i class="fa fa-mobile-phone fa-fw"></i> Khuyến mãi</a>
                                 </li>
                                 <li>
                                     <a asp-action="Them" asp-controller="Admin" asp-route-id="LSP0002"><i class="fa fa-mobile-phone fa-fw"></i> Điện thoại</a>
@@ -394,6 +397,8 @@
 
     <!-- Page level custom scripts -->
     <script src="~/Admin/js/demo/datatables-demo.js"></script>
+    <script src="~/js/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/test.js"></script>
 
 </body>
 
