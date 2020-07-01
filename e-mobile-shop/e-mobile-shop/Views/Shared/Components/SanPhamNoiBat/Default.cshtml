@@ -76,8 +76,16 @@
                                 @item.TenSp
                             </h5>
                             <div class="info-product-price my-2">
-                                <span class="item_price">@item.GiaGoc<sup>đ</sup></span>
-                                <del>@item.GiaTien<sup>đ</sup></del>
+                                @if (item.GiaTien != item.GiaGoc)
+                                {
+                                    <span class="item_price">@item.GiaGoc.Value.ToString("N0")<sup>đ</sup></span>
+                                    <del>@item.GiaTien.Value.ToString("N0")<sup>đ</sup></del>
+                                }
+                                else
+                                {
+                                    <span class="item_price">@item.GiaGoc.Value.ToString("N0")<sup>đ</sup></span>
+                                }
+
                             </div>
                             <div class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out">
                                 <form action="#" method="post">

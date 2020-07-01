@@ -19,6 +19,9 @@
     .flex-control-thumbs li img {
         max-height: 120px;
     }
+    .mota  ul{
+        padding-top: 30px;
+    }
 </style>
 
 <!-- Single Page -->
@@ -38,12 +41,12 @@
                     <img src="~/ProductImages/@context.AnhSanPham.SingleOrDefault(x=>x.MaSp==Model.MaSp).Anh1" />
                     <img src="~/ProductImages/@context.AnhSanPham.SingleOrDefault(x=>x.MaSp==Model.MaSp).Anh2" />
                     <img src="~/ProductImages/@context.AnhSanPham.SingleOrDefault(x=>x.MaSp==Model.MaSp).Anh3" />
-                   
+
                 </div>
                 <div class="slider slider-nav border mt-3 align-content-center">
                     <img src="~/ProductImages/@context.AnhSanPham.SingleOrDefault(x=>x.MaSp==Model.MaSp).Anh1" />
-                    <img  src="~/ProductImages/@context.AnhSanPham.SingleOrDefault(x=>x.MaSp==Model.MaSp).Anh2" />
-                    <img  src="~/ProductImages/@context.AnhSanPham.SingleOrDefault(x=>x.MaSp==Model.MaSp).Anh3" />
+                    <img src="~/ProductImages/@context.AnhSanPham.SingleOrDefault(x=>x.MaSp==Model.MaSp).Anh2" />
+                    <img src="~/ProductImages/@context.AnhSanPham.SingleOrDefault(x=>x.MaSp==Model.MaSp).Anh3" />
 
                 </div>
 
@@ -53,8 +56,16 @@
             <div class="col-lg-7 single-right-left simpleCart_shelfItem">
                 <h3 class="mb-3">@Model.TenSp</h3>
                 <p class="mb-3">
-                    <span class="item_price">@Model.GiaGoc<sup>đ</sup></span>
-                    <del class="mx-2 font-weight-light">@Model.GiaTien<sup>đ</sup></del>
+                    @if (Model.GiaGoc.Value != Model.GiaTien.Value)
+                    {
+                        <span class="item_price">@Model.GiaGoc.Value.ToString("N0")<sup>đ</sup></span>
+                        <del class="mx-2 font-weight-light">@Model.GiaTien.Value.ToString("N0")<sup>đ</sup></del>
+                    }
+                    else
+                    {
+                        <span class="item_price">@Model.GiaGoc.Value.ToString("N0")<sup>đ</sup></span>
+                    }
+
                 </p>
                 <div class="single-infoagile">
                     <ul>
@@ -87,7 +98,7 @@
                     <ul>
                         @foreach (var item in dataAccess.GetThongSoKiThuat(Model.MaSp).Take(10))
                         {
-                            if (item.GiaTri.Length <= 50)
+                            if (item.GiaTri.Length <= 50 && item.GiaTri.Length>0)
                             {
                                 <li class="mb-1">
                                     <span style="text-transform:uppercase">@context.ThongSo.Find(item.ThongSo).TenThongSo</span>  : <span style="text-transform:uppercase">@item.GiaTri</span>
@@ -114,7 +125,7 @@
                                 <div class="modal-body">
                                     <table style="width:100% ">
                                         @{
-                                            var lst = dataAccess.GetThongSoKiThuat(Model.MaSp);
+                                            var lst = dataAccess.GetThongSoKiThuat(Model.MaSp).Where(x=>x.GiaTri.Length>0).ToList();
                                             for (int i = 0; i < lst.Count(); i++)
                                             {
                                                 if (i % 2 == 0)
@@ -148,7 +159,10 @@
 
             </div>
         </div>
-        <div class="row">
+        <h3 class="tittle-w3l   mt-5">
+            Mô tả 
+        </h3>
+        <div class="row p-5 mota">
             @Html.Raw(Model.MoTa)
         </div>
 

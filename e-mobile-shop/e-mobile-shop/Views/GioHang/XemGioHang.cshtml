@@ -77,7 +77,27 @@
             <form asp-action="Update" asp-controller="GioHang" method="post" asp-route-id="@i" class=" form-inline">
                 <label class="pr-2"> Số lượng </label>
                 <input disabled name="SoLuong-@i" id="SoLuong+@i" max="10" style="width: 35px" value="@ViewBag.GioHang[i].SoLuong" type="number" />
-                <button data-toggle="tooltip" data-placement="left" title="Lưu " class="btn btn-primary radius-0 p-1 pl-2 pr-2 ml-2 " id="link-update-@i" style="display: none; font-size: 10px;" type="submit"> Lưu</button>
+                <button type="button" id="link-update-@i" class="btn btn-primary radius-0 p-1 pl-2 pr-2 ml-2" style="display:none" data-toggle="modal" data-target="@("#modal"+i.ToString())">
+                    Lưu
+                </button>
+               
+                <div class="modal fade" id="@("modal"+i.ToString())" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Xác nhận thay đổi chi tiết</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                    
+                            <div class="modal-footer">
+                               
+                                <button data-toggle="tooltip" data-placement="left" title="Lưu " class="btn btn-success radius-0 "   type="submit">Xác nhận</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </form>
             <button data-toggle="tooltip" data-placement="left" title="Chỉnh sửa " onclick="AllowUpdate(@i)" id="btn-update-@i" class="btn btn-outline-primary p-0 pl-2 pr-2 ml-2 radius-0">
                 <i class="fas fa-pencil-alt"></i>
@@ -92,7 +112,29 @@
         </div>
         <div class="p-2 d-flex  justify-content-between" style="font-size: 12px">
 
-            <a class="" asp-action="Remove" asp-controller="GioHang" asp-route-id="i">Xóa</a>
+            <button type="button" id="link-update-@i" class="btn btn-primary radius-0 p-1 pl-2 pr-2 ml-2" data-toggle="modal" data-target="@("#modalDelete"+i.ToString())">
+                Xóa
+            </button>
+
+            <div class="modal fade" id="@("modalDelete"+i.ToString())" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Xác nhận xóa </h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+
+                        <div class="modal-footer">
+                            <a class=" btn btn-success radius-0" data-toggle="tooltip" data-placement="left" asp-action="Remove" asp-controller="GioHang" asp-route-id="i">Xóa</a>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
         </div>
     </div>
 </div>      }

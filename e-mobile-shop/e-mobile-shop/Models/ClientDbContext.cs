@@ -49,7 +49,7 @@ namespace e_mobile_shop.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Data Source=UAENA;Initial Catalog=eShopDb;Integrated Security=True");
+                optionsBuilder.UseSqlServer("Data Source=DESKTOP-R3PM237;Initial Catalog=eShopDb;Integrated Security=True");
             }
         }
 
@@ -70,11 +70,6 @@ namespace e_mobile_shop.Models
                 entity.Property(e => e.MaSp)
                     .HasColumnName("MaSP")
                     .HasMaxLength(6);
-
-                entity.HasOne(d => d.MaSpNavigation)
-                    .WithMany(p => p.AnhSanPham)
-                    .HasForeignKey(d => d.MaSp)
-                    .HasConstraintName("FK_AnhSanPham_SanPham");
             });
 
             modelBuilder.Entity<AspNetRoleClaims>(entity =>
@@ -201,11 +196,6 @@ namespace e_mobile_shop.Models
                 entity.Property(e => e.Status).HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.ThongTin).HasColumnType("text");
-
-                entity.HasOne(d => d.MaSpNavigation)
-                    .WithMany(p => p.BannerKhuyenMai)
-                    .HasForeignKey(d => d.MaSp)
-                    .HasConstraintName("FK_BannerKhuyenMai_SanPham");
             });
 
             modelBuilder.Entity<BinhLuan>(entity =>
@@ -245,17 +235,12 @@ namespace e_mobile_shop.Models
                     .WithMany(p => p.BinhLuan)
                     .HasForeignKey(d => d.MaKh)
                     .HasConstraintName("FK_BinhLuan_AspNetUsers");
-
-                entity.HasOne(d => d.MaSpNavigation)
-                    .WithMany(p => p.BinhLuan)
-                    .HasForeignKey(d => d.MaSp)
-                    .HasConstraintName("FK_BinhLuan_SanPham");
             });
 
             modelBuilder.Entity<ChiTietDonHang>(entity =>
             {
                 entity.HasKey(e => e.MaCtdh)
-                    .HasName("PK__ChiTietD__1E4E40F04910CF25");
+                    .HasName("PK__ChiTietD__1E4E40F0D3994ED9");
 
                 entity.Property(e => e.MaCtdh)
                     .HasColumnName("MaCTDH")
@@ -277,12 +262,6 @@ namespace e_mobile_shop.Models
                     .HasForeignKey(d => d.MaDh)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_ChiTietDonHang_DonHang");
-
-                entity.HasOne(d => d.MaSpNavigation)
-                    .WithMany(p => p.ChiTietDonHang)
-                    .HasForeignKey(d => d.MaSp)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_ChiTietDonHang_SanPham");
             });
 
             modelBuilder.Entity<Country>(entity =>
@@ -527,7 +506,7 @@ namespace e_mobile_shop.Models
                 entity.HasOne(d => d.NsxNavigation)
                     .WithMany(p => p.SanPham)
                     .HasForeignKey(d => d.Nsx)
-                    .HasConstraintName("FK__SanPham__NSX__0B91BA14");
+                    .HasConstraintName("FK__SanPham__NSX__3493CFA7");
             });
 
             modelBuilder.Entity<ThongSo>(entity =>
@@ -551,7 +530,7 @@ namespace e_mobile_shop.Models
             modelBuilder.Entity<ThongSoKiThuat>(entity =>
             {
                 entity.HasKey(e => e.MaTskt)
-                    .HasName("PK__ThongSoK__475C93A12A457EA8");
+                    .HasName("PK__ThongSoK__475C93A1614983D3");
 
                 entity.Property(e => e.MaTskt)
                     .HasColumnName("MaTSKT")
@@ -568,17 +547,6 @@ namespace e_mobile_shop.Models
                     .HasMaxLength(6);
 
                 entity.Property(e => e.ThongSo).HasMaxLength(7);
-
-                entity.HasOne(d => d.MaSpNavigation)
-                    .WithMany(p => p.ThongSoKiThuat)
-                    .HasForeignKey(d => d.MaSp)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_ThongSoKiThuat_SanPham");
-
-                entity.HasOne(d => d.ThongSoNavigation)
-                    .WithMany(p => p.ThongSoKiThuat)
-                    .HasForeignKey(d => d.ThongSo)
-                    .HasConstraintName("FK_ThongSoKiThuat_ThongSoKiThuat");
             });
 
             modelBuilder.Entity<TraLoi>(entity =>
@@ -670,12 +638,6 @@ namespace e_mobile_shop.Models
                 entity.Property(e => e.SortOrder).HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.Type).HasMaxLength(50);
-
-                entity.HasOne(d => d.District)
-                    .WithMany(p => p.Ward)
-                    .HasForeignKey(d => d.DistrictId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Ward_District");
             });
 
             OnModelCreatingPartial(modelBuilder);

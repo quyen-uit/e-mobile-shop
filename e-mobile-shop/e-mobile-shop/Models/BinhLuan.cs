@@ -17,6 +17,5 @@ namespace e_mobile_shop.Models
         public int? Status { get; set; }
 
         public virtual AspNetUsers MaKhNavigation { get; set; }
-        public virtual SanPham MaSpNavigation { get; set; }
     }
 }

@@ -12,6 +12,5 @@ namespace e_mobile_shop.Models
         public string MaCtdh { get; set; }
 
         public virtual DonHang MaDhNavigation { get; set; }
-        public virtual SanPham MaSpNavigation { get; set; }
     }
 }

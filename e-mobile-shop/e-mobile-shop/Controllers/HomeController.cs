@@ -120,14 +120,7 @@ namespace e_mobile_shop.Controllers
             {
                 ViewData["LoaiSp"] = loaiSp;
 
-                if (loaiSp != "LSP0001")
-                {
                     sanphams = sanphams.Where(x => x.LoaiSp == loaiSp);
-                }
-                else
-                {
-                    sanphams = sanphams.Where(x => x.LoaiSp != "LSP0002" && x.LoaiSp != "LSP0007" && x.LoaiSp != "LSP0008");
-                }
             }
             switch (sortOrder)
             {

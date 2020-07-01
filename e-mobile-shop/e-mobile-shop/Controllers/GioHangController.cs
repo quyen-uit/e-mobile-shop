@@ -216,7 +216,13 @@ namespace e_mobile_shop.Controllers
             var gh = HttpContext.Session.GetObjectFromJson<List<ChiTietDonHang>>("GioHang");
 
             gh[id].SoLuong = int.Parse(fc["SoLuong-" + id]);
-            dataAccess.soCtdh = gh.Count();
+            if(gh[id].SoLuong==0)
+            {
+                return RedirectToAction("Remove", "GioHang", new { id = id });
+            }
+
+
+            
             HttpContext.Session.SetObjectAsJson("GioHang", gh);
             return RedirectToAction("XemGioHang", "GioHang").WithSuccess("", "Chỉnh sửa thành công");
         }

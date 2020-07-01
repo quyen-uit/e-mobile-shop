@@ -126,7 +126,7 @@
                     <div class="form-group">
                         <label>Mô tả</label>
                       
-                        <textarea disabled class="form-control" rows="3" asp-for="MoTa"></textarea>
+                        <textarea disabled class="form-control" rows="3" asp-for="MoTa"> @Model.MoTa</textarea>
                         <script>
                             CKEDITOR.replace('MoTa');
                         </script>
@@ -197,7 +197,7 @@
                 </div>           
         </div>
     </div>
-
+    </div>
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
     <script src="~/Admin/js/jquery.czMore-1.5.3.2.js"></script>
     <script>
