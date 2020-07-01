@@ -7,15 +7,21 @@
     var dataAccess = new DataAccess();
 }
 <body>
+     @Html.Partial("_StatusMessages")
     <div class="col-lg-12">
         <div class="panel panel-success">
             <div class=" panel-heading ">
                 <div class="row">
-                    <div class="col-lg-6">
+                    <div class="col-lg-4">
                         <h4>Quản lý đơn hàng</h4>
-
+                        
                     </div>
-                    <div class="col-lg-6">
+                    <div class="col-lg-4">
+                        <select id="filter" onchange="filter()" class="form-control" asp-items="@(new SelectList(context.TrangThaiDonHang.ToList(),"Id","TenTrangThai"))">
+                            <option value="">Trạng thái</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-4">
                         <form asp-action="QuanLyDonHang" method="get" asp-controller="Admin">
                             <div class="input-group custom-search-form">
                                 <input name="searchValue" type="text" class="form-control" placeholder="Tìm mã đơn hàng hoặc tên khách hàng ...">
@@ -26,18 +32,7 @@
                                 </span>
                             </div>
                         </form>
-                        <a asp-action="QuanLyDonHang" asp-controller="Admin" asp-route-status="0">
-                            Bị hủy
-                        </a>
-                        <a asp-action="QuanLyDonHang" asp-controller="Admin" asp-route-status="1">
-                            Đang chờ
-                        </a>
-                        <a asp-action="QuanLyDonHang" asp-controller="Admin" asp-route-status="2">
-                            Đang giao
-                        </a>
-                        <a asp-action="QuanLyDonHang" asp-controller="Admin" asp-route-status="3">
-                            Thanh toán
-                        </a>
+                       
                     </div>
                 </div>
             </div>
@@ -87,5 +82,11 @@
             </div>
         </div>
     </div>
-
+    <script>
+        function filter() {
+           // var e = document.querySelector('#filter').value;
+          //  location.href = '/admin/quanlydonhang/3?status=' + document.querySelector('#filter').value;
+            location.href = '@Url.Action("QuanLyDonHang","Admin")' + '?status=' + document.querySelector('#filter').value;
+        }
+    </script>
 </body>

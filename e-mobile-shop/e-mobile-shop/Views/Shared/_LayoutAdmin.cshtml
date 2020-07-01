@@ -32,6 +32,18 @@
 </head>
 
 <body>
+    <style>
+
+        ul{
+            
+            list-style-type: none;
+        }
+
+        li {
+            padding: 0.5px;
+        }
+
+    </style>
 
     <div id="wrapper">
 
@@ -276,44 +288,44 @@
                                  /input-group
                             </li>*@
                         <li>
-                            <a asp-action="Index" asp-controller="Admin" style="color:darkgreen; background-color: aliceblue"><i class="fa fa-shopping-cart fa-fw"></i> Dashboard</a>
+                            <a asp-action="Index" asp-controller="Admin" style="color:white; background-color: #27ae60;" ><i class="fa fa-dashboard fa-fw"></i><strong> Dashboard</strong></a>
                         </li>
                         <li>
-                            <a asp-action="QuanLyDonHang" asp-controller="Admin" style="color:darkgreen; background-color: aliceblue"><i class="fa fa-shopping-cart fa-fw"></i> Quản lý đơn hàng</a>
+                            <a asp-action="QuanLyDonHang" asp-controller="Admin" style="color:white; background-color: #27ae60;"><i class="fa fa-shopping-cart fa-fw"></i><strong> Quản lý đơn hàng</strong></a>
                         </li>
                         <li>
-                            <a asp-action="QuanLyUser" asp-controller="Admin" style="color:darkgreen; background-color: aliceblue"><i class="fa fa-user fa-fw"></i> Quản lý người dùng </a>
+                            <a asp-action="QuanLyUser" asp-controller="Admin" style="color:white; background-color: #27ae60;"><i class="fa fa-user fa-fw"></i><strong> Quản lý người dùng </strong></a>
                         </li>
                         <li>
-                            <a asp-action="QuanLyKhuyenMai" asp-controller="Admin" style="color:darkgreen; background-color: aliceblue"><i class="fa fa-user fa-fw"></i> Quản lý khuyến mãi </a>
+                            <a asp-action="QuanLyKhuyenMai" asp-controller="Admin" style="color:white; background-color: #27ae60;"><i class="fa fa-plus-circle fa-fw"></i><strong> Quản lý khuyến mãi</strong> </a>
                         </li>
                         <li>
-                            <a style="color:darkgreen; background-color: aliceblue" href="#"><i class="fa fa-wrench fa-fw"></i> Quản lý sản phẩm<span class="fa arrow"></span></a>
+                            <a style="color:white; background-color: #27ae60;" href="#"><i class="fa fa-wrench fa-fw"></i><strong> Quản lý sản phẩm</strong><span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level collapse" style="height: auto;">
                                 <li>
-                                    <a asp-action="QuanLy" asp-controller="Admin" asp-route-id="LSP0002"><i class="fa fa-mobile-phone fa-fw"></i> Điện thoại</a>
+                                    <a asp-action="QuanLy" asp-controller="Admin" asp-route-id="LSP0002" style="background-color:#2980b9; color: white"><i class="fa fa-mobile-phone fa-fw"></i><strong> Điện thoại</strong></a>
                                 </li>
                                 <li>
-                                    <a asp-action="QuanLy" asp-controller="Admin" asp-route-id="LSP0008"><i class="fa fa-laptop fa-fw"></i> Laptop</a>
+                                    <a asp-action="QuanLy" asp-controller="Admin" asp-route-id="LSP0008" style="background-color:#2980b9; color: white"><i class="fa fa-laptop fa-fw"></i><strong> Laptop</strong></a>
                                 </li>
                                 <li>
-                                    <a asp-action="QuanLy" asp-controller="Admin" asp-route-id="LSP0007"><i class="fa fa-tablet fa-fw"></i> Máy tính bảng</a>
+                                    <a asp-action="QuanLy" asp-controller="Admin" asp-route-id="LSP0007" style="background-color:#2980b9; color: white"><i class="fa fa-tablet fa-fw"></i><strong> Máy tính bảng</strong></a>
                                 </li>
 
                                 <li>
-                                    <a style="color:darkgreen; background-color: aliceblue" href="#"><i class="fa fa-wrench fa-fw"></i> Phụ kiện<span class="fa arrow"></span></a>
+                                    <a  style="background-color:#2980b9; color: white" href="#"><i class="fa fa-wrench fa-fw"></i><strong> Phụ kiện</strong><span class="fa arrow"></span></a>
                                     <ul class="nav nav-third-level collapse" style="height: auto;">
                                         <li>
-                                            <a asp-action="QuanLy" asp-controller="Admin" asp-route-id="LSP0001"><i class="fa fa-headphones fa-fw"></i> Tai nghe</a>
+                                            <a asp-action="QuanLy" asp-controller="Admin" asp-route-id="LSP0001" style="background-color:#1abc9c; color:white"><i class="fa fa-headphones fa-fw"></i><strong> Tai nghe</strong></a>
                                         </li>
                                         <li>
-                                            <a asp-action="QuanLy" asp-controller="Admin" asp-route-id="LSP0004"><i class="fa fa-pinterest fa-fw"></i> Cáp sạc</a>
+                                            <a asp-action="QuanLy" asp-controller="Admin" asp-route-id="LSP0004" style="background-color:#1abc9c; color:white"><i class="fa fa-pinterest fa-fw"></i><strong> Cáp sạc</strong></a>
                                         </li>
                                         <li>
-                                            <a asp-action="QuanLy" asp-controller="Admin" asp-route-id="LSP0003"><i class="fa fa-plus-square fa-fw"></i> Thẻ nhớ</a>
+                                            <a asp-action="QuanLy" asp-controller="Admin" asp-route-id="LSP0003" style="background-color:#1abc9c; color:white"><i class="fa fa-plus-square fa-fw"></i><strong> Thẻ nhớ</strong></a>
                                         </li>
                                         <li>
-                                            <a asp-action="QuanLy" asp-controller="Admin" asp-route-id="LSP0005"><i class="fa fa-mobile fa-fw"></i> Ốp lưng</a>
+                                            <a asp-action="QuanLy" asp-controller="Admin" asp-route-id="LSP0005" style="background-color:#1abc9c; color:white"><i class="fa fa-mobile fa-fw"></i><strong> Ốp lưng</strong></a>
                                         </li>
 
                                     </ul>
@@ -322,35 +334,35 @@
 
                         </li>
                         <li>
-                            <a style="color:darkgreen; background-color: aliceblue" href="#"><i class="fa fa-plus fa-fw"></i> Thêm mới<span class="fa arrow"></span></a>
-                            <ul class="nav nav-third-level collapse" style="height: auto;">
+                            <a style="color:white; background-color: #27ae60;" href="#"><i class="fa fa-plus fa-fw"></i><strong> Thêm mới</strong><span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level collapse" style="height: auto;">
                                 <li>
-                                    <a asp-action="ThemKhuyenMai" asp-controller="Admin"><i class="fa fa-mobile-phone fa-fw"></i> Khuyến mãi</a>
+                                    <a style="background-color:#2980b9; color: white" asp-action="ThemKhuyenMai" asp-controller="Admin"><i class="fa fa-mobile-phone fa-fw"></i><strong> Khuyến mãi</strong></a>
                                 </li>
                                 <li>
-                                    <a asp-action="Them" asp-controller="Admin" asp-route-id="LSP0002"><i class="fa fa-mobile-phone fa-fw"></i> Điện thoại</a>
+                                    <a  style="background-color:#2980b9; color: white" asp-action="Them" asp-controller="Admin" asp-route-id="LSP0002"><i class="fa fa-mobile-phone fa-fw"></i><strong> Điện thoại</strong></a>
                                 </li>
                                 <li>
-                                    <a asp-action="Them" asp-controller="Admin" asp-route-id="LSP0007"><i class="fa fa-tablet fa-fw"></i> Máy tính bảng</a>
+                                    <a style="background-color:#2980b9; color: white" asp-action="Them" asp-controller="Admin" asp-route-id="LSP0007"><i class="fa fa-tablet fa-fw"></i><strong> Máy tính bảng</strong></a>
                                 </li>
 
                                 <li>
-                                    <a asp-action="Them" asp-controller="Admin" asp-route-id="LSP0008"><i class="fa fa-laptop fa-fw"></i> Laptop</a>
+                                    <a style="background-color:#2980b9; color: white" asp-action="Them" asp-controller="Admin" asp-route-id="LSP0008"><i class="fa fa-laptop fa-fw"></i><strong> Laptop</strong></a>
                                 </li>
                                 <li>
-                                    <a style="color:darkgreen ; background-color: aliceblue" href="#"><i class="fa fa-wrench fa-fw"></i> Phụ kiện<span class="fa arrow"></span></a>
-                                    <ul class="nav nav-second-level collapse" style="height: auto;">
+                                    <a style="background-color:#2980b9; color: white" href="#"><i class="fa fa-wrench fa-fw"></i><strong> Phụ kiện</strong><span class="fa arrow"></span></a>
+                                    <ul class="nav nav-third-level collapse" style="height: auto;">
                                         <li>
-                                            <a asp-action="Them" asp-controller="Admin" asp-route-id="LSP0001"><i class="fa fa-headphones fa-fw"></i> Tai nghe</a>
+                                            <a style="background-color:#1abc9c; color:white" asp-action="Them" asp-controller="Admin" asp-route-id="LSP0001"><i class="fa fa-headphones fa-fw"></i><strong> Tai nghe</strong></a>
                                         </li>
                                         <li>
-                                            <a asp-action="Them" asp-controller="Admin" asp-route-id="LSP0004"><i class="fa fa-pinterest fa-fw"></i> Cáp sạc</a>
+                                            <a style="background-color:#1abc9c; color:white" asp-action="Them" asp-controller="Admin" asp-route-id="LSP0004"><i class="fa fa-pinterest fa-fw"></i><strong> Cáp sạc</strong></a>
                                         </li>
                                         <li>
-                                            <a asp-action="Them" asp-controller="Admin" asp-route-id="LSP0003"><i class="fa fa-plus-square fa-fw"></i> Thẻ nhớ</a>
+                                            <a style="background-color:#1abc9c; color:white" asp-action="Them" asp-controller="Admin" asp-route-id="LSP0003"><i class="fa fa-plus-square fa-fw"></i><strong> Thẻ nhớ</strong></a>
                                         </li>
                                         <li>
-                                            <a asp-action="Them" asp-controller="Admin" asp-route-id="LSP0005"><i class="fa fa-mobile fa-fw"></i> Ốp lưng</a>
+                                            <a style="background-color:#1abc9c; color:white" asp-action="Them" asp-controller="Admin" asp-route-id="LSP0005"><i class="fa fa-mobile fa-fw"></i><strong> Ốp lưng</strong></a>
                                         </li>
 
                                     </ul>
@@ -369,6 +381,11 @@
         </nav>
 
         <div id="page-wrapper" style="padding-top: 15px">
+            <style>
+                .dataTables_filter, .dataTables_info {
+                    display: none;
+                }
+            </style>
             @RenderBody()
         </div>
         <!-- /#page-wrapper -->

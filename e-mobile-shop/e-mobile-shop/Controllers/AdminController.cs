@@ -58,6 +58,7 @@ namespace e_mobile_shop.Controllers
             }
             return View(list);
         }
+       
         public IActionResult QuanLyDonHang(string searchValue, string status)
         {
             List<DonHang> list = context.DonHang.ToList();
@@ -86,7 +87,14 @@ namespace e_mobile_shop.Controllers
                 }
                 return View(rs).WithSuccess("Tìm kiếm", searchValue);
             }
-            return View(list);
+            if(!string.IsNullOrEmpty(status))
+            {
+                return View(list).WithSuccess("Trạng thái đơn hàng: ", context.TrangThaiDonHang.Find(Int32.Parse(status)).TenTrangThai);
+            }
+            else
+            {
+                return View(list);
+            }
         }
         public IActionResult ChiTietDonHang(string id)
         {
