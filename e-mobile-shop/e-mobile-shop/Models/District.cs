@@ -5,6 +5,11 @@ namespace e_mobile_shop.Models
 {
     public partial class District
     {
+        public District()
+        {
+            Ward = new HashSet<Ward>();
+        }
+
         public int Id { get; set; }
         public string Name { get; set; }
         public string Type { get; set; }
@@ -15,5 +20,6 @@ namespace e_mobile_shop.Models
         public bool? IsDeleted { get; set; }
 
         public virtual Province Province { get; set; }
+        public virtual ICollection<Ward> Ward { get; set; }
     }
 }

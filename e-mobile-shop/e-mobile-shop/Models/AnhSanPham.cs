@@ -10,5 +10,7 @@ namespace e_mobile_shop.Models
         public string Anh3 { get; set; }
         public string Id { get; set; }
         public string MaSp { get; set; }
+
+        public virtual SanPham MaSpNavigation { get; set; }
     }
 }
