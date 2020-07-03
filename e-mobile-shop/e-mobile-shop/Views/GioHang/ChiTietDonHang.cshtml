@@ -44,22 +44,32 @@
         <div class="col-md-4 col-12 border">
             <div class="row p-2 m-2 " style=" border-bottom: 1px dashed black">
                 <div class="col-6">
+                    Trạng thái
+                </div>
+                <div class="col-6">
+                    @{
+                        var dh = context.DonHang.Find(Model[0].MaDh);
+                        var trangthai = context.TrangThaiDonHang.Find(dh.TinhTrangDh).TenTrangThai;
+                            <span>@trangthai </span>
+                    }
+                </div>
+                <div class="col-6">
                     Tổng cộng
                 </div>
                 <div class="col-6">
-                    <span style="color:blue">  @context.DonHang.Find(Model[0].MaDh).Tongtien.Value.ToString("N0") </span>
+                    <span style="color:blue">  @context.DonHang.Find(Model[0].MaDh).Tongtien.Value.ToString("N0") VNĐ </span>
                 </div>
                 <div class="col-6">
                     Giảm giá
                 </div>
                 <div class="col-6">
-                    <span style="color:black">0</span>
+                    <span style="color:black">@context.DonHang.Find(Model[0].MaDh).GiamGia.Value.ToString("N0")</span>
                 </div>
                 <div class="col-6">
                     Cần thanh toán
                 </div>
                 <div class="col-6"> 
-                    <strong style="color:red"> @dataAccess.GetDonHang(Model[0].MaDh).Tongtien.Value.ToString("N0") VNĐ </strong>
+                    <strong style="color:red"> @((dataAccess.GetDonHang(Model[0].MaDh).Tongtien.Value - context.DonHang.Find(Model[0].MaDh).GiamGia.Value).ToString("N0"))  VNĐ </strong>
                 </div>
             </div>
             <div class="row ">

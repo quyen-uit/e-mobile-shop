@@ -385,7 +385,7 @@
                                             <img src=@Url.Content("~/ProductAvatar/" + item.AnhDaiDien) alt="" class="d-block w-100 p-4">
                                             <div class="men-cart-pro">
                                                 <div class="inner-men-cart-pro">
-                                                    <a asp-controller="SanPham" asp-action="SanPham" asp-route-id="@item.MaSp" class="link-product-add-cart">Quick View</a>
+                                                    <a asp-controller="SanPham" asp-action="SanPham" asp-route-id="@item.MaSp" class="link-product-add-cart">Xem chi tiết</a>
                                                 </div>
                                             </div>
 
@@ -405,8 +405,16 @@
                                                 @item.TenSp
                                             </h5>
                                             <div class="info-product-price my-2">
-                                                <span class="item_price">@item.GiaGoc<sup>đ</sup></span>
-                                                <del>@item.GiaTien<sup>đ</sup></del>
+                                                @if (item.GiaGoc != item.GiaTien)
+                                                {
+                                                    <span class="item_price">@item.GiaGoc.Value.ToString("N0")<sup>đ</sup></span>
+                                                    <del>@item.GiaTien.Value.ToString("N0")<sup>đ</sup></del>
+                                                }
+                                                else
+                                                {
+                                                    <span class="item_price">@item.GiaGoc.Value.ToString("N0")<sup>đ</sup></span>
+                                                }
+
                                             </div>
                                             <div class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out">
                                                 <form action="#" method="post">

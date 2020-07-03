@@ -1,10 +1,9 @@
-﻿@{
-
-    var dataAccess = new DataAccess();
-
-}
-@using Microsoft.AspNetCore.Http;
+﻿@using Microsoft.AspNetCore.Http;
 @using e_mobile_shop.Models.Helpers;
+@{
+    var dataAccess = new DataAccess();
+}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -105,10 +104,16 @@
                                 <a class="btn w3view-cart p-0" asp-controller="GioHang" asp-action="XemGioHang" name="submit" value="">
 
                                     <i style="font-size: 30px" class="fas fa-cart-arrow-down"></i>
-                                    @if (dataAccess.soCtdh != null)
-                                    {
-                                        <span>@dataAccess.soCtdh</span>
-                                    }
+                                        @{ 
+                                            if (dataAccess != null)
+                                            {
+                                                <span> @dataAccess.getSoCtdh()</span>
+                                            }
+                                            else
+                                            {
+                                                <span>0</span>
+                                            }
+                                        }
                                 </a>
 
                             </div>
@@ -129,7 +134,7 @@
                             <div id="agileinfo-nav_search" name="agileinfo_search" class="border dropdown p-1" required="">
                                 <button style="font-size: 15px;" class="btn dropdown-toggle" type="button" data-toggle="dropdown" id="drmn" value="">Danh mục Sản phẩm</button>
                                 <div class="dropdown-menu" style="width: 100%; border-radius: 0px; background-color: #F8F9FA" aria-labeledby="drmn">
-                                    @foreach (var item in dataAccess.ReadLoaiSp())
+                                    @foreach (var item in new DataAccess().ReadLoaiSp())
                                     {
                                         <a type="button" style="text-align: left; border-radius: 0px;" class="btn btn-block p-0 " asp-action="DanhSach" asp-controller="SanPham" asp-route-id="@item.MaLoai">
                                             <p style="color: black" class="p-2">@item.TenLoai</p>
@@ -180,7 +185,7 @@
 
                                 </div>
                             </li>
-                            
+
                             <li class="nav-item">
                                 <a class="nav-link" asp-controller="Home" asp-action="Contact">Hỗ trợ </a>
                             </li>
@@ -256,22 +261,17 @@
                         <h3 class="text-white font-weight-bold mb-3">Sản phẩm</h3>
                         <ul>
                             <li class="mb-3">
-                                <a href="product.html">Điện thoại di động </a>
+                                <a  asp-controller="SanPham" asp-action="DanhSach" asp-route-id="LSP0002" >Điện thoại di động </a>
                             </li>
                             <li class="mb-3">
-                                <a href="product.html">Máy tính bảng</a>
+                                <a  asp-controller="SanPham" asp-action="DanhSach" asp-route-id="LSP0007">Máy tính bảng</a>
                             </li>
                             <li class="mb-3">
-                                <a href="product.html">Laptop</a>
+                                <a  asp-controller="SanPham" asp-action="DanhSach" asp-route-id="LSP0008">Laptop</a>
                             </li>
+                           
                             <li class="mb-3">
-                                <a href="product2.html">Phụ kiện</a>
-                            </li>
-                            <li class="mb-3">
-                                <a href="product.html">Tin tức</a>
-                            </li>
-                            <li class="mb-3">
-                                <a href="product.html">Tin tức</a>
+                                <a href="#">Tin tức</a>
                             </li>
                         </ul>
                     </div>
@@ -281,10 +281,10 @@
                         <h3 class="text-white font-weight-bold mb-3">Liên kết</h3>
                         <ul>
                             <li class="mb-3">
-                                <a href="about.html">Về chúng tôi</a>
+                                <a href="#">Về chúng tôi</a>
                             </li>
                             <li class="mb-3">
-                                <a href="contact.html">Liên hệ</a>
+                                <a asp-controller="Home" asp-action="Contact">Liên hệ</a>
                             </li>
                             <li class="mb-3">
                                 <a href="help.html">Website liên quan</a>
@@ -296,7 +296,7 @@
                         <h3 class="text-white font-weight-bold mb-3">Liên hệ</h3>
                         <ul>
                             <li class="mb-3">
-                                <i class="fas fa-map-marker"></i> 123 Sebastian, USA.
+                                <i class="fas fa-map-marker"></i> University of Information Technology, VNU-HCM, HCM City, Viet Nam.
                             </li>
                             <li class="mb-3">
                                 <i class="fas fa-mobile"></i> 0857394951
@@ -306,7 +306,7 @@
                             </li>
                             <li class="mb-3">
                                 <i class="fas fa-envelope-open"></i>
-                                <a href="mailto:example@mail.com"> thanglequoc1912@gmail.com</a>
+                                <a href="mailto:thanglequoc1912@gmail.com"> thanglequoc1912@gmail.com</a>
                             </li>
 
                         </ul>
@@ -372,7 +372,7 @@
                 arrows: false,
                 fade: true,
                 asNavFor: '.slider-nav',
-                 autoplay: true,
+                autoplay: true,
                 autoplaySpeed: 2000,
                 infinite: true,
             });
@@ -390,7 +390,7 @@
             $('.slick-brand').slick({
                 slidesToShow: 4,
                 slidesToScroll: 4,
-               
+
                 arrows: true,
                 dots: false,
                 centerMode: true,

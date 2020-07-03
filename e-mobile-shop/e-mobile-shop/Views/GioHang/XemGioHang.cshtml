@@ -3,7 +3,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     var context = new ClientDbContext();
     var dataAccess = new DataAccess();
-    }
+}
 @using e_mobile_shop.Areas.Identity.Data
 @using Microsoft.AspNetCore.Identity
 @inject UserManager<AppUser> UserManager
@@ -65,79 +65,79 @@
         <div class="col-md-8 col-12 p-0 ">
             @for (var i = 0; i < ViewBag.GioHang.Count; i++)
             {
-<div class="row border m-1 ">
-    <div class="col-3 " style="margin: auto; text-align: center">
-        <img src=@Url.Content("~/ProductAvatar/" + dataAccess.GetSanPham(ViewBag.GioHang[i].MaSp).AnhDaiDien) style="max-height: 70px; max-width: 70px;" />
-    </div>
-    <div class="col-5 ">
-        <div class="p-2">
-            <strong> @dataAccess.GetSanPham(ViewBag.GioHang[i].MaSp).TenSp </strong>
-        </div>
-        <div class="p-2 border d-inline-flex mb-1">
-            <form asp-action="Update" asp-controller="GioHang" method="post" asp-route-id="@i" class=" form-inline">
-                <label class="pr-2"> Số lượng </label>
-                <input disabled name="SoLuong-@i" id="SoLuong+@i" max="10" style="width: 35px" value="@ViewBag.GioHang[i].SoLuong" type="number" />
-                <button type="button" id="link-update-@i" class="btn btn-primary radius-0 p-1 pl-2 pr-2 ml-2" style="display:none" data-toggle="modal" data-target="@("#modal"+i.ToString())">
-                    Lưu
-                </button>
-               
-                <div class="modal fade" id="@("modal"+i.ToString())" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Xác nhận thay đổi chi tiết</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                    
-                            <div class="modal-footer">
-                               
-                                <button data-toggle="tooltip" data-placement="left" title="Lưu " class="btn btn-success radius-0 "   type="submit">Xác nhận</button>
-                            </div>
-                        </div>
+                <div class="row border m-1 ">
+                    <div class="col-3 " style="margin: auto; text-align: center">
+                        <img src=@Url.Content("~/ProductAvatar/" + dataAccess.GetSanPham(ViewBag.GioHang[i].MaSp).AnhDaiDien) style="max-height: 70px; max-width: 70px;" />
                     </div>
-                </div>
-            </form>
-            <button data-toggle="tooltip" data-placement="left" title="Chỉnh sửa " onclick="AllowUpdate(@i)" id="btn-update-@i" class="btn btn-outline-primary p-0 pl-2 pr-2 ml-2 radius-0">
-                <i class="fas fa-pencil-alt"></i>
-            </button>
-        </div>
-    </div>
-    <div class="col-4  d-flex justify-content-around flex-column" style="text-align: right">
-        <div class="p-2">
-            <strong style="font-size: 13px">
-                @((context.SanPham.Find(ViewBag.GioHang[i].MaSp).GiaGoc * ViewBag.GioHang[i].SoLuong).ToString("N0"))
-            </strong>
-        </div>
-        <div class="p-2 d-flex  justify-content-between" style="font-size: 12px">
+                    <div class="col-5 ">
+                        <div class="p-2">
+                            <strong> @dataAccess.GetSanPham(ViewBag.GioHang[i].MaSp).TenSp </strong>
+                        </div>
+                        <div class="p-2 border d-inline-flex mb-1">
+                            <form asp-action="Update" asp-controller="GioHang" method="post" asp-route-id="@i" class=" form-inline">
+                                <label class="pr-2"> Số lượng </label>
+                                <input disabled name="SoLuong-@i" id="SoLuong+@i" max="10" style="width: 35px" value="@ViewBag.GioHang[i].SoLuong" type="number" />
+                                <button type="button" id="link-update-@i" class="btn btn-primary radius-0 p-1 pl-2 pr-2 ml-2" style="display:none" data-toggle="modal" data-target="@("#modal"+i.ToString())">
+                                    Lưu
+                                </button>
 
-            <button type="button" id="link-update-@i" class="btn btn-primary radius-0 p-1 pl-2 pr-2 ml-2" data-toggle="modal" data-target="@("#modalDelete"+i.ToString())">
-                Xóa
-            </button>
+                                <div class="modal fade" id="@("modal"+i.ToString())" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Xác nhận thay đổi chi tiết</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
 
-            <div class="modal fade" id="@("modalDelete"+i.ToString())" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Xác nhận xóa </h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
+                                            <div class="modal-footer">
+
+                                                <button data-toggle="tooltip" data-placement="left" title="Lưu " class="btn btn-success radius-0 " type="submit">Xác nhận</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <button data-toggle="tooltip" data-placement="left" title="Chỉnh sửa " onclick="AllowUpdate(@i)" id="btn-update-@i" class="btn btn-outline-primary p-0 pl-2 pr-2 ml-2 radius-0">
+                                <i class="fas fa-pencil-alt"></i>
                             </button>
                         </div>
+                    </div>
+                    <div class="col-4  d-flex justify-content-around flex-column" style="text-align: right">
+                        <div class="p-2">
+                            <strong style="font-size: 13px">
+                                @((context.SanPham.Find(ViewBag.GioHang[i].MaSp).GiaGoc * ViewBag.GioHang[i].SoLuong).ToString("N0"))
+                            </strong>
+                        </div>
+                        <div class="p-2 d-flex  justify-content-between" style="font-size: 12px">
 
-                        <div class="modal-footer">
-                            <a class=" btn btn-success radius-0" data-toggle="tooltip" data-placement="left" asp-action="Remove" asp-controller="GioHang" asp-route-id="i">Xóa</a>
-                            
+                            <button type="button" id="link-update-@i" class="btn btn-primary radius-0 p-1 pl-2 pr-2 ml-2" data-toggle="modal" data-target="@("#modalDelete"+i.ToString())">
+                                Xóa
+                            </button>
+
+                            <div class="modal fade" id="@("modalDelete"+i.ToString())" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Xác nhận xóa </h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+
+                                        <div class="modal-footer">
+                                            <a class=" btn btn-success radius-0" data-toggle="tooltip" data-placement="left" asp-action="Remove" asp-controller="GioHang" asp-route-id="i">Xóa</a>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
                         </div>
                     </div>
-                </div>
-            </div>
-
-
-        </div>
-    </div>
-</div>      }
+                </div>      }
         </div>
         <div class="col-md-4 col-12 border">
             <div class="row p-2 m-2 " style="border-bottom: 1px dashed black">
@@ -148,13 +148,13 @@
 
                     @if (ViewBag.GiaTriDonHang != null)
                     {
-        <span style="color: blue">
+                        <span style="color: blue">
 
-            @ViewBag.GiaTriDonHang.ToString("N0") VNĐ
-        </span> }
-    else
-    {
-<span> 0 VNĐ</span>}
+                            @ViewBag.GiaTriDonHang.ToString("N0") VNĐ
+                        </span> }
+                    else
+                    {
+                        <span> 0 VNĐ</span>}
                 </div>
                 <div class="col-6">
                     Giảm giá
@@ -162,16 +162,16 @@
                 <div class="col-6">
                     @if (ViewBag.GiamGia != null)
                     {
-        <span style="color: black">
+                        <span style="color: black">
 
-            @ViewBag.GiamGia.ToString("N0")
-        </span> }
-    else
-    {
-<span style="color: black">
+                            @ViewBag.GiamGia.ToString("N0")
+                        </span> }
+                    else
+                    {
+                        <span style="color: black">
 
-    01
-</span>}
+                            01
+                        </span>}
                 </div>
                 <div class="col-6">
                     Cần thanh toán
@@ -185,11 +185,12 @@
                 {
                     foreach (var item in (List<Voucher>)ViewBag.Vouchers)
                     {
-    <div class="col-12 ">
+                        <div class="col-12 ">
 
-        <a class="btn btn-block btn-outline-primary mt-2" asp-action="RemoveVoucher" asp-controller="GioHang" asp-route-voucherCode="@item.VoucherCode"> @item.VoucherName</a>
-    </div>}
-}
+                            <a class="btn btn-block btn-outline-primary mt-2" asp-action="RemoveVoucher" asp-controller="GioHang" asp-route-voucherCode="@item.VoucherCode"> @item.VoucherName</a>
+                        </div>
+                    }
+                }
                 <div class="col-12 p-0 m-0">
                     <form asp-action="XemGioHang" name="voucher" onsubmit="return true" method="post" asp-controller="GioHang">
                         <table style="width: 100%">

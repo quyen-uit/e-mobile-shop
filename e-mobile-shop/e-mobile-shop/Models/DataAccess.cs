@@ -2,12 +2,30 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using e_mobile_shop.Models.Helpers;
+using Microsoft.AspNetCore.Http;
 
 namespace e_mobile_shop.Models
 {
     public class DataAccess
     {
-        public int soCtdh { get; set; }
+        private  readonly HttpContextAccessor httpContextAccessor = new HttpContextAccessor();
+        static int soCtdh;
+
+        public void AddCtdh(int value)
+        {
+            soCtdh = value;
+        }
+
+        public string getSoCtdh()
+        {
+            if (!String.IsNullOrEmpty(httpContextAccessor.HttpContext.Session.GetString("GioHangCount")))
+            {
+                return httpContextAccessor.HttpContext.Session.GetString("GioHangCount");
+            }
+            else return "0";
+           
+        }
 
         public List<AspNetUsers> ViewSanPham()
         {

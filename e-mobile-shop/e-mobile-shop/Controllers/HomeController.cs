@@ -25,6 +25,7 @@ namespace e_mobile_shop.Controllers
         {
             _context = context;
             dataAccess = new DataAccess();
+           
         }
 
        

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using e_mobile_shop.Models;
 using e_mobile_shop.Models.Helpers;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,6 +19,7 @@ namespace e_mobile_shop.Controllers
         {
             context = _context;
             dataAccess = new DataAccess();
+            
         }
         public IActionResult Index()
         {

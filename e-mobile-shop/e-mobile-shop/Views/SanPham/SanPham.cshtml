@@ -4,6 +4,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     var context = new ClientDbContext();
     var dataAccess = new DataAccess();
+
 }
 
 @using e_mobile_shop.Areas.Identity.Data
@@ -84,7 +85,7 @@
                         <li class="mb-3">
                             <form style="font-size: 14px; " asp-action="AddToCartSession" asp-route-maSp="@Model.MaSp" asp-controller="GioHang" class="form-inline  " method="post">
                                 <label>Số lượng</label>
-                                <input type="number" style="width: 60px;" name="SoLuong" id="SoLuong" value="1" class=" form-control ml-1" />
+                                <input type="number" style="width: 60px;" name="SoLuong" id="SoLuong" value="1" min="1" max="10" class=" form-control ml-1" />
                                 <button class="btn btn-primary radius-0 ml-1" type="submit"> Thêm vào giỏ hàng </button>
                             </form>
 

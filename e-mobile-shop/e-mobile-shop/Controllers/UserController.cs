@@ -14,10 +14,11 @@ namespace e_mobile_shop.Controllers
     public class UserController : Controller
     {
         private readonly ClientDbContext context;
-             
+        private DataAccess dataAccess;
         public UserController(ClientDbContext _context)
         {
             context = _context;
+           
         }
         public IActionResult Index()
         {

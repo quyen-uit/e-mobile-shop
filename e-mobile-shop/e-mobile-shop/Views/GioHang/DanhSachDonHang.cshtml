@@ -49,6 +49,32 @@
         <span>D</span>anh sách đơn hàng
     </h3>
     <div class="container">
+        <div class="d-flex pb-2">
+            <div class="pr-2 dropdown show">
+                <a class="btn btn-outline-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Chọn loại đơn hàng
+                </a>
+
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    @foreach (var m in new ClientDbContext().TrangThaiDonHang.ToList())
+                    {
+                        <a class="dropdown-item" asp-action="DanhSachDonHang" asp-controller="GioHang" asp-route-type="@m.Id">@m.TenTrangThai</a>
+                    }
+                    <a class="dropdown-item" asp-action="DanhSachDonHang" asp-controller="GioHang" asp-route-type="">Tất cả </a>
+                </div>
+            </div>
+            <div style="line-height: 20px; border-left: 1px solid gray" class="pl-2">
+                @if (ViewData["Type"] != null)
+                {
+                    <h3> @ViewData["Type"].ToString()</h3>
+                }
+                else
+                {
+                    <h3> Tất cả đơn hàng</h3>
+                }
+            </div>
+           
+        </div>
         <table class="table">
             <thead>
                 <tr>
@@ -78,11 +104,10 @@
                             @Html.DisplayFor(modelItem => item.MaDh)
                         </td>
                         <td>
-                            @(item.PhiVanChuyen + item.Tongtien)
-                        </td>
+                            @((item.PhiVanChuyen + item.Tongtien - item.GiamGia).Value.ToString("N0")) VNĐ
 
                         <td>
-                            @Html.DisplayFor(modelItem => item.TinhTrangDh)
+                            @( new ClientDbContext().TrangThaiDonHang.Find(item.TinhTrangDh).TenTrangThai)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.NgayDatMua)
@@ -91,7 +116,30 @@
                             <a data-toggle="tooltip" data-placement="left" title="Chi tiết " asp-controller="GioHang" asp-action="ChiTietDonHang" asp-route-id="@item.MaDh">
                                 <i class="s fas fa-info-circle"></i>
                             </a>
-                            <a data-toggle="tooltip" data-placement="top" title="Hủy "><i class=" s fas fa-trash-alt"></i></a>
+                           
+                            <button  data-placement="top" title="Hủy " type="button" id="link-update-@item.MaDh"  data-toggle="modal" data-target="@("#modalDelete"+item.MaDh.ToString())">
+                                <i class=" s fas fa-trash-alt"></i>
+                            </button>
+
+                            <div class="modal fade" id="@("modalDelete"+item.MaDh.ToString())" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Xác nhận hủy đơn hàng  </h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+
+                                        <div class="modal-footer">
+                                            <a class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Hủy " asp-action="HuyDonHang" asp-controller="GioHang" asp-route-id="@item.MaDh"> Xác nhận </a>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
                         </td>
                     </tr>
                 }

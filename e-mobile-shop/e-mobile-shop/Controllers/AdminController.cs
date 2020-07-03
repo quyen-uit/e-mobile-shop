@@ -31,7 +31,8 @@ namespace e_mobile_shop.Controllers
         [HttpGet]
         public IActionResult Test()
         {
-            return Ok(_repository.GetAll());
+                return Ok(_repository.GetAll());
+         
         }
         // [Authorize(Roles = "Quản trị viên")]
         public IActionResult Index()
