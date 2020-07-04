@@ -31,18 +31,19 @@
                 Thêm @ViewData["TenLoai"]
             </div>
             <div class="panel-body">
-                <div class="checkbox ">
-                    <label>
-                        <input type="checkbox" asp-for="@Model.Isnew" checked />Sản phẩm mới
-                    </label>
-                </div>
-                <div class="checkbox ">
-                    <label>
-                        <input type="checkbox" asp-for="@Model.Ishot" />Sản phẩm nổi bật
-                    </label>
-                </div>
-
+               
                 <form enctype="multipart/form-data" role="form" asp-action="Them" asp-controller="Admin" method="post">
+                    <div class="checkbox ">
+                        <label>
+                            <input type="checkbox" asp-for="@Model.Isnew" checked />Sản phẩm mới
+                        </label>
+                        
+                    </div>
+                    <div class="checkbox ">
+                        <label>
+                            <input type="checkbox" asp-for="@Model.Ishot" />Sản phẩm nổi bật
+                        </label>
+                    </div>
 
                     <div class="form-group" hidden>
                         <label asp-for="LoaiSp"> Loại sản phẩm </label>
@@ -50,11 +51,11 @@
 
                     </div>
                     @*<div class="form-group">
-                            <label asp-for="LoaiSp"> Loại sản phẩm </label>
-                            <select class="form-control" asp-for="LoaiSp" asp-items="@(new SelectList(DataAccess.ReadLoaiSp(),"MaLoai","TenLoai"))">
-                            </select>
+            <label asp-for="LoaiSp"> Loại sản phẩm </label>
+            <select class="form-control" asp-for="LoaiSp" asp-items="@(new SelectList(DataAccess.ReadLoaiSp(),"MaLoai","TenLoai"))">
+            </select>
 
-                        </div>*@
+        </div>*@
                     <div class="row">
                         <div class="form-group col-lg-6">
                             <label asp-for="TenSp">
@@ -131,18 +132,18 @@
                         </script>
                     </div>
                     @*<div class="form-group">
-                            <label>Thông số kĩ thuật  </label>
+            <label>Thông số kĩ thuật  </label>
 
-                            <div id="czContainer">
-                                <div id="first">
-                                    <div class="recordset">
-                                        <input placeholder="Tên thuộc tính" class="form-group ml-2" type="text" id="attribute_1_name" name="attribute_1_name">
+            <div id="czContainer">
+                <div id="first">
+                    <div class="recordset">
+                        <input placeholder="Tên thuộc tính" class="form-group ml-2" type="text" id="attribute_1_name" name="attribute_1_name">
 
-                                        <input placeholder="Giá trị" class="form-group" type="text" id="attribute_1_value" name="attribute_1_value">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>*@
+                        <input placeholder="Giá trị" class="form-group" type="text" id="attribute_1_value" name="attribute_1_value">
+                    </div>
+                </div>
+            </div>
+        </div>*@
                     <div class="form-group">
                         <div class="row">
                             @foreach (var item in dataAccess.ReadThongSo(ViewData["MaLoai"].ToString()))
@@ -153,7 +154,7 @@
                                         @*<label class="validation-summary-errors">*</label>*@
 
                                     </label>
-                                    <input name="@item.MaThongSo" type="text" class="form-control">
+                                    <input name="@item.MaThongSo" type="text" class="form-control" maxlength="256">
                                 </div>
                             }
                         </div>

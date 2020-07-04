@@ -31,12 +31,36 @@ namespace e_mobile_shop.Controllers
         [HttpGet]
         public IActionResult Test()
         {
-                return Ok(_repository.GetAll());
-         
+            return Ok(_repository.GetAll());
         }
         // [Authorize(Roles = "Quản trị viên")]
         public IActionResult Index()
         {
+            int sumPre = 0;
+            int sum = 0;
+            int preMonth = DateTime.Now.AddMonths(-1).Month;
+            List<DonHang> dhs = context.DonHang.ToList();
+            foreach(var item in dhs)
+            {
+               
+              if (item.NgayDatMua.Value.Month == preMonth)
+                {
+                    foreach(var i in context.ChiTietDonHang.Where(x=>x.MaDh == item.MaDh))
+                    {
+                        sumPre = sumPre + i.SoLuong.Value;
+                    }
+                }
+              else if (item.NgayDatMua.Value.Month == DateTime.Now.Month)
+                {
+                    foreach (var i in context.ChiTietDonHang.Where(x => x.MaDh == item.MaDh))
+                    {
+                        sum = sum + i.SoLuong.Value;
+                    }
+                }
+            }
+            ViewData["sumPreMonth"] = sumPre;
+
+            ViewData["sumCurMonth"] = sum;
             return View();
         }
         public IActionResult QuanLyUser(string searchValue)
@@ -86,7 +110,7 @@ namespace e_mobile_shop.Controllers
                         rs.Add(item);
                     }
                 }
-                return View(rs).WithSuccess("Tìm kiếm", searchValue);
+                return View(rs).WithSuccess("Tìm kiếm: ", searchValue);
             }
             if(!string.IsNullOrEmpty(status))
             {
@@ -115,13 +139,17 @@ namespace e_mobile_shop.Controllers
             dh.TinhTrangDh = model.TinhTrangDh;
             context.DonHang.Update(dh);
             context.SaveChanges();
-            return RedirectToAction("QuanLyDonHang", "Admin").WithSuccess("Thành công", "Đơn hàng đã được sửa.");
+            return RedirectToAction("QuanLyDonHang", "Admin").WithSuccess("Thành công", "Đơn hàng đã được sửa. ID: " + model.MaDh);
         }
-        public IActionResult QuanLy(string id, string searchValue)
+        public IActionResult QuanLy(string id, string searchValue,string status)
         {
-            ViewData["LoaiSp"] = id;
+            ViewData["LoaiSP"] = id;
             var a = dataAccess.ReadSanPham(id);
             List<SanPham> rs = new List<SanPham>();
+            if(!string.IsNullOrEmpty(status))
+            {
+                a = context.SanPham.Where(x=>x.LoaiSp == id && x.Status == Int32.Parse(status)).ToList();
+            }
             if (!String.IsNullOrEmpty(searchValue))
             {
 
@@ -130,10 +158,12 @@ namespace e_mobile_shop.Controllers
                     if (item.TenSp.ToLower().Contains(searchValue.ToLower().Trim()) || item.MaSp.ToLower().Contains(searchValue.ToLower().Trim()))
                         rs.Add(item);
                 }
-                return View(rs).WithSuccess("Tìm kiếm", searchValue);
+                return View(rs).WithSuccess("Tìm kiếm: ", searchValue);
             }
 
-
+            if (!string.IsNullOrEmpty(status))
+                return View(a).WithSuccess("Trạng thái sản phẩm: ", status=="1"?"Kinh doanh":"Ngừng kinh doanh");
+            else 
             return View(a);
         }
         //public IActionResult QuanLy(string maloai, string search)
@@ -172,7 +202,7 @@ namespace e_mobile_shop.Controllers
             IFormFile productImages2,
             IFormFile productImages3)
         {
-            string message = "";
+           
             model.MaSp = fc["MaSp"];
             SanPham a = context.SanPham.Find(fc["MaSp"]);
            
@@ -187,7 +217,9 @@ namespace e_mobile_shop.Controllers
             }
             if (ModelState.IsValid)
             {
-                model.Status = string.IsNullOrEmpty(fc["status"]) ? 0 : 1;
+                model.Ishot = Convert.ToBoolean(fc["isHot"].ToString().Split(',')[0]);
+                model.Isnew = Convert.ToBoolean(fc["isNew"].ToString().Split(',')[0]);
+                model.Status = fc["status"].ToString().Contains("on")  ? 1:0;
                 context.Entry(a).CurrentValues.SetValues(model);
                 context.SaveChanges();
 
@@ -228,7 +260,7 @@ namespace e_mobile_shop.Controllers
                 //    temp = null;
 
                 //}
-                return RedirectToAction("QuanLy", "Admin", new { id = model.LoaiSp }).WithSuccess("Thành công", "Sản phẩm đã được sửa");
+                return RedirectToAction("QuanLy", "Admin", new { id = model.LoaiSp }).WithSuccess("Thành công", "Sản phẩm đã được sửa. ID: "+ model.MaSp);
             }
             else
             {
@@ -255,7 +287,8 @@ namespace e_mobile_shop.Controllers
 
                 model.AnhDaiDien = UploadedFile(AnhDaiDien, "ProductAvatar");
                 model.SoLuotXemSp = 0;
-
+                model.Ishot =   Convert.ToBoolean(fc["isHot"].ToString().Split(',')[0]);
+                model.Isnew = Convert.ToBoolean(fc["isNew"].ToString().Split(',')[0]);
                 context.SanPham.Add(model);
                 context.SaveChanges();
 
@@ -263,9 +296,9 @@ namespace e_mobile_shop.Controllers
                 {
 
                     MaSp = model.MaSp,
-                    Anh1 = UploadedFile(productImages1, "ProductImages"),
-                    Anh2 = UploadedFile(productImages2, "ProductImages"),
-                    Anh3 = UploadedFile(productImages3, "ProductImages")
+                    Anh1 = productImages1 != null ?  UploadedFile(productImages1, "ProductImages"): null,
+                    Anh2 = productImages2 != null ? UploadedFile(productImages2, "ProductImages") : null,
+                    Anh3 = productImages3 != null ? UploadedFile(productImages3, "ProductImages") : null,
                 };
 
                 context.AnhSanPham.Add(pic);
@@ -311,7 +344,7 @@ namespace e_mobile_shop.Controllers
                 //    else break;
 
                 //}
-                return RedirectToAction("QuanLy", "Admin", new { id = model.LoaiSp }).WithSuccess("Thành công", "Sản phẩm đã được sửa");
+                return RedirectToAction("QuanLy", "Admin", new { id = model.LoaiSp }).WithSuccess("Thành công", "Sản phẩm đã được thêm. ID:" + model.MaSp);
             }
             else
             {
@@ -343,11 +376,14 @@ namespace e_mobile_shop.Controllers
         {
             return View();
         }
-        public IActionResult QuanLyKhuyenMai(string searchValue)
+        public IActionResult QuanLyKhuyenMai(string searchValue, string status)
         {
             List<Voucher> list = context.Voucher.ToList();
             List<Voucher> rs = new List<Voucher>();
-       
+            if(!string.IsNullOrEmpty(status))
+            {
+               list = context.Voucher.Where(x => x.Status == Int32.Parse(status)).ToList();
+            }
             if (!String.IsNullOrEmpty(searchValue))
             {
 
@@ -362,13 +398,16 @@ namespace e_mobile_shop.Controllers
                 }
                 return View(rs).WithSuccess("Tìm kiếm", searchValue);
             }
-            return View(list);
+            if (!string.IsNullOrEmpty(status))
+                return View(list).WithSuccess("Trạng thái khuyến mãi: " , status=="1"?"Hoạt động":"Hết hạn");
+            else 
+                return View(list);
         }
         public IActionResult XoaKhuyenMai(string Id)
         {
             context.Voucher.Find(Id).Status = 0;
             context.SaveChanges();
-            return RedirectToAction("QuanLyKhuyenMai", "Admin").WithSuccess("Thành công", "Bạn đã xóa sản phẩm khỏi danh sách.");
+            return RedirectToAction("QuanLyKhuyenMai", "Admin").WithSuccess("Thành công", "Bạn đã xóa khuyến mãi khỏi danh sách.");
         }
         public IActionResult ThemKhuyenMai( )
         {
@@ -381,12 +420,12 @@ namespace e_mobile_shop.Controllers
             {
                 context.Voucher.Add(model);
                 context.SaveChanges();
-                return RedirectToAction("QuanLyKhuyenMai", "Admin").WithSuccess("Thành công", "Đã thêm khuyến mãi mới.");
+                return RedirectToAction("QuanLyKhuyenMai", "Admin").WithSuccess("Thành công", "Đã thêm khuyến mãi mới. ID: "+model.VoucherId);
             }
             return View(model);
         }
 
-        public IActionResult Detail(string id)
+        public IActionResult ChiTiet(string id)
         {
             return View(context.SanPham.Find(id));
         }

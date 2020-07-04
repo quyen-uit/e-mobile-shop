@@ -2,6 +2,8 @@
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    var context = new ClientDbContext();
+    var dataAccess = new DataAccess();
 }
 
     <body style="margin-top: -20px">
@@ -9,6 +11,7 @@
         <div class="col-12">
             <div class="page-header">
                 <h1>Dashboard</h1>
+                
             </div>
             <div class="row">
                 <div class="col-md-3">
@@ -19,12 +22,12 @@
                                     <i class="fa fa-check fa-5x"></i>
                                 </div>
                                 <div class="col-xs-8 text-right">
-                                    <p style="font-size:40px"><strong>12</strong></p>
-                                    <p class="card-text">Sản phẩm đã bán</p>
+                                    <p id="numDH1" style="font-size:40px"><strong>@context.DonHang.Where(x=>x.TinhTrangDh==1).ToList().Count()</strong></p>
+                                    <p class="card-text">Đơn hàng đang chờ<p>
                                 </div>
                             </div>
                         </div>
-                        <a href="#">
+                        <a href="@Url.Action("QuanLyDonHang","Admin", new {status = 1 })">
                             <div class="panel-footer announcement-bottom">
                                 <div class="row">
                                     <div class="col-xs-8">
@@ -42,16 +45,16 @@
                     <div class="panel panel-success">
                         <div class="panel-heading">
                             <div class="row">
-                                <div class="col-xs-4">
+                                <div class="col-xs-3">
                                     <i class="fa fa-check fa-5x"></i>
                                 </div>
-                                <div class="col-xs-8 text-right">
-                                    <p style="font-size:40px"><strong>12</strong></p>
-                                    <p class="card-text">Sản phẩm đã bán</p>
+                                <div class="col-xs-9 text-right">
+                                    <p id="numDH2" style="font-size:40px"><strong>@context.DonHang.Where(x => x.TinhTrangDh == 2).ToList().Count()</strong></p>
+                                    <p class="card-text">Đơn hàng đang giao<p>
                                 </div>
                             </div>
                         </div>
-                        <a href="#">
+                        <a href="@Url.Action("QuanLyDonHang","Admin", new {status = 2 })">
                             <div class="panel-footer announcement-bottom">
                                 <div class="row">
                                     <div class="col-xs-8">
@@ -73,20 +76,16 @@
                                     <i class="fa fa-check fa-5x"></i>
                                 </div>
                                 <div class="col-xs-8 text-right">
-                                    <p style="font-size:40px"><strong>12</strong></p>
-                                    <p class="card-text">Sản phẩm đã bán</p>
+                                    <p style="font-size:40px"><strong>@ViewData["sumPreMonth"]</strong></p>
+                                    <p class="card-text">Sản phẩm đã bán tháng trước</p>
+                                   
                                 </div>
                             </div>
                         </div>
                         <a href="#">
                             <div class="panel-footer announcement-bottom">
                                 <div class="row">
-                                    <div class="col-xs-8">
-                                        Xem chi tiết
-                                    </div>
-                                    <div class="col-xs-4 text-right">
-                                        <i class="fa fa-arrow-circle-right"></i>
-                                    </div>
+                                    
                                 </div>
                             </div>
                         </a>
@@ -100,21 +99,14 @@
                                     <i class="fa fa-check fa-5x"></i>
                                 </div>
                                 <div class="col-xs-8 text-right">
-                                    <p style="font-size:40px"><strong>12</strong></p>
-                                    <p class="card-text">Sản phẩm đã bán</p>
+                                    <p style="font-size:40px"><strong>@ViewData["sumCurMonth"]</strong></p>
+                                    <p class="card-text">Sản phẩm đã bán tháng này</p>
                                 </div>
                             </div>
                         </div>
                         <a href="#">
                             <div class="panel-footer announcement-bottom">
-                                <div class="row">
-                                    <div class="col-xs-8">
-                                        Xem chi tiết
-                                    </div>
-                                    <div class="col-xs-4 text-right">
-                                        <i class="fa fa-arrow-circle-right"></i>
-                                    </div>
-                                </div>
+                                
                             </div>
                         </a>
                     </div>
@@ -173,6 +165,6 @@
                
             </div>
         </div> 
-      
+    
     </body>
 

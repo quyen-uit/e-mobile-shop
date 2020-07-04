@@ -14,15 +14,22 @@
 
             <div class=" panel-heading ">
                 <div class="row">
-                    <div class="col-lg-6">
-                        <h4>Quản lý @dataAccess.GetLoaiSp(ViewData["LoaiSp"].ToString())</h4>
+                    <div class="col-lg-4">
+                        <h4>Quản lý @dataAccess.GetLoaiSp(ViewData["LoaiSP"].ToString())</h4>
 
                     </div>
-                    <div class="col-lg-6">
+                  
+                    <div class="col-lg-8">
                         <form asp-action="QuanLy" method="get" asp-controller="Admin">
-                            <input type="hidden" value="@ViewData["LoaiSp"]" name="id" />
 
-                            <div class="input-group custom-search-form">
+                            <div class="col-lg-4">
+                                <select id="filter" name="status" class="form-control">
+                                    <option value="">Trạng thái</option>
+                                    <option value="1">Kinh doanh</option>
+                                    <option value="0">Ngừng kinh doanh</option>
+                                </select>
+                            </div>
+                            <div class="input-group custom-search-form col-lg-8">
                                 <input name="searchValue" type="text" class="form-control" placeholder="Tìm tên hoặc mã ...">
                                 <span class="input-group-btn">
                                     <button class="btn btn-default" type="submit">
@@ -41,14 +48,14 @@
 
                         <thead>
                             <tr>
-                                <th>STT</th>
+                                
                                 <th>ID</th>
                                 <th>Tên</th>
                                 <th>Ảnh</th>
                                 <th>Số lượng</th>
                                 <th>Đã bán</th>
                                 <th>Lượt xem</th>
-                                <th>Hãng sãn xuất</th>
+                                <th>Hãng</th>
                                 <th>Giá gốc</th>
                                 <th>Sửa</th>
                                 <th>Xóa</th>
@@ -58,15 +65,11 @@
 
                         <tbody>
 
-                            @{
-                                int i = 0;
-
+                            @{                                
                                 foreach (var item in Model)
                                 
                                 {
-                                    i = i + 1;
                                     <tr>
-                                        <td class="text-center">@i</td>
                                         <td style="vertical-align:middle">@item.MaSp</td>
 
                                         <td style="vertical-align:middle">@item.TenSp</td>
@@ -186,11 +189,11 @@
                                             </button>
                                         </td>
                                         <td style="vertical-align:middle">
-                                            <button type="button" data-toggle="modal" data-target="#exampleModal" class="btn btn-primary">Xóa</button>
+                                            <button type="button" data-toggle="modal" data-target="#modal-@item.MaSp" class="btn btn-primary">Xóa</button>
 
 
                                             <!-- Modal confirm delete  -->
-                                            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal fade" id="modal-@item.MaSp" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
@@ -212,7 +215,7 @@
 
                                         </td>
                                         <td style="vertical-align:middle">
-                                            <a class="btn btn-primary" asp-action="Detail" asp-controller="Admin" asp-route-id="@item.MaSp"> Chi tiết </a>
+                                            <a class="btn btn-primary" asp-action="ChiTiet" asp-controller="Admin" asp-route-id="@item.MaSp"> Chi tiết </a>
                                         </td>
                                     </tr>
 

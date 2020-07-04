@@ -6,6 +6,7 @@
     var context = new ClientDbContext();
     var dataAccess = new DataAccess();
 }
+
 <body>
      @Html.Partial("_StatusMessages")
     <div class="col-lg-12">
@@ -14,16 +15,21 @@
                 <div class="row">
                     <div class="col-lg-4">
                         <h4>Quản lý đơn hàng</h4>
-                        
+
                     </div>
-                    <div class="col-lg-4">
-                        <select id="filter" onchange="filter()" class="form-control" asp-items="@(new SelectList(context.TrangThaiDonHang.ToList(),"Id","TenTrangThai"))">
-                            <option value="">Trạng thái</option>
-                        </select>
-                    </div>
-                    <div class="col-lg-4">
+                  
+              
+                    <div>
+
                         <form asp-action="QuanLyDonHang" method="get" asp-controller="Admin">
-                            <div class="input-group custom-search-form">
+
+                            <div class="col-lg-3">
+                                <select   id="filter" name="status" class="form-control" asp-items="@(new SelectList(context.TrangThaiDonHang.ToList(),"Id","TenTrangThai"))">
+                                    <option value="">Trạng thái</option>
+                                </select>
+                            </div>
+                            <div class="input-group custom-search-form col-lg-5 ">
+
                                 <input name="searchValue" type="text" class="form-control" placeholder="Tìm mã đơn hàng hoặc tên khách hàng ...">
                                 <span class="input-group-btn">
                                     <button class="btn btn-default" type="submit">
@@ -31,8 +37,9 @@
                                     </button>
                                 </span>
                             </div>
+
                         </form>
-                       
+
                     </div>
                 </div>
             </div>
@@ -43,11 +50,11 @@
 
                         <thead>
                             <tr>
-                                <th>Mã đơn hàng</th>
+                                <th>ID</th>
                                 <th>Tên khách hàng</th>
                                 <th>Trạng thái</th>
-                                <th>Thời gian đặt hàng</th>
-                                <th>Phương thức giao dịch</th>
+                                <th>Thời gian</th>
+                                <th>PTGD</th>
                                 <th>Tổng tiền</th>
                                 <th>Sửa</th>
                                 <th>Chi tiết</th>

@@ -6,96 +6,105 @@
     var dataAccess = new DataAccess();
 }
 @model  List<Voucher>
-<body>
-    <div class="col-lg-12">
-        <div class="panel panel-success">
-            <div class=" panel-heading ">
-                <div class="row">
-                    <div class="col-lg-6">
-                        <h4>Quản lý khuyến mãi</h4>
+    <body>
+        @Html.Partial("_StatusMessages")
+        <div class="col-lg-12">
+            <div class="panel panel-success">
+                <div class=" panel-heading ">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <h4>Quản lý khuyến mãi</h4>
 
-                    </div>
-                    <div class="col-lg-6">
-                        <form asp-action="QuanLyKhuyenMai" method="get" asp-controller="Admin">
-                            <div class="input-group custom-search-form">
-                                <input name="searchValue" type="text" class="form-control" placeholder="Tìm mã hoặc tên khuyến mãi ...">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default" type="submit">
-                                        <i class="fa fa-search"></i>
-                                    </button>
-                                </span>
-                            </div>
-                        </form>
+                        </div>
+                        <div class="col-lg-6">
+                            <form asp-action="QuanLyKhuyenMai" method="get" asp-controller="Admin">
+                                <div class="col-lg-4">
+                                    <select id="filter" name="status" class="form-control">
+                                        <option value="">Trạng thái</option>
+                                        <option value="1">Hoạt động</option>
+                                        <option value="0">Hết hạn</option>
+                                    </select>
+                                </div>
+                                <div class="input-group custom-search-form col-lg-8">
+                                    <input name="searchValue" type="text" class="form-control" placeholder="Tìm mã hoặc tên khuyến mãi ...">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default" type="submit">
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="panel-body">
-                <div class="table-responsive">
-                    <table class="table table-bordered" id="dataTable" width="98%" cellspacing="0">
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="dataTable" width="98%" cellspacing="0">
 
-                        <thead>
-                            <tr >
-                                <th class="text-center">ID</th>
-                                <th class="text-center">Mã voucher</th>
-                                <th class="text-center">Tên </th>
-                                <th class="text-center">Giá trị</th>
-                                <th class="text-center">Loại</th>
-                                 <th class="text-center">Trạng thái</th>
-                                <th class="text-center">Xóa</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-
-                            @foreach (var item in Model)
-                            {
-
+                            <thead>
                                 <tr>
-                                    <td style="vertical-align:middle" class="text-center">@item.VoucherId</td>
+                                    <th class="text-center">ID</th>
+                                    <th class="text-center">Mã</th>
+                                    <th class="text-center">Tên </th>
+                                    <th class="text-center">Giá trị</th>
+                                    <th class="text-center">Loại</th>
+                                    <th class="text-center">Trạng thái</th>
+                                    <th class="text-center">Xóa</th>
+                                </tr>
+                            </thead>
 
-                                    <td style="vertical-align:middle">@item.VoucherCode</td>
-                                    <td style="vertical-align:middle">@item.VoucherName</td>
-                                    <td style="vertical-align:middle">@item.VoucherDiscount</td>
-                                    <td style="vertical-align:middle">@context.VoucherType.Find(item.VoucherType).VoucherTypeName</td>
-                                    @if(item.Status==1)
-                                    {
-                                <td class="text-center" style="vertical-align:middle">Hoạt động</td>
-                                    }else
-                                    {
-                                <td class="text-center" style="vertical-align:middle">Hết hạn</td>
-                                    }
-                                    <td style="vertical-align:middle; " class="text-center">
-                                        <button type="button" data-toggle="modal" data-target="#exampleModal" class="btn btn-primary text-center">Xóa</button>
-                                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalLabel">Xác nhận xóa </h5>
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        Bạn có muốn <span style="color:red; font-weight:bold;">xóa</span> voucher <span style="color:red; font-weight:bold"> @item.VoucherName</span>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                                                        <a type="button" class="btn btn-primary" asp-controller="Admin" asp-action="XoaKhuyenMai" asp-route-id="@item.VoucherId"> Xóa </a>
+                            <tbody>
+
+                                @foreach (var item in Model)
+                                {
+
+                                    <tr>
+                                        <td style="vertical-align:middle" class="text-center">@item.VoucherId</td>
+
+                                        <td style="vertical-align:middle">@item.VoucherCode</td>
+                                        <td style="vertical-align:middle">@item.VoucherName</td>
+                                        <td style="vertical-align:middle">@item.VoucherDiscount</td>
+                                        <td style="vertical-align:middle">@context.VoucherType.Find(item.VoucherType).VoucherTypeName</td>
+                                        @if (item.Status == 1)
+                                        {
+                                            <td class="text-center" style="vertical-align:middle">Hoạt động</td>
+                                        }
+                                        else
+                                        {
+                                            <td class="text-center" style="vertical-align:middle">Hết hạn</td>
+                                        }
+                                        <td style="vertical-align:middle; " class="text-center">
+                                            <button type="button" data-toggle="modal" data-target="#modal-@item.VoucherId" class="btn btn-primary text-center">Xóa</button>
+                                            <div class="modal fade" id="modal-@item.VoucherId" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel">Xác nhận xóa </h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            Bạn có muốn <span style="color:red; font-weight:bold;">xóa</span> voucher <span style="color:red; font-weight:bold"> @item.VoucherName</span>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                                                            <a type="button" class="btn btn-primary" asp-controller="Admin" asp-action="XoaKhuyenMai" asp-route-id="@item.VoucherId"> Xóa </a>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </td>
+                                        </td>
 
-                                </tr>
-                            }
+                                    </tr>
+                                }
 
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-</body>
+    </body>

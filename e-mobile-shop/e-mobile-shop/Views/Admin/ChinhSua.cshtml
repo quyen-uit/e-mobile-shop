@@ -51,7 +51,7 @@
                     </div>
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" name="status" @str />Hoạt động
+                            <input type="checkbox" name="status" @str />Đang kinh doanh
                         </label>
                     </div>
                     <div class="row">
@@ -125,7 +125,7 @@
                     <div class="form-group">
                         <label>Mô tả</label>
                         <label class="validation-summary-errors">*</label>
-                        <textarea class="form-control" rows="3"  asp-for="MoTa">@Model.MoTa</textarea>
+                        <textarea class="form-control" rows="3" asp-for="MoTa">@Model.MoTa</textarea>
                         <script>
                             CKEDITOR.replace('MoTa');
                         </script>
