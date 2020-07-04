@@ -107,16 +107,16 @@
             <hr />
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="row">
-                <div class="col-md-6 col-12">
+                <div class="col-md-6 col-12">   
                     <div class="form-group">
                         <label>Tên người dùng </label>
-                        <input asp-for="Input.Username" class="form-control" />
-                        <span asp-validation-for="Input.Username" class="text-danger"></span>
+                        <input asp-for="Input.Username" maxlength="50" class="form-control" />
+                        <span asp-validation-for="Input.Username"  class="text-danger"></span>
                     </div>
 
                     <div class="form-group">
                         <label asp-for="Input.Email"></label>
-                        <input asp-for="Input.Email" class="form-control" />
+                        <input asp-for="Input.Email" maxlength="50" class="form-control" />
                         <span asp-validation-for="Input.Email" class="text-danger"></span>
                     </div>
 
@@ -125,11 +125,11 @@
                 <div class="col-md-6 col-12">
                     <div class="form-group">
                         <label asp-for="Input.HoTen"></label>
-                        <input asp-for="Input.HoTen" class="form-control" />
+                        <input asp-for="Input.HoTen" maxlength="50" class="form-control" />
                     </div>
                     <div class="form-group">
                         <label asp-for="Input.CMND"></label>
-                        <input asp-for="Input.CMND" class="form-control" />
+                        <input pattern=".{9,14}" required title="10 kí tự" asp-for="Input.CMND" maxlength="14"  onkeypress="return isNumber(event)" class="form-control input-cmnd" />
                     </div>
                 </div>
                 <div class="row col-12 form-group  ml-0 p-0">
@@ -140,7 +140,8 @@
                             <option value="-1"> Chọn tỉnh/thành phố</option>}
                             @foreach (var item in context.Province)
                             {
-                <option value="@item.Id">@item.Type  @item.Name</option>}
+                                <option value="@item.Id">@item.Type  @item.Name</option>
+}
                         </select>
                     </div>
                     <div class="col-4">
@@ -151,14 +152,14 @@
                         <select id="Ward" asp-for="Input.XaPhuong" class="form-control"></select>
                     </div>
                     <div class="col-12 pt-2">
-                        <input asp-for="Input.DiaChi" placeholder="Số nhà, đặc điểm ..." class="form-control" />
+                        <input asp-for="Input.DiaChi" maxlength="100" placeholder="Số nhà, đặc điểm ..." class="form-control" />
                     </div>
                 </div>
 
                 <div class="col-md-6 col-12">
                     <div class="form-group">
                         <label asp-for="Input.SDT"></label>
-                        <input asp-for="Input.SDT" class="form-control" />
+                        <input asp-for="Input.SDT" maxlength="12" onkeypress="return isNumber(event)" class="form-control input-dienthoai" />
                         <span asp-validation-for="Input.SDT" class="text-danger"></span>
                     </div>
                     <div class="form-group">
@@ -190,7 +191,7 @@
 
                     </div>
                     <div class="form-group">
-                       
+
                     </div>
                 </div>
 
@@ -206,24 +207,24 @@
             <hr />
             @{ if ((Model.ExternalLogins?.Count ?? 0) == 0)
                 {
-    <div>
-        <p>
-            There are no external authentication services configured. See <a href="https://go.microsoft.com/fwlink/?LinkID=532715">this article</a>
-            for details on setting up this ASP.NET application to support logging in via external services.
-        </p>
-    </div> }
-else
-{
-<form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
-    <div>
-        <p>
+                    <div>
+                        <p>
+                            There are no external authentication services configured. See <a href="https://go.microsoft.com/fwlink/?LinkID=532715">this article</a>
+                            for details on setting up this ASP.NET application to support logging in via external services.
+                        </p>
+                    </div> }
+                else
+                {
+                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+                        <div>
+                            <p>
 
-            <button type="submit" class="btn-block loginBtn loginBtn--google" name="provider" value="@Model.ExternalLogins[0].Name" title="Log in using your @Model.ExternalLogins[0].DisplayName account">@Model.ExternalLogins[0].DisplayName</button>
-            <button type="submit" class="btn-block loginBtn loginBtn--facebook" name="provider" value="@Model.ExternalLogins[1].Name" title="Log in using your @Model.ExternalLogins[1].DisplayName account">@Model.ExternalLogins[1].DisplayName</button>
+                                <button type="submit" class="btn-block loginBtn loginBtn--google" name="provider" value="@Model.ExternalLogins[0].Name" title="Log in using your @Model.ExternalLogins[0].DisplayName account">@Model.ExternalLogins[0].DisplayName</button>
+                                <button type="submit" class="btn-block loginBtn loginBtn--facebook" name="provider" value="@Model.ExternalLogins[1].Name" title="Log in using your @Model.ExternalLogins[1].DisplayName account">@Model.ExternalLogins[1].DisplayName</button>
 
-        </p>
-    </div>
-</form> } }
+                            </p>
+                        </div>
+                    </form> } }
         </section>
     </div>
 </div>
@@ -231,8 +232,29 @@ else
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
-
+<script src="https://cdn.bootcdn.net/ajax/libs/cleave.js/0.0.4/cleave.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/cleave.js/0.0.4/ext/cleave-phone.vi.js"></script>
 <script>
+    function isNumber(event) {
+        if (event.keyCode >= 48 && event.keyCode <= 57) {
+            return true;
+        }
+        else return false;
+    }
+
+    $(document).ready(function () {
+        var cleave = new Cleave('.input-dienthoai', {
+            blocks: [4, 3, 4],
+            uppercase: true,
+
+        });
+        var cleave1 = new Cleave('.input-cmnd', {
+            blocks: [4, 4, 4],
+            uppercase: true,
+
+        });
+    });
+
     $(document).ready(function () {
         $("#Province").change(function () {
             var id = $(this).val();

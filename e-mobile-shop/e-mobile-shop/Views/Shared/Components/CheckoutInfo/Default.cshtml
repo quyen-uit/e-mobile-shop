@@ -21,9 +21,9 @@
                         <input disabled id="hotenLogin" name="HoTen" style="width: 100%" value="@Model[0].HoTen" />
                     </div>
                     <div class="col-6 p-1 ">
-                        <input disabled id="phoneLogin" name="DienThoai" style="width: 100%" placeholder="Điện thoại " value="@Model[0].PhoneNumber" />
+                        <input disabled class="phoneLogin" id="phoneLogin" onkeypress=" return isNumber(event)" name="DienThoai" style="width: 100%" placeholder="Điện thoại " value="@Model[0].PhoneNumber" />
                     </div>
-                    <div class="col-12 p-1 pt-2">
+                    <div class="col-12 p-1 pt-2">   
                         <input disabled id="diachiLogin" style="width: 100%" name="DiaChi" placeholder="Địa chỉ giao hàng " value="@Model[0].DiaChi" />
                     </div>
                     <div class="col-12 p-1 pt-2">
@@ -58,7 +58,7 @@ else
                     <input style="width: 100%" placeholder="Họ và tên" name="HoTen" />
                 </div>
                 <div class="col-6 p-1 ">
-                    <input style="width: 100%" placeholder="Điện thoại " name="DienThoai" />
+                    <input style="width: 100%" placeholder="Điện thoại " onkeypress=" return isNumber(event)" class="phoneNotLogin" name="DienThoai" />
                 </div>
                 <div class="col-12 p-1 pt-2">
                     <input style="width: 100%" placeholder="Địa chỉ giao hàng " name="DiaChi" />
@@ -84,6 +84,21 @@ else
 }
 
 <script>
+
+    function isNumber(event) {
+        if (event.keyCode >= 48 && event.keyCode <= 57) {
+            return true;
+        }
+        else return false;
+    }
+   
+    $(document).ready(function () {
+        var cleave = new Cleave('.phoneNotLogin', {
+            blocks: [4, 3, 4],
+            uppercase: true,
+           
+        });
+    });
     function myFunction() {
         var a = document.getElementById("diachiLogin");
         var b = document.getElementById("hotenLogin");
@@ -96,8 +111,15 @@ else
             document.getElementById("phoneLogin").disabled = false;
             document.getElementById("emailLogin").disabled = false;
             document.getElementById("idLogin").value = "nulll1111";
-
+            document.getElementById("voucher").disabled = true;
+            document.getElementById("voucher").value = "Không dùng voucher với tài khoản khách";
+            document.getElementById("btnsubmit").disabled = true;
+            var cleave = new Cleave('.phoneLogin', {
+                blocks: [4, 3, 4],
+                uppercase: true,
+               
+            });
         }
-            
+
     }
 </script>

@@ -68,13 +68,16 @@ namespace e_mobile_shop.Areas.Identity.Pages.Account
             public string Avatar { get; set; }
 
             [Display(Name = "Số CMND")]
+            [StringLength(12, ErrorMessage = "CMND phải có {0} tới {1} số.", MinimumLength = 9)]
             [DataType(DataType.Text)]
             public string CMND { get; set; }
 
             [Display(Name ="Số điện thoại")]
+            [StringLength(12, ErrorMessage = "Số điện thoại phải có {0} tới {1} số.", MinimumLength = 9)]
             [DataType(DataType.Text)]
             public string SDT { get; set; }
 
+            [Required]
             [Display(Name = "Địa chỉ")]
             [DataType(DataType.Text)]
             public string DiaChi { get; set; }
@@ -97,8 +100,11 @@ namespace e_mobile_shop.Areas.Identity.Pages.Account
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
 
+            [Required]
             public int TinhThanh { get; set; }
+            [Required]
             public int QuanHuyen { get; set; }
+            [Required]
             public int XaPhuong { get; set; }
             
         }

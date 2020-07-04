@@ -104,16 +104,16 @@
                                 <a class="btn w3view-cart p-0" asp-controller="GioHang" asp-action="XemGioHang" name="submit" value="">
 
                                     <i style="font-size: 30px" class="fas fa-cart-arrow-down"></i>
-                                        @{ 
-                                            if (dataAccess != null)
-                                            {
-                                                <span> @dataAccess.getSoCtdh()</span>
-                                            }
-                                            else
-                                            {
-                                                <span>0</span>
-                                            }
+                                    @{
+                                        if (dataAccess != null)
+                                        {
+                                            <span> @dataAccess.getSoCtdh()</span>
                                         }
+                                        else
+                                        {
+                                            <span>0</span>
+                                        }
+                                    }
                                 </a>
 
                             </div>
@@ -261,15 +261,15 @@
                         <h3 class="text-white font-weight-bold mb-3">Sản phẩm</h3>
                         <ul>
                             <li class="mb-3">
-                                <a  asp-controller="SanPham" asp-action="DanhSach" asp-route-id="LSP0002" >Điện thoại di động </a>
+                                <a asp-controller="SanPham" asp-action="DanhSach" asp-route-id="LSP0002">Điện thoại di động </a>
                             </li>
                             <li class="mb-3">
-                                <a  asp-controller="SanPham" asp-action="DanhSach" asp-route-id="LSP0007">Máy tính bảng</a>
+                                <a asp-controller="SanPham" asp-action="DanhSach" asp-route-id="LSP0007">Máy tính bảng</a>
                             </li>
                             <li class="mb-3">
-                                <a  asp-controller="SanPham" asp-action="DanhSach" asp-route-id="LSP0008">Laptop</a>
+                                <a asp-controller="SanPham" asp-action="DanhSach" asp-route-id="LSP0008">Laptop</a>
                             </li>
-                           
+
                             <li class="mb-3">
                                 <a href="#">Tin tức</a>
                             </li>
@@ -364,6 +364,8 @@
     <!-- jquery -->
 
     <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/cleave.js/0.0.4/cleave.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/cleave.js/0.0.4/ext/cleave-phone.vi.js"></script>
     <script>
         $(document).ready(function () {
             $('.slider-for').slick({

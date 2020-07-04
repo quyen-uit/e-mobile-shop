@@ -61,17 +61,21 @@ namespace e_mobile_shop.Controllers
         [Authorize]
         public IActionResult ReplyComment(string userId, string maBl,string maSp, IFormCollection fc )
         {
-            TraLoi tl = new TraLoi()
+            if(!string.IsNullOrEmpty(fc["ReplyComment"].ToString()))
             {
-                MaBinhLuan = maBl,
-                NoiDung = fc["ReplyComment"],
-                MaKh = userId,
-                NgayDang = DateTime.Now
-            };
+                TraLoi tl = new TraLoi()
+                {
+                    MaBinhLuan = maBl,
+                    NoiDung = fc["ReplyComment"],
+                    MaKh = userId,
+                    NgayDang = DateTime.Now
+                };
 
-            context.TraLoi.Add(tl);
-            context.SaveChanges();
-            return RedirectToAction("SanPham", "SanPham", new { Id = maSp });
+                context.TraLoi.Add(tl);
+                context.SaveChanges();
+                return RedirectToAction("SanPham", "SanPham", new { Id = maSp });
+            }
+            else return RedirectToAction("SanPham", "SanPham", new { Id = maSp });
         }
         public IActionResult DeleteReply(string id, string maSp)
         {
@@ -85,16 +89,19 @@ namespace e_mobile_shop.Controllers
         [Authorize]
         public IActionResult Comment(string userId,  string maSp, IFormCollection fc)
         {
-            BinhLuan tl = new BinhLuan()
+            if(!String.IsNullOrEmpty(fc["Comment"].ToString()))
             {
-                NoiDung = fc["Comment"],
-                MaKh = userId,
-                NgayDang = DateTime.Now,
-                MaSp=maSp
-            };
+                BinhLuan tl = new BinhLuan()
+                {
+                    NoiDung = fc["Comment"],
+                    MaKh = userId,
+                    NgayDang = DateTime.Now,
+                    MaSp = maSp
+                };
 
-            context.BinhLuan.Add(tl);
-            context.SaveChanges();
+                context.BinhLuan.Add(tl);
+                context.SaveChanges();
+            }
             return RedirectToAction("SanPham", "SanPham", new { Id = maSp });
         }
 

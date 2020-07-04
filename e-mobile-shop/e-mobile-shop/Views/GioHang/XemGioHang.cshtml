@@ -76,7 +76,7 @@
                         <div class="p-2 border d-inline-flex mb-1">
                             <form asp-action="Update" asp-controller="GioHang" method="post" asp-route-id="@i" class=" form-inline">
                                 <label class="pr-2"> Số lượng </label>
-                                <input disabled name="SoLuong-@i" id="SoLuong+@i" max="10" style="width: 35px" value="@ViewBag.GioHang[i].SoLuong" type="number" />
+                                <input disabled name="SoLuong-@i" id="SoLuong+@i" max="10" min="0" style="width: 35px" value="@ViewBag.GioHang[i].SoLuong" type="number" />
                                 <button type="button" id="link-update-@i" class="btn btn-primary radius-0 p-1 pl-2 pr-2 ml-2" style="display:none" data-toggle="modal" data-target="@("#modal"+i.ToString())">
                                     Lưu
                                 </button>

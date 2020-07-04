@@ -381,7 +381,7 @@
     </div>
 
     <div class="row d-flex justify-content-between p-0 m-0 filter-row">
-        <div>
+        <div >
             @if (ViewData["TenSp"] != null)
             {
                 <a class="btn btn-primary"
@@ -441,7 +441,7 @@
                 }
                 else
                 {
-                    <div></div>
+                    <span></span>
                 }
 
                 @if (ViewData["CurrentFilter"] != null)
@@ -503,8 +503,10 @@
                         }
                     }
                 }
-            </div>
+        </div>
+
         <div >
+
             <strong style="line-height: 40px; margin-left:5px;"> Có @Model.Count sản phẩm</strong>
         </div>
     </div>
