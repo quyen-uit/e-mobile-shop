@@ -1,0 +1,59 @@
+﻿﻿
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="utf-8" />
+  
+</head>
+<body>
+
+    <div style="font-style: italic; padding-bottom: 5px;">Chào {{Hoten}}, </div>
+    <div style="padding-bottom: 3px;">Cảm ơn quý khách đã đăng kí thành viên tại <span style="color:red; font-weight:bold"> TheGioiCongNghe</span></div>
+    <div style="padding-bottom:3px;">Thông tin đăng kí thành viên của quý khách được lưu trữ thành công tại cửa hàng như sau: </div>
+    <div style="padding: 10px; ">
+        <table style="border: 1px solid black;">
+            <tr>
+                <td>Họ và tên</td>
+                <td> {{Hoten}} </td>
+            </tr>
+            <tr>
+                <td>Tên đăng nhập</td>
+                <td>{{username}}</td>
+            </tr>
+     
+            <tr>
+                <td>Email</td>
+                <td>{{email}}</td>
+            </tr>
+            <tr>
+                <td>Địa chỉ </td>
+                <td>
+                    {{address}}
+                </td>
+            </tr>
+
+        </table>
+    </div>
+    <div>
+        <strong>
+            {{callbackurl}}
+        </strong>
+    </div>
+    <div style="font-style:italic; padding-top: 5px; ">
+        <div>
+            Trân trọng,
+
+        </div>
+        <br />
+
+        <div>
+            Quản trị cửa hàng TheGioiCongNghe
+        </div>
+        <div style="font-size: 14px;">
+            <div> Hotline: 0857394951</div>
+            <div> Email: thanglequoc1912@gmail.com</div>
+        </div>
+    </div>
+</body>
+</html>

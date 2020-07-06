@@ -14,10 +14,23 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="RegisterEmail.html" />
+    <None Remove="GioHang.html" />
+    <None Remove="RegisterEmail.html" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="GioHang.html">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="RegisterEmail.html">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\GioHang.html" />
     <None Include="wwwroot\ProductImages\1_9_3_1.webp" />
     <None Include="wwwroot\ProductImages\41c944907a80a6702c36de63502dcbb0.jpg_200x200q80.jpg_.webp" />
     <None Include="wwwroot\ProductImages\ae-galaxy-tab-a-t295-sm-t295nzsaxsg-frontsilver-172640354.webp" />
@@ -25,6 +38,7 @@
     <None Include="wwwroot\ProductImages\HTB1xfu4aInrK1RkHFrdq6xCoFXab.webp" />
     <None Include="wwwroot\ProductImages\mini_white_cable_c__12_3f363333695945acbdc7f1d905676a94_medium.webp" />
     <None Include="wwwroot\ProductImages\sg-galaxy-taba-2019-8-sm-t295nzkaxsp-frontblack-175174967.webp" />
+    <None Include="wwwroot\RegisterEmail.html" />
   </ItemGroup>
 
   <ItemGroup>
