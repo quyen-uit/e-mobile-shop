@@ -49,7 +49,7 @@ namespace e_mobile_shop.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Data Source=UAENA;Initial Catalog=eShopDb;Integrated Security=True");
+                optionsBuilder.UseSqlServer("Server=tcp:e-shop.database.windows.net,1433;Initial Catalog=eShopDb;Persist Security Info=False;User ID=admin2;Password=VACha2JKhnsMhDr;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
             }
         }
 
@@ -255,7 +255,7 @@ namespace e_mobile_shop.Models
             modelBuilder.Entity<ChiTietDonHang>(entity =>
             {
                 entity.HasKey(e => e.MaCtdh)
-                    .HasName("PK__ChiTietD__1E4E40F06E4AD1CE");
+                    .HasName("PK__ChiTietD__1E4E40F02CDFDE7D");
 
                 entity.Property(e => e.MaCtdh)
                     .HasColumnName("MaCTDH")
@@ -527,7 +527,7 @@ namespace e_mobile_shop.Models
                 entity.HasOne(d => d.NsxNavigation)
                     .WithMany(p => p.SanPham)
                     .HasForeignKey(d => d.Nsx)
-                    .HasConstraintName("FK__SanPham__NSX__3493CFA7");
+                    .HasConstraintName("FK__SanPham__NSX__2BFE89A6");
             });
 
             modelBuilder.Entity<ThongSo>(entity =>
@@ -551,7 +551,7 @@ namespace e_mobile_shop.Models
             modelBuilder.Entity<ThongSoKiThuat>(entity =>
             {
                 entity.HasKey(e => e.MaTskt)
-                    .HasName("PK__ThongSoK__475C93A118240939");
+                    .HasName("PK__ThongSoK__475C93A1EFF2A2CE");
 
                 entity.Property(e => e.MaTskt)
                     .HasColumnName("MaTSKT")

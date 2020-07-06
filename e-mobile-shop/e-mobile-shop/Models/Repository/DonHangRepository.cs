@@ -18,7 +18,7 @@ namespace e_mobile_shop.Models.Repository
         public DonHangRepository(IConfiguration configuration,
                                     IHubContext<SignalServer> context)
         {
-            connectionString = "Data Source=UAENA;Initial Catalog=eShopDb;Integrated Security=True";
+            connectionString = "";
             _context = context;
         }
         public List<DonHang> GetAll()
