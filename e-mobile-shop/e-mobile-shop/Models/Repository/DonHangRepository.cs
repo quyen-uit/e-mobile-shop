@@ -15,6 +15,7 @@ namespace e_mobile_shop.Models.Repository
         string connectionString = "";
         string newID = "";
         static bool a = true;
+        static int flag = 0;
         public DonHangRepository(IConfiguration configuration,
                                     IHubContext<SignalServer> context)
         {
@@ -23,6 +24,7 @@ namespace e_mobile_shop.Models.Repository
         }
         public List<DonHang> GetAll()
         {
+            
             var DonHangs = new List<DonHang>();
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
@@ -36,6 +38,7 @@ namespace e_mobile_shop.Models.Repository
 
                 SqlDependency dependency = new SqlDependency(cmd);
                 a = true;
+                flag = 0;
                 dependency.OnChange += new OnChangeEventHandler(dbChangeNotification);
                
                 var reader = cmd.ExecuteReader();
@@ -58,6 +61,8 @@ namespace e_mobile_shop.Models.Repository
 
         private void dbChangeNotification(object sender, SqlNotificationEventArgs e)
         {
+            if (flag == 1)
+                return;
             var DonHangs = new List<DonHang>();
             int num1,num2;
             using (SqlConnection conn = new SqlConnection(connectionString))
@@ -107,6 +112,7 @@ namespace e_mobile_shop.Models.Repository
                 }
                 else a = true;
             }
+            flag = 1;
         }
     }
 }
