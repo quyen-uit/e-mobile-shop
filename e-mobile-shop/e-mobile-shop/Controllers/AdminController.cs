@@ -21,12 +21,18 @@ namespace e_mobile_shop.Controllers
 
 
       
-        public AdminController(IWebHostEnvironment hostEnvironment, ClientDbContext _context, IDonHangRepository repository)
+        //public AdminController(IWebHostEnvironment hostEnvironment, ClientDbContext _context, IDonHangRepository repository)
+        //{
+        //    webHostEnvironment = hostEnvironment;
+        //    context = _context;
+        //    dataAccess = new DataAccess();
+        //    _repository = repository;
+        //}
+        public AdminController(IWebHostEnvironment hostEnvironment, ClientDbContext _context)
         {
             webHostEnvironment = hostEnvironment;
             context = _context;
             dataAccess = new DataAccess();
-            _repository = repository;
         }
         [HttpGet]
         public IActionResult Test()
