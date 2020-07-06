@@ -68,7 +68,7 @@ namespace e_mobile_shop.Areas.Identity.Pages.Account
             public string Avatar { get; set; }
 
             [Display(Name = "Số CMND")]
-            [StringLength(12, ErrorMessage = "CMND phải có {0} tới {1} số.", MinimumLength = 9)]
+            [StringLength(12, ErrorMessage = "CMND phải có {2} tới {1} số.", MinimumLength = 9)]
             [DataType(DataType.Text)]
             public string CMND { get; set; }
 
