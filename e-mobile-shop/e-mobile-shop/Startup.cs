@@ -85,7 +85,7 @@ namespace e_mobile_shop
             });
 
 
-            services.AddSignalR();
+            services.AddSignalR().AddAzureSignalR();
             services.AddTransient<IDonHangRepository, DonHangRepository>();
 
             services.AddRouting(options => options.LowercaseUrls = true);
@@ -115,7 +115,7 @@ namespace e_mobile_shop
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
-                endpoints.MapHub<SignalServer>("/signalServer");
+               endpoints.MapHub<SignalServer>("/signalServer");
 
             });
         }
