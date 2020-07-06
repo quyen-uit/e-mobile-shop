@@ -118,6 +118,13 @@ namespace e_mobile_shop
                //endpoints.MapHub<SignalServer>("/signalServer");
 
             });
+
+
+
+
+
+
+
         }
     }
 }
