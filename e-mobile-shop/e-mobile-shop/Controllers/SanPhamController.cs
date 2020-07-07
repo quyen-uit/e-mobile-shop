@@ -29,6 +29,8 @@ namespace e_mobile_shop.Controllers
         [Route("chi-tiet/{id}")]
         public IActionResult SanPham(string Id)
         {
+            context.SanPham.Find(Id).SoLuotXemSp++;
+            context.SaveChanges();
             return View(context.SanPham.Find(Id));
         }
 

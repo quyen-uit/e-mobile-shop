@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using e_mobile_shop.Models;
 
 namespace e_mobile_shop.Areas.Identity.Pages.Account
 {
@@ -22,7 +23,7 @@ namespace e_mobile_shop.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<AppUser> _signInManager;
         private readonly UserManager<AppUser> _userManager;
-        private  readonly IEmailSender _emailSender;
+        private readonly IEmailSender _emailSender;
         private readonly ILogger<ExternalLoginModel> _logger;
 
         public ExternalLoginModel(
@@ -93,7 +94,7 @@ namespace e_mobile_shop.Areas.Identity.Pages.Account
             if (remoteError != null)
             {
                 ErrorMessage = $"Error from external provider: {remoteError}";
-                return RedirectToPage("./Login", new {ReturnUrl = returnUrl });
+                return RedirectToPage("./Login", new { ReturnUrl = returnUrl });
             }
             var info = await _signInManager.GetExternalLoginInfoAsync();
             if (info == null)
@@ -103,7 +104,7 @@ namespace e_mobile_shop.Areas.Identity.Pages.Account
             }
 
             // Sign in the user with this external login provider if the user already has a login.
-            var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor : true);
+            var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
             if (result.Succeeded)
             {
                 _logger.LogInformation("{Name} logged in with {LoginProvider} provider.", info.Principal.Identity.Name, info.LoginProvider);
@@ -140,62 +141,75 @@ namespace e_mobile_shop.Areas.Identity.Pages.Account
                 return RedirectToPage("./Login", new { ReturnUrl = returnUrl });
             }
 
-            if (ModelState.IsValid)
+            using (var context = new ClientDbContext())
             {
-                var user = new AppUser { UserName = Input.Email, 
-                    Email = Input.Email,
-                    HoTen = info.Principal.FindFirstValue(ClaimTypes.Name),
-                    NgaySinh = Input.NgaySinh,
-                    CMND = Input.CMND,
-                    DiaChi = Input.DiaChi,
-                    PhoneNumber = Input.SDT, 
-                    };
-
-                string content = System.IO.File.ReadAllText("RegisterEmail.html");
-                content = content.Replace("{{Hoten}}", user.HoTen);
-                content = content.Replace("{{username}}", user.UserName);
-                content = content.Replace("{{phone}}", user.PhoneNumber);
-                content = content.Replace("{{email}}", user.Email);
-                content = content.Replace("{{address}}", user.DiaChi);
-
-                var result = await _userManager.CreateAsync(user);
-                if (result.Succeeded)
+                var usedEmail = context.AspNetUsers.Where(x => x.Email == Input.Email).ToList();
+                if (usedEmail.Count == 0)
                 {
-                    result = await _userManager.AddLoginAsync(user, info);
-                    if (result.Succeeded)
+                    if (ModelState.IsValid)
                     {
-                        _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
-
-                        var userId = await _userManager.GetUserIdAsync(user);
-                        var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                        code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                        var callbackUrl = Url.Page(
-                            "/Account/ConfirmEmail",
-                            pageHandler: null,
-                            values: new { area = "Identity", userId = userId, code = code },
-                            protocol: Request.Scheme);
-                        content = content.Replace("{{callbackurl}}", $"Vui lòng xác nhận tài khoản bằng cách <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>nhấn vào đây </a>.");
-
-                        await _emailSender.SendEmailAsync(Input.Email, "Xác nhận email",
-                           $"{System.Net.WebUtility.HtmlDecode(content)}");
-
-                        // If account confirmation is required, we need to show the link if we don't have a real email sender
-                        if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                        var user = new AppUser
                         {
-                            return RedirectToPage("./RegisterConfirmation", new { Email = Input.Email });
+                            UserName = Input.Email,
+                            Email = Input.Email,
+                            HoTen = info.Principal.FindFirstValue(ClaimTypes.Name),
+                            NgaySinh = Input.NgaySinh,
+                            CMND = Input.CMND,
+                            DiaChi = Input.DiaChi,
+                            PhoneNumber = Input.SDT,
+                        };
+
+                        string content = System.IO.File.ReadAllText("RegisterEmail.html");
+                        content = content.Replace("{{Hoten}}", user.HoTen);
+                        content = content.Replace("{{username}}", user.UserName);
+                        content = content.Replace("{{phone}}", user.PhoneNumber);
+                        content = content.Replace("{{email}}", user.Email);
+                        content = content.Replace("{{address}}", user.DiaChi);
+
+                        var result = await _userManager.CreateAsync(user);
+                        if (result.Succeeded)
+                        {
+                            result = await _userManager.AddLoginAsync(user, info);
+                            if (result.Succeeded)
+                            {
+                                _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
+
+                                var userId = await _userManager.GetUserIdAsync(user);
+                                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                                code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                                var callbackUrl = Url.Page(
+                                    "/Account/ConfirmEmail",
+                                    pageHandler: null,
+                                    values: new { area = "Identity", userId = userId, code = code },
+                                    protocol: Request.Scheme);
+                                content = content.Replace("{{callbackurl}}", $"Vui lòng xác nhận tài khoản bằng cách <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>nhấn vào đây </a>.");
+
+                                await _emailSender.SendEmailAsync(Input.Email, "Xác nhận email",
+                                   $"{System.Net.WebUtility.HtmlDecode(content)}");
+
+                                // If account confirmation is required, we need to show the link if we don't have a real email sender
+                                if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                                {
+                                    return RedirectToPage("./RegisterConfirmation", new { Email = Input.Email });
+                                }
+
+                                await _signInManager.SignInAsync(user, isPersistent: false, info.LoginProvider);
+
+                                return LocalRedirect(returnUrl);
+                            }
                         }
-
-                        await _signInManager.SignInAsync(user, isPersistent: false, info.LoginProvider);
-
-                        return LocalRedirect(returnUrl);
+                        foreach (var error in result.Errors)
+                        {
+                            ModelState.AddModelError(string.Empty, error.Description);
+                        }
                     }
+
                 }
-                foreach (var error in result.Errors)
+                else
                 {
-                    ModelState.AddModelError(string.Empty, error.Description);
+                    ModelState.AddModelError(string.Empty, "Email đã dùng");
                 }
             }
-
             ProviderDisplayName = info.ProviderDisplayName;
             ReturnUrl = returnUrl;
             return Page();

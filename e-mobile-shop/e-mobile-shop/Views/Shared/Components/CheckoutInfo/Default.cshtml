@@ -4,16 +4,16 @@
 @inject UserManager<AppUser> UserManager
 @inject SignInManager<AppUser> SignInManager
 @model List<AspNetUsers>
-@{ 
-    var disabledd = ViewBag.GioHang.Count ==0? "disabled":"";
-    
+@{
+    var disabledd = ViewBag.GioHang.Count == 0 ? "disabled" : "";
+
 }
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
 @if (SignInManager.IsSignedIn(User))
 {
     <div>
         <div class="row ">
-       
+
             <div class="col-12 row  ">
                 <div class="col-12 text-center "> Nhập thông tin khách hàng </div>
                 <form class="col-12 row  m-2 border" asp-controller="GioHang" asp-action="CheckOut" method="post">
@@ -21,9 +21,9 @@
                         <input disabled id="hotenLogin" name="HoTen" style="width: 100%" value="@Model[0].HoTen" />
                     </div>
                     <div class="col-6 p-1 ">
-                        <input disabled class="phoneLogin" id="phoneLogin" onkeypress=" return isNumber(event)" name="DienThoai" style="width: 100%" placeholder="Điện thoại " value="@Model[0].PhoneNumber" />
+                        <input disabled class="phoneNotLogin" id="phoneLogin" onkeypress=" return isNumber(event)" name="DienThoai" style="width: 100%" placeholder="Điện thoại " value="@Model[0].PhoneNumber" />
                     </div>
-                    <div class="col-12 p-1 pt-2">   
+                    <div class="col-12 p-1 pt-2">
                         <input disabled id="diachiLogin" style="width: 100%" name="DiaChi" placeholder="Địa chỉ giao hàng " value="@Model[0].DiaChi" />
                     </div>
                     <div class="col-12 p-1 pt-2">
@@ -33,8 +33,8 @@
                         <input style="width: 100%" name="GhiChu" placeholder="Yêu cầu khác  " />
                     </div>
                     <input type="hidden" id="idLogin" value="@Model[0].Id" name="Id" />
-                    <input type="hidden"  value="@ViewBag.GiaTriDonHang" name="GiaTriDonHang" />
-                    <input type="hidden"  value="@ViewBag.GiamGia" name="GiamGia" />
+                    <input type="hidden" value="@ViewBag.GiaTriDonHang" name="GiaTriDonHang" />
+                    <input type="hidden" value="@ViewBag.GiamGia" name="GiamGia" />
 
                     <button @disabledd type="submit" class=" col-12 btn btn-block btn-success m-0 mt-2" style="border-radius:0; color: white"> Thanh toán  </button>
                 </form>
@@ -48,40 +48,45 @@
 }
 else
 {
-<div>
-    <div class="row ">
-       
-        <div class="col-12 row  ">
-            <div class="col-12 text-center "> Nhập thông tin khách hàng </div>
-            <form class="col-12 row  m-2 border" asp-controller="GioHang" asp-action="CheckOut" method="post">
-                <div class="col-6 p-1 ">
-                    <input style="width: 100%" placeholder="Họ và tên" name="HoTen" />
-                </div>
-                <div class="col-6 p-1 ">
-                    <input style="width: 100%" placeholder="Điện thoại " onkeypress=" return isNumber(event)" class="phoneNotLogin" name="DienThoai" />
-                </div>
-                <div class="col-12 p-1 pt-2">
-                    <input style="width: 100%" placeholder="Địa chỉ giao hàng " name="DiaChi" />
+    <div>
+        <div class="row ">
 
-                </div>
-                <div class="col-12 p-1 pt-2">
-                    <input type="email" style="width: 100%" placeholder="Email  " name="Email" />
-                </div>
-                <div class="col-12 p-1 pt-2">
-                    <input style="width: 100%" placeholder="Yêu cầu khác  " name="GhiChu" />
-                </div>
-                <input type="hidden" value="@ViewBag.GiaTriDonHang" name="GiaTriDonHang" />
-                <input type="hidden" value="@ViewBag.GiamGia" name="GiamGia" />
-                <button type="submit" class=" col-12 btn btn-block btn-success m-0 mt-2" style="border-radius:0; color: white"> Thanh toán  </button>
-            </form>
+            <div class="col-12 row  ">
+                <div class="col-12 text-center "> Nhập thông tin khách hàng </div>
+                <form class="col-12 row  m-2 border" asp-controller="GioHang" asp-action="CheckOut" method="post">
+                    <div class="col-6 p-1 ">
+                        <input style="width: 100%" placeholder="Họ và tên" name="HoTen" />
+                    </div>
+                    <div class="col-6 p-1 ">
+                        <input style="width: 100%" placeholder="Điện thoại " onkeypress=" return isNumber(event)" class="phoneNotLogin" name="DienThoai" />
+                    </div>
+                    <div class="col-12 p-1 pt-2">
+                        <input style="width: 100%" placeholder="Địa chỉ giao hàng " name="DiaChi" />
+
+                    </div>
+                    <div class="col-12 p-1 pt-2">
+                        <input type="email" style="width: 100%" placeholder="Email  " name="Email" />
+                    </div>
+                    <div class="col-12 p-1 pt-2">
+                        <input style="width: 100%" placeholder="Yêu cầu khác  " name="GhiChu" />
+                    </div>
+                    <input type="hidden" value="@ViewBag.GiaTriDonHang" name="GiaTriDonHang" />
+                    <input type="hidden" value="@ViewBag.GiamGia" name="GiamGia" />
+                    <button type="submit" class=" col-12 btn btn-block btn-success m-0 mt-2" style="border-radius:0; color: white"> Thanh toán  </button>
+                </form>
+
+            </div>
+            <div class="col-12 text-center "> hoặc </div>
+            <a class=" col-12 btn btn-block btn-warning m-0 " style="border-radius:0" asp-area="Identity" asp-page="/Account/Login"> Đăng nhập để lấy thông tin </a>
 
         </div>
-        <div class="col-12 text-center "> hoặc </div>
-        <a class=" col-12 btn btn-block btn-warning m-0 " style="border-radius:0" asp-area="Identity" asp-page="/Account/Login"> Đăng nhập để lấy thông tin </a>
-       
     </div>
-</div>
 }
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cleave.js/1.6.0/cleave.min.js" integrity="sha512-KaIyHb30iXTXfGyI9cyKFUIRSSuekJt6/vqXtyQKhQP6ozZEGY8nOtRS6fExqE4+RbYHus2yGyYg1BrqxzV6YA==" crossorigin="anonymous"></script>
+
 
 <script>
 
@@ -91,20 +96,24 @@ else
         }
         else return false;
     }
-   
-    $(document).ready(function () {
-        var cleave = new Cleave('.phoneNotLogin', {
-            blocks: [4, 3, 4],
-            uppercase: true,
-           
-        });
+
+    var cleave = new Cleave('.phoneNotLogin', {
+        blocks: [4, 3, 5],
+        uppercase: true,
+
+    });
+
+    var cleave1 = new Cleave('.i-phoneLogin', {
+        blocks: [4, 3, 5],
+        uppercase: true,
+
     });
     function myFunction() {
         var a = document.getElementById("diachiLogin");
         var b = document.getElementById("hotenLogin");
         var c = document.getElementById("phoneLogin");
         var d = document.getElementById("idLogin");
-        
+
         if (a.disabled === true) {
             document.getElementById("diachiLogin").disabled = false;
             document.getElementById("hotenLogin").disabled = false;
@@ -114,11 +123,8 @@ else
             document.getElementById("voucher").disabled = true;
             document.getElementById("voucher").value = "Không dùng voucher với tài khoản khách";
             document.getElementById("btnsubmit").disabled = true;
-            var cleave = new Cleave('.phoneLogin', {
-                blocks: [4, 3, 4],
-                uppercase: true,
-               
-            });
+
+
         }
 
     }

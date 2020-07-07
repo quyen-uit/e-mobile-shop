@@ -18,7 +18,7 @@ namespace e_mobile_shop.Controllers.Components
         public async Task<IViewComponentResult> InvokeAsync(string Id)
         {
             var result = (from t in _context.SanPham
-                          where t.LoaiSp == Id
+                          where t.LoaiSp == Id && t.SoLuong > 0
                           orderby t.GiaGoc descending
                           select t).Take(4).ToListAsync();
         
