@@ -66,7 +66,7 @@
                         <div class="row">
                             <div class="form-group col-lg-6">
                                 <label asp-for="@Model.Tongtien">Tổng tiền </label>
-                                <input disabled class="form-control" asp-for="Tongtien" />
+                                <input disabled class="form-control" asp-for="Tongtien" value="@Model.Tongtien.Value.ToString("N0") VNĐ"/>
                             </div>
                             <div class="form-group col-lg-6">
                                 <label asp-for="@Model.PtgiaoDich">Phương thức giao dịch </label>
@@ -80,7 +80,7 @@
                             </div>
                             <div class="form-group col-lg-6">
                                 <label asp-for="@Model.PhiVanChuyen">Phí vận chuyên </label>
-                                <input disabled class="form-control" asp-for="PhiVanChuyen" />
+                                <input disabled class="form-control" asp-for="PhiVanChuyen" value="@Model.PhiVanChuyen.Value.ToString("N0") VNĐ"/>
                             </div>
 
                         </div>
@@ -121,7 +121,7 @@
                                         <th>Tên sản phẩm</th>
                                         <th>Hình ảnh</th>
                                         <th>Số lượng</th>
-                                        <th>Tổng tiền</th>
+                                        <th>Giá</th>
                                     </tr>
                                 </thead>
 
@@ -137,7 +137,7 @@
                                                 <img style="width: 50px; height:50px;" src="~/ProductAvatar/@dataAccess.GetSanPham(item.MaSp).AnhDaiDien" />
                                             </td>
                                             <td style="vertical-align:middle">@item.SoLuong</td>
-                                            <td style="vertical-align:middle">@item.ThanhTien</td>
+                                            <td style="vertical-align:middle">@context.SanPham.Find(item.MaSp).GiaTien.Value.ToString("N0") VNĐ</td>
 
                                         </tr>
                                     }

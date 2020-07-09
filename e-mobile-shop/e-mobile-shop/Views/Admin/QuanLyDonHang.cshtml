@@ -73,7 +73,7 @@
                                     <td style="vertical-align:middle">@context.TrangThaiDonHang.Find(item.TinhTrangDh).TenTrangThai</td>
                                     <td  style="vertical-align:middle">@item.Ghichu</td>
                                     <td style="vertical-align:middle">@item.PtgiaoDich</td>
-                                    <td style="vertical-align:middle">@item.Tongtien</td>
+                                    <td style="vertical-align:middle">@string.Format("{0:#,##0}", item.Tongtien) VND</td>
                                     <td style="vertical-align:middle">
                                         <button type="button" class="btn btn-primary" onclick="location.href='@Url.Action( "ChiTietDonHang","Admin", new {  id = item.MaDh })'">Chi tiết</button>
                                     </td>
