@@ -49,7 +49,7 @@ namespace e_mobile_shop.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=tcp:e-shop.database.windows.net,1433;Initial Catalog=eShopDb;Persist Security Info=False;User ID=admin2;Password=VACha2JKhnsMhDr;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+                optionsBuilder.UseSqlServer("Server=db,1433;Initial Catalog=eShopDb;User Id=SA;Password=Password789");
             }
         }
 
