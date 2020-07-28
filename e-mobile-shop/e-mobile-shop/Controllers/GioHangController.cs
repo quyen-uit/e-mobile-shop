@@ -270,7 +270,7 @@ namespace e_mobile_shop.Controllers
 
         [HttpPost]
         [Route("thanh-toan")]
-        public IActionResult CheckOut(IFormCollection fc)
+        public IActionResult CheckOut(IFormCollection fc,[FromServices] EmailSender mailSender)
         {
             var dh = new DonHang();
 
@@ -351,13 +351,13 @@ namespace e_mobile_shop.Controllers
             content = content.Replace("{{sdt}}", dh.Dienthoai);
             content = content.Replace("{{giamgia}}", dh.GiamGia.Value.ToString("N0"));
             content = content.Replace("{{thanhtoan}}", (- dh.GiamGia.Value + dh.Tongtien.Value).ToString("N0"));
-            var Option = new AuthMessageSenderOptions
-            {
-                SendGridKey = context.Parameters.Find("2").Value,
-                SendGridUser = context.Parameters.Find("1").Value
-            };
+            //var Option = new AuthMessageSenderOptions
+            //{
+            //    SendGridKey = context.Parameters.Find("2").Value,
+            //    SendGridUser = context.Parameters.Find("1").Value
+            //};
 
-            var mailSender = new EmailSender(Option);
+            //var mailSender = new EmailSender(Option);
 
 
             mailSender.SendEmailAsync(dh.Email, "Chi tiết đơn hàng ", $"{WebUtility.HtmlDecode(content)}");
