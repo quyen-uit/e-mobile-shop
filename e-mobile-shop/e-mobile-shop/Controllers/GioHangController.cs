@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using e_mobile_shop.Models.Repository;
 
 namespace e_mobile_shop.Controllers
 {
@@ -20,12 +22,13 @@ namespace e_mobile_shop.Controllers
 
         private readonly ClientDbContext context;
         private DataAccess dataAccess;
+        private readonly IDonHangRepository _repository;
+        public GioHangController(ClientDbContext _context, IDonHangRepository repository)
 
-        public GioHangController(ClientDbContext _context)
         {
             context = _context;
             dataAccess = new DataAccess();
-
+            _repository = repository;
         }
         [Route("xem-gio-hang")]
         public IActionResult XemGioHang(IFormCollection fc)
@@ -270,7 +273,7 @@ namespace e_mobile_shop.Controllers
 
         [HttpPost]
         [Route("thanh-toan")]
-        public IActionResult CheckOut(IFormCollection fc,[FromServices] EmailSender mailSender)
+        public IActionResult CheckOut(IFormCollection fc,[FromServices] IEmailSender mailSender)
         {
             var dh = new DonHang();
 
@@ -319,7 +322,7 @@ namespace e_mobile_shop.Controllers
             context.DonHang.Add(dh);
             context.SaveChanges();
 
-
+            _repository.NotifyDonHang();
             var content = System.IO.File.ReadAllText("GioHang.html");
             content = content.Replace("{{Hoten}}", dh.HoTen);
 

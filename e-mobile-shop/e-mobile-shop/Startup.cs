@@ -85,8 +85,8 @@ namespace e_mobile_shop
             });
 
 
-            //services.AddSignalR().AddAzureSignalR();
-            //services.AddTransient<IDonHangRepository, DonHangRepository>();
+            services.AddSignalR();
+            services.AddTransient<IDonHangRepository, DonHangRepository>();
 
             services.AddRouting(options => options.LowercaseUrls = true);
         }

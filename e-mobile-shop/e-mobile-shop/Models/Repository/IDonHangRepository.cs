@@ -8,5 +8,6 @@ namespace e_mobile_shop.Models.Repository
     public interface IDonHangRepository
     {
         List<DonHang> GetAll();
+        void NotifyDonHang();
     }
 }
