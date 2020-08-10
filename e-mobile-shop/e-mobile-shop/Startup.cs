@@ -115,7 +115,7 @@ namespace e_mobile_shop
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
-               //endpoints.MapHub<SignalServer>("/signalServer");
+                endpoints.MapHub<SignalServer>("/signalServer");
 
             });
 
