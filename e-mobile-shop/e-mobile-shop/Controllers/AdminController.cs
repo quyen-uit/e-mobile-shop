@@ -397,7 +397,7 @@ namespace e_mobile_shop.Controllers
                 {
                     if (item.VoucherId.ToLower().Contains(searchValue.ToLower().Trim()))
                         rs.Add(item);
-                    else if (!string.IsNullOrEmpty(item.VoucherName) && item.VoucherName.ToLower().Contains(searchValue.ToLower().Trim()))
+                    else if (!string.IsNullOrEmpty(item.VoucherCode) && item.VoucherCode.ToLower().Contains(searchValue.ToLower().Trim()))
                     {
                         rs.Add(item);
                     }
