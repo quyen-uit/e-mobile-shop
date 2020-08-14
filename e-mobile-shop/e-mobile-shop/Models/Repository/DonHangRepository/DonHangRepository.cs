@@ -18,7 +18,7 @@ namespace e_mobile_shop.Models.Repository
         public DonHangRepository(IConfiguration configuration,
                                     IHubContext<SignalServer> context)
         {
-            connectionString = "Server=db,1433;Initial Catalog=eShopDb;User Id=SA;Password=Password789";
+            connectionString = "Data Source=DESKTOP-HN4A59E\\SQLEXPRESS;Initial Catalog=eShopDb;Integrated Security=True";
             _context = context;
         }
         public List<DonHang> GetAll()

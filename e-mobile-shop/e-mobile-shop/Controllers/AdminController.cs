@@ -8,6 +8,7 @@ using System.IO;
 using Microsoft.AspNetCore.Http;
 using e_mobile_shop.Models.Helpers;
 using e_mobile_shop.Models.Repository;
+using e_mobile_shop.Models.Repository.MobileShopRepository;
 
 namespace e_mobile_shop.Controllers
 {
@@ -17,16 +18,17 @@ namespace e_mobile_shop.Controllers
         private readonly ClientDbContext context;
         private readonly DataAccess dataAccess;
         private readonly IDonHangRepository _repository;
-
+        private readonly IMobileShopRepository _shopRepo;
 
 
       
-        public AdminController(IWebHostEnvironment hostEnvironment, ClientDbContext _context, IDonHangRepository repository)
+        public AdminController(IWebHostEnvironment hostEnvironment, ClientDbContext _context, IDonHangRepository repository, IMobileShopRepository shopRepo)
         {
            webHostEnvironment = hostEnvironment;
            context = _context;
            dataAccess = new DataAccess();
            _repository = repository;
+           _shopRepo = shopRepo;
         }
         // public AdminController(IWebHostEnvironment hostEnvironment, ClientDbContext _context)
         // {
@@ -141,7 +143,7 @@ namespace e_mobile_shop.Controllers
         [HttpPost]
         public IActionResult ChinhSuaDonHang( DonHang model, IFormCollection fc)
         {
-            DonHang dh = dataAccess.GetDonHang(fc["MaDh"]);
+            DonHang dh = _shopRepo.GetDonHang(fc["MaDh"]);
             dh.TinhTrangDh = model.TinhTrangDh;
             context.DonHang.Update(dh);
             context.SaveChanges();
@@ -150,7 +152,7 @@ namespace e_mobile_shop.Controllers
         public IActionResult QuanLy(string id, string searchValue,string status)
         {
             ViewData["LoaiSP"] = id;
-            var a = dataAccess.ReadSanPham(id);
+            var a =_shopRepo.ReadSanPham(id);
             List<SanPham> rs = new List<SanPham>();
             if(!string.IsNullOrEmpty(status))
             {
@@ -178,7 +180,7 @@ namespace e_mobile_shop.Controllers
         //}
         public IActionResult QuanLyDienThoai()
         {
-            return View(dataAccess.ReadSanPham("LSP0002"));
+            return View(_shopRepo.ReadSanPham("LSP0002"));
         }
         public IActionResult Them(string Id)
         {
@@ -242,7 +244,7 @@ namespace e_mobile_shop.Controllers
 
                 // List<ThongSoKiThuat> listTSKT = ReadThongSoKiThuat(model.MaSp);
 
-                foreach (var tskt in dataAccess.ReadThongSoKiThuat(model.MaSp))
+                foreach (var tskt in _shopRepo.ReadThongSoKiThuat(model.MaSp))
                 {
                     tskt.GiaTri = fc[tskt.ThongSo];
                     context.Update(tskt);
@@ -284,7 +286,7 @@ namespace e_mobile_shop.Controllers
             IFormFile productImages3
             )
         {
-            string message = "";
+           // string message = "";
 
             if (ModelState.IsValid)
             {
@@ -311,7 +313,7 @@ namespace e_mobile_shop.Controllers
                 context.SaveChanges();
 
                 ThongSoKiThuat tskt;
-                List<ThongSo> listTS = dataAccess.ReadThongSo(model.LoaiSp).ToList();
+                List<ThongSo> listTS = _shopRepo.ReadThongSo(model.LoaiSp).ToList();
                 for (int i = 0; i < listTS.Count(); i++)
                 {
 

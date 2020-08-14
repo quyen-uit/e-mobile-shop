@@ -1,4 +1,5 @@
 ﻿using e_mobile_shop.Models;
+using e_mobile_shop.Models.Repository.MobileShopRepository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -10,16 +11,14 @@ namespace e_mobile_shop.Controllers.Components
 {
     public class CheckoutInfoViewComponent:ViewComponent
     {
-        private readonly ClientDbContext context;
-        public CheckoutInfoViewComponent(ClientDbContext _context)
+        private readonly IMobileShopRepository context;
+        public CheckoutInfoViewComponent(IMobileShopRepository _context)
         {
             context = _context;
         }
         public async Task<IViewComponentResult> InvokeAsync(string Id)
         {
-            var result = context.AspNetUsers.Where(x => x.Id.Equals(Id)).ToListAsync();
-
-            return View(await result);
+            return View(await context.GetCheckoutInfo(Id));
         }
     }
 }

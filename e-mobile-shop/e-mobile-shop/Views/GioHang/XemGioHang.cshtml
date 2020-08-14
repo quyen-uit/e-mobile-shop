@@ -1,8 +1,8 @@
-﻿
+﻿@using e_mobile_shop.Models.Repository.MobileShopRepository
 @{ ViewData["Title"] = "XemGioHang";
     Layout = "~/Views/Shared/_Layout.cshtml";
     var context = new ClientDbContext();
-    var dataAccess = new DataAccess();
+    var dataAccess = new MobileShopRepository(context);
 }
 @using e_mobile_shop.Areas.Identity.Data
 @using Microsoft.AspNetCore.Identity

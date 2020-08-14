@@ -10,7 +10,7 @@ using e_mobile_shop.Models;
 using Microsoft.AspNetCore.Http;
 using e_mobile_shop.Models.Helpers;
 using Microsoft.EntityFrameworkCore;
-
+using e_mobile_shop.Models.Repository.MobileShopRepository;
 
 namespace e_mobile_shop.Controllers
 {
@@ -20,12 +20,12 @@ namespace e_mobile_shop.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly ClientDbContext _context;
         private readonly DataAccess dataAccess ;
-
-        public HomeController(ClientDbContext context)
+        private readonly IMobileShopRepository _shopRepo;
+        public HomeController(ClientDbContext context,IMobileShopRepository shopRepo)
         {
             _context = context;
             dataAccess = new DataAccess();
-           
+           _shopRepo = shopRepo;
         }
 
        
@@ -46,7 +46,7 @@ namespace e_mobile_shop.Controllers
             string loaiSp,
             string tenSp, string hangSx, string params_list)
         {
-
+            ViewBag.DanhSachLoaiSp = _shopRepo.ReadLoaiSp();
             //sort order
             ViewData["CurrentSort"] = sortOrder;
             if (string.IsNullOrEmpty(sortOrder))
@@ -148,6 +148,7 @@ namespace e_mobile_shop.Controllers
         [HttpGet]
         public IActionResult TestPage()
         {
+            
             return View();
         }
         [HttpPost]

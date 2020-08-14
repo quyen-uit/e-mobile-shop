@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using e_mobile_shop.Models.Repository;
+using e_mobile_shop.Models.Repository.MobileShopRepository;
 
 namespace e_mobile_shop.Controllers
 {
@@ -23,12 +24,14 @@ namespace e_mobile_shop.Controllers
         private readonly ClientDbContext context;
         private DataAccess dataAccess;
         private readonly IDonHangRepository _repository;
-        public GioHangController(ClientDbContext _context, IDonHangRepository repository)
+        private readonly IMobileShopRepository _shopRepo;
+        public GioHangController(ClientDbContext _context, IDonHangRepository repository, IMobileShopRepository shopRepo)
 
         {
             context = _context;
             dataAccess = new DataAccess();
             _repository = repository;
+            _shopRepo = shopRepo;
         }
         [Route("xem-gio-hang")]
         public IActionResult XemGioHang(IFormCollection fc)
@@ -282,7 +285,7 @@ namespace e_mobile_shop.Controllers
                 if (context.AspNetUsers.Find(fc["Id"]) != null)
                 {
                     dh.MaKh = fc["Id"];
-                    var a = dataAccess.GetUser(dh.MaKh);
+                    var a = _shopRepo.GetUser(dh.MaKh);
                     dh.HoTen = a.HoTen;
                     dh.Dienthoai = a.PhoneNumber;
                     dh.Ghichu = fc["GhiChu"];
@@ -389,14 +392,14 @@ namespace e_mobile_shop.Controllers
         public IActionResult ChiTietDonHang(string id)
         {
             if (id != null)
-                return View(context.ChiTietDonHang.Where(x => x.MaDh == id).ToList());
+                return View(_shopRepo.GetChiTietDonHang(id));
             return RedirectToAction("Index", "Home");
         }
 
  
         public IActionResult HuyDonHang(string id )
         {
-            DonHang dh = dataAccess.GetDonHang(id);
+            DonHang dh = _shopRepo.GetDonHang(id);
             if(dh.TinhTrangDh!=3)
             {
                 dh.TinhTrangDh = 0;

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using e_mobile_shop.Models;
 using e_mobile_shop.Models.Helpers;
+using e_mobile_shop.Models.Repository.MobileShopRepository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,13 +14,13 @@ namespace e_mobile_shop.Controllers
 {
     public class SanPhamController : Controller
     {
+        private readonly IMobileShopRepository _shopRepo;
         private readonly ClientDbContext context;
         private readonly DataAccess dataAccess;
-        public SanPhamController(ClientDbContext _context)
+        public SanPhamController( IMobileShopRepository _repository)
         {
-            context = _context;
-            dataAccess = new DataAccess();
-            
+            _shopRepo = _repository;
+           
         }
         public IActionResult Index()
         {
@@ -29,33 +30,22 @@ namespace e_mobile_shop.Controllers
         [Route("chi-tiet/{id}")]
         public IActionResult SanPham(string Id)
         {
-            context.SanPham.Find(Id).SoLuotXemSp++;
-            context.SaveChanges();
-            return View(context.SanPham.Find(Id));
+            ViewBag.ListThongSoKiThuat = _shopRepo.GetThongSoKiThuat(Id);
+            return View(_shopRepo.GetSanPhamById(Id));
         }
 
         [Route("danh-sach/{id}")]
         public async Task<IActionResult> DanhSach(int? pageNumber, string Id)
         {
-            var sanphams = from s in context.SanPham select s ;
 
-            if (Id != "LSP0006")
-            {
-                sanphams= context.SanPham.Where(x => x.LoaiSp == Id);
-            }
-            else
-            {
-                 sanphams = context.SanPham.Where(x => x.LoaiSp != "LSP0002" && x.LoaiSp != "LSP0007" && x.LoaiSp != "LSP0008");
-            }
+             ViewBag.LoaiSp = _shopRepo.GetLoaiSp(_shopRepo.GetPaginatedListSanPham(Id).ToList().ElementAt(0).LoaiSp);
 
+            var sanphams = _shopRepo.GetPaginatedListSanPham(Id);
             int pageSize = 16;
 
             return View(await PaginatedList<SanPham>.CreateAsync(sanphams.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
-        public IActionResult DanhSach1(string Id)
-        {
-            return View(dataAccess.ReadSanPham(Id));
-        }
+    
 
     }
 }

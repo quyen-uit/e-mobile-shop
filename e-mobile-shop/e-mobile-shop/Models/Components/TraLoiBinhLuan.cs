@@ -1,4 +1,5 @@
 ﻿using e_mobile_shop.Models;
+using e_mobile_shop.Models.Repository.MobileShopRepository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -8,17 +9,16 @@ using System.Threading.Tasks;
 
 namespace e_mobile_shop.Controllers.Components
 {
-    public class BinhLuanViewComponent:ViewComponent
+    public class TraLoiBinhLuanViewComponent : ViewComponent
     {
-        private readonly ClientDbContext context;
-        public BinhLuanViewComponent(ClientDbContext _context)
+        private readonly IMobileShopRepository context;
+        public TraLoiBinhLuanViewComponent(IMobileShopRepository _context)
         {
             context = _context;
         }
         public async Task<IViewComponentResult> InvokeAsync(string Id)
         {
-            var result = context.BinhLuan.Where(x => x.MaSp == Id && x.Status!=0).ToListAsync();
-            return View(await result);  
+            return View(await context.GetTraLoiBinhLuan(Id));
         }
     }
 }

@@ -1,10 +1,10 @@
 ﻿@model e_mobile_shop.Models.SanPham
-
+@using e_mobile_shop.Models.Repository.MobileShopRepository
 @{
     ViewData["Title"] = "ChiTiet";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
     var context = new ClientDbContext();
-    var dataAccess = new DataAccess();
+    var dataAccess = new MobileShopRepository(context);
 }
 <style>
     input {

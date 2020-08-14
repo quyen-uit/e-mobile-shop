@@ -7,8 +7,9 @@ using BotDetect.Web;
 using e_mobile_shop.Data;
 using e_mobile_shop.Models;
 using e_mobile_shop.Models.Repository;
+using e_mobile_shop.Models.Repository.MobileShopRepository;
 using e_mobile_shop.Models.Services;
-using e_mobile_shop.Models.Services.Hubs;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -87,7 +88,7 @@ namespace e_mobile_shop
 
             services.AddSignalR();
             services.AddTransient<IDonHangRepository, DonHangRepository>();
-
+            services.AddTransient<IMobileShopRepository, MobileShopRepository>();
             services.AddRouting(options => options.LowercaseUrls = true);
         }
 
@@ -118,12 +119,6 @@ namespace e_mobile_shop
                 endpoints.MapHub<SignalServer>("/signalServer");
 
             });
-
-
-
-
-
-
 
         }
     }

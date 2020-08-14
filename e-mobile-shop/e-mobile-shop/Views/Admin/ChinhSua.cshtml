@@ -1,9 +1,11 @@
 ﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @model e_mobile_shop.Models.SanPham
+@using e_mobile_shop.Models.Repository.MobileShopRepository
 @{
     ViewData["Title"] = "ChinhSua";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
-    var dataAccess = new DataAccess();
+    var dataAccess = new MobileShopRepository(new ClientDbContext());
+    
 }
 
 <style>

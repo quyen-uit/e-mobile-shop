@@ -5,11 +5,11 @@
 
 }
 @using e_mobile_shop.Models.Helpers;
-
+@using e_mobile_shop.Models.Repository.MobileShopRepository;
 @model PaginatedList<SanPham>
 @{
     var context = new ClientDbContext();
-    var dataAccess = new DataAccess();
+    var dataAccess = new MobileShopRepository(context);
     var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
     var nextDisabled = !Model.HasNextPage ? "disabled" : "";
 }
@@ -359,7 +359,7 @@
 
             <div style="overflow:auto">
                 <div style="display:flex; flex-wrap: nowrap;">
-                    @foreach (var item in dataAccess.ReadLoaiSp())
+                    @foreach (var item in ViewBag.DanhSachLoaiSp )
                     {
                         <a class="button text-type-sp ml-2" style="text-align:left; border-radius:0px; flex-shrink: 0;"
                            asp-action="Filter"
