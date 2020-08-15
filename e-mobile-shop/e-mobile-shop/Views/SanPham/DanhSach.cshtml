@@ -3,6 +3,7 @@
     ViewData["Title"] = "DanhSach";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
 @using e_mobile_shop.Models.Helpers;
 
 @model PaginatedList<SanPham>
@@ -11,7 +12,7 @@
     var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
     var nextDisabled = !Model.HasNextPage ? "disabled" : "";
     var context = new ClientDbContext();
-    var dataAccess = new DataAccess();
+    
 }
     <style>
 
@@ -106,7 +107,7 @@
         <div class="row">
             <div class="col-12" style="overflow-x: auto; overflow-y:hidden; border: 1px solid #C0C0C0; border-radius:5px;">
                 <div style="display:flex; flex-wrap: nowrap;">
-                    @foreach (var item in context.NhaSanXuat)
+                    @foreach (var item in ViewBag.NhaSanXuat as List<NhaSanXuat>)
                     {
                         @if (!String.IsNullOrEmpty(item.Avatar))
                         {

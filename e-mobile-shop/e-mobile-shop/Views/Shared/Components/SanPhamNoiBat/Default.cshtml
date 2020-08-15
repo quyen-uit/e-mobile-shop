@@ -109,7 +109,7 @@
         }
 
         <div class="col-12 d-flex justify-content-end">
-            <a style="line-height: 40px; font-weight: bold" asp-controller="SanPham" asp-action="DanhSach" asp-route-id="@Model[0].LoaiSp">  Xem tất cả @context.SanPham.Where(x=>x.LoaiSp==Model[0].LoaiSp).ToList().Count sản phẩm </a>
+            <a style="line-height: 40px; font-weight: bold" asp-controller="SanPham" asp-action="DanhSach" asp-route-id="@Model[0].LoaiSp">  Xem tất cả @ViewBag.SoLuongSp sản phẩm </a>
         </div>
     </div>
 </div>

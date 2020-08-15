@@ -38,5 +38,7 @@ namespace e_mobile_shop.Models.Repository.MobileShopRepository
         List<Voucher> GetVouchersByStatus(string status);
         void DeleteVoucher(string id);
         void SaveVoucher(Voucher vc);
+        List<NhaCungCap> GetNhaCungCap();
+        Voucher GetVoucherById(string id);
     }
 }

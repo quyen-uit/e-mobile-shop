@@ -1,5 +1,6 @@
 ﻿@model e_mobile_shop.Models.SanPham
 @using e_mobile_shop.Models.Repository.MobileShopRepository
+@inject MobileShopRepository _eShopRepo
 @{
     ViewData["Title"] = "ChiTiet";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
@@ -146,7 +147,7 @@
             </div>*@
                     <div class="form-group">
                         <div class="row">
-                            @foreach (var item in dataAccess.ReadThongSo(Model.LoaiSp))
+                            @foreach (var item in _eShopRepo.ReadThongSo(Model.LoaiSp))
                             {
                                 <div class="form-group col-lg-6">
                                     <label>@item.TenThongSo</label>

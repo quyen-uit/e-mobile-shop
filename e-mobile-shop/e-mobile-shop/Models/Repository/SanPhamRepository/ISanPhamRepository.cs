@@ -16,5 +16,9 @@ namespace e_mobile_shop.Models.Repository.SanPhamRepository
         void UpdateTSKT(ThongSoKiThuat tskt);
         void Delete(string id);
         void Update(SanPham sp, string masp);
+        void UpdateSoLuong(string maSp, int? soLuong);
+        List<ThongSo> GetThongSo(string Id);
+        string GetLoaiSp(string id);
+        int CountSanPham(string loaiSp);
     }
 }

@@ -15,8 +15,6 @@ namespace e_mobile_shop.Controllers
     public class SanPhamController : Controller
     {
         private readonly IMobileShopRepository _shopRepo;
-        private readonly ClientDbContext context;
-        private readonly DataAccess dataAccess;
         public SanPhamController( IMobileShopRepository _repository)
         {
             _shopRepo = _repository;
@@ -39,7 +37,7 @@ namespace e_mobile_shop.Controllers
         {
 
              ViewBag.LoaiSp = _shopRepo.GetLoaiSp(_shopRepo.GetPaginatedListSanPham(Id).ToList().ElementAt(0).LoaiSp);
-
+            ViewBag.NhaSanXuat = _shopRepo.GetNSX();
             var sanphams = _shopRepo.GetPaginatedListSanPham(Id);
             int pageSize = 16;
 

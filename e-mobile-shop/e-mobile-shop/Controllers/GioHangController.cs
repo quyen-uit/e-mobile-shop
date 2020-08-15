@@ -14,6 +14,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using e_mobile_shop.Models.Repository;
 using e_mobile_shop.Models.Repository.MobileShopRepository;
+using e_mobile_shop.Models.Repository.SanPhamRepository;
 
 namespace e_mobile_shop.Controllers
 {
@@ -21,17 +22,15 @@ namespace e_mobile_shop.Controllers
     {
      
 
-        private readonly ClientDbContext context;
-        private DataAccess dataAccess;
         private readonly IDonHangRepository _repository;
         private readonly IMobileShopRepository _shopRepo;
-        public GioHangController(ClientDbContext _context, IDonHangRepository repository, IMobileShopRepository shopRepo)
+        private readonly ISanPhamRepository _sanPhamRepository;
+        public GioHangController( IDonHangRepository repository, IMobileShopRepository shopRepo, ISanPhamRepository sp)
 
         {
-            context = _context;
-            dataAccess = new DataAccess();
             _repository = repository;
             _shopRepo = shopRepo;
+            _sanPhamRepository = sp;
         }
         [Route("xem-gio-hang")]
         public IActionResult XemGioHang(IFormCollection fc)
@@ -45,7 +44,7 @@ namespace e_mobile_shop.Controllers
 
             foreach (var item in giohang)
             {
-                item.ThanhTien = (double?)(context.SanPham.Find(item.MaSp).GiaGoc * item.SoLuong);
+                item.ThanhTien = (double?)(_sanPhamRepository.GetSanPhamById(item.MaSp).GiaGoc * item.SoLuong);
                 thanhTien = thanhTien + item.ThanhTien;
                 giaTriDonHang = giaTriDonHang + item.ThanhTien;
             }
@@ -59,7 +58,7 @@ namespace e_mobile_shop.Controllers
             else
                 ViewBag.Vouchers = listVoucher;
 
-            var _voucher = context.Voucher.SingleOrDefault(x => x.VoucherCode == fc["voucher"].ToString());
+            var _voucher = _shopRepo.GetVoucherById(fc["voucher"].ToString()) ;
 
             if (_voucher != null)
             {
@@ -142,7 +141,7 @@ namespace e_mobile_shop.Controllers
                     _soLuong = (int)_sp.SoLuong;
                 }
 
-                if ((int.Parse(fc["SoLuong"]) + _soLuong) <= context.SanPham.Find(maSp).SoLuong)
+                if ((int.Parse(fc["SoLuong"]) + _soLuong) <= _sanPhamRepository.GetSanPhamById(maSp).SoLuong)
                 {
                     var ctdh1 = new ChiTietDonHang
                     {
@@ -193,7 +192,7 @@ namespace e_mobile_shop.Controllers
             }
             else
             {
-                if (int.Parse(fc["SoLuong"]) <= context.SanPham.Find(maSp).SoLuong)
+                if (int.Parse(fc["SoLuong"]) <= _sanPhamRepository.GetSanPhamById(maSp).SoLuong)
                 {
                     var ctdh1 = new ChiTietDonHang
                     {
@@ -282,7 +281,8 @@ namespace e_mobile_shop.Controllers
 
             if (!string.IsNullOrEmpty(fc["Id"].ToString()))
             {
-                if (context.AspNetUsers.Find(fc["Id"]) != null)
+                
+                if (_shopRepo.GetUser(fc["Id"]) != null)
                 {
                     dh.MaKh = fc["Id"];
                     var a = _shopRepo.GetUser(dh.MaKh);
@@ -295,7 +295,7 @@ namespace e_mobile_shop.Controllers
                 }
                 else
                 {
-                    dh.MaKh = "null" + (context.DonHang.Count() + 1);
+                    dh.MaKh = "null" + (_repository.SoDonHang() + 1);
                     dh.HoTen = fc["HoTen"];
                     dh.Diachi = fc["DiaChi"];
                     dh.Ghichu = fc["GhiChu"];
@@ -305,7 +305,7 @@ namespace e_mobile_shop.Controllers
             }
             else
             {
-                dh.MaKh = "null" + (context.DonHang.Count() + 1);
+                dh.MaKh = "null" + (_repository.SoDonHang() + 1);
                 dh.HoTen = fc["HoTen"];
                 dh.Diachi = fc["DiaChi"];
                 dh.Ghichu = fc["GhiChu"];
@@ -322,8 +322,7 @@ namespace e_mobile_shop.Controllers
             dh.Ghichu = fc["GhiChu"];
             dh.TinhTrangDh = 1;
             //dh.Diachi = fc["DiaChi"];
-            context.DonHang.Add(dh);
-            context.SaveChanges();
+            _repository.AddDonHang(dh);
 
             _repository.NotifyDonHang();
             var content = System.IO.File.ReadAllText("GioHang.html");
@@ -334,18 +333,20 @@ namespace e_mobile_shop.Controllers
             var gh = HttpContext.Session.GetObjectFromJson<List<ChiTietDonHang>>("GioHang");
             foreach (var item in gh)
             {
-                item.MaCtdh = (context.ChiTietDonHang.ToList().Count + 1).ToString();
+                item.MaCtdh = (_repository.GetChiTiets().Count + 1).ToString();
                 item.MaDh = dh.MaDh;
-                context.SanPham.Find(item.MaSp).SoLuong =
-                    context.SanPham.Find(item.MaSp).SoLuong - item.SoLuong;
-                context.ChiTietDonHang.Add(item);
-                context.SaveChanges();
+
+                
+
+                _sanPhamRepository.UpdateSoLuong(item.MaSp,item.SoLuong);
+                _repository.AddChiTietDonHang(item);
+               
                 strCtdh = strCtdh + "<tr>";
                 strCtdh = strCtdh + "<td style='text-align:center'>" + ++index + "</td><td>" +
-                          context.SanPham.Find(item.MaSp).TenSp + "</td><td  style='text-align:center'>"
+                         _sanPhamRepository.GetSanPhamById(item.MaSp).TenSp + "</td><td  style='text-align:center'>"
                           + item.SoLuong + "</td><td  style='text-align:center'>"
-                          + ((context.SanPham.Find(item.MaSp).GiaGoc * item.SoLuong).HasValue
-                              ? (context.SanPham.Find(item.MaSp).GiaGoc * item.SoLuong)?.ToString("N0")
+                          + ((_sanPhamRepository.GetSanPhamById(item.MaSp).GiaGoc * item.SoLuong).HasValue
+                              ? (_sanPhamRepository.GetSanPhamById(item.MaSp).GiaGoc * item.SoLuong)?.ToString("N0")
                               : "NULL") + "</td><tr>";
             }
 
@@ -378,12 +379,14 @@ namespace e_mobile_shop.Controllers
         [Route("danh-sach-don-hang/{id}")]
         public async Task<IActionResult> DanhSachDonHang(int? pageNumber, string id, string type )
         {
-            var donhangs = from d in context.DonHang where d.MaKh == id select d;
-            if(!String.IsNullOrEmpty(type))
-            {
-                donhangs = donhangs.Where(x => x.TinhTrangDh == int.Parse(type));
-                ViewData["Type"] = context.TrangThaiDonHang.Find(int.Parse(type)).TenTrangThai;
-            }
+            //var donhangs = from d in context.DonHang where d.MaKh == id select d;
+             if(!string.IsNullOrEmpty(type))
+           {
+                ViewData["Type"] = _repository.GetTrangThaiDonHang(type);
+           }
+
+           var donhangs = _repository.GetDonHangsByMaKh(id, type);
+          
             var pageSize = 5;
             return View(await PaginatedList<DonHang>.CreateAsync(donhangs.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
@@ -403,9 +406,10 @@ namespace e_mobile_shop.Controllers
             if(dh.TinhTrangDh!=3)
             {
                 dh.TinhTrangDh = 0;
-                context.DonHang.Update(dh);
+                _repository.Update(dh);
+               // context.DonHang.Update(dh);
 
-                context.SaveChanges();
+                //context.SaveChanges();
                 return RedirectToAction("ChiTietDonHang", "GioHang", new { id = id }).WithSuccess("Thành công", "Đơn hàng đã được hủy.");
 
             }

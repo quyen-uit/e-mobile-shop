@@ -331,5 +331,16 @@ namespace e_mobile_shop.Models.Repository.MobileShopRepository
             context.Voucher.Add(vc);
             context.SaveChanges();
         }
+
+
+        public List<NhaCungCap> GetNhaCungCap()
+        {
+            return context.NhaCungCap.ToList();
+        }
+
+        public Voucher GetVoucherById(string id)
+        {
+            return context.Voucher.Where(x=>x.VoucherCode==id).FirstOrDefault();
+        }
     }
 }

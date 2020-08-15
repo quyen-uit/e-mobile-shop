@@ -1,9 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Http;
 @using e_mobile_shop.Models.Helpers;
 @using e_mobile_shop.Models.Repository.MobileShopRepository;
-@{
-    var dataAccess = new DataAccess();
-}
+@inject e_mobile_shop.Models.Repository.DataExcuteRepository.IDataAccess DataAccess;
 
 <!DOCTYPE html>
 <html lang="en">
@@ -106,9 +104,9 @@
 
                                     <i style="font-size: 30px" class="fas fa-cart-arrow-down"></i>
                                     @{
-                                        if (dataAccess != null)
+                                        if ( DataAccess!= null)
                                         {
-                                            <span> @dataAccess.getSoCtdh()</span>
+                                            <span> @DataAccess.getSoCtdh()</span>
                                         }
                                         else
                                         {

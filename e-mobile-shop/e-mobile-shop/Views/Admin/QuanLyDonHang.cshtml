@@ -1,10 +1,10 @@
 ﻿@model List<DonHang>
-
+@inject e_mobile_shop.Models.Repository.IDonHangRepository DonHangRepository
 @{
     ViewData["Title"] = "QuanLyDonHang";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
     var context = new ClientDbContext();
-    var dataAccess = new DataAccess();
+  
 }
 
 <body>
@@ -24,7 +24,7 @@
                         <form asp-action="QuanLyDonHang" method="get" asp-controller="Admin">
 
                             <div class="col-lg-3">
-                                <select   id="filter" name="status" class="form-control" asp-items="@(new SelectList(context.TrangThaiDonHang.ToList(),"Id","TenTrangThai"))">
+                                <select   id="filter" name="status" class="form-control" asp-items="@(new SelectList(DonHangRepository.GetTrangThaiDonHangs(),"Id","TenTrangThai"))">
                                     <option value="">Trạng thái</option>
                                 </select>
                             </div>
@@ -70,7 +70,7 @@
                                     <td style="vertical-align:middle">@item.MaDh</td>
 
                                     <td style="vertical-align:middle">@item.HoTen</td>
-                                    <td style="vertical-align:middle">@context.TrangThaiDonHang.Find(item.TinhTrangDh).TenTrangThai</td>
+                                    <td style="vertical-align:middle">@DonHangRepository.GetTTDH(item.TinhTrangDh.ToString()).TenTrangThai</td>
                                     <td  style="vertical-align:middle">@item.Ghichu</td>
                                     <td style="vertical-align:middle">@item.PtgiaoDich</td>
                                     <td style="vertical-align:middle">@string.Format("{0:#,##0}", item.Tongtien) VND</td>

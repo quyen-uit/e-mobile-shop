@@ -74,5 +74,26 @@ namespace e_mobile_shop.Models.Repository.SanPhamRepository
             context.Entry(a).CurrentValues.SetValues(sp);
             context.SaveChanges();
         }
+
+        public List<ThongSo> GetThongSo(string Id)
+        {
+            return context.ThongSo.Where(x=>x.MaLoai==Id).ToList();
+        }
+
+        public string GetLoaiSp(string id)
+        {
+            return context.LoaiSp.Find(id).TenLoai;
+        }
+
+        public int CountSanPham(string loaiSp)
+        {
+            return context.SanPham.Where(x=>x.LoaiSp==loaiSp).ToList().Count;
+        }
+
+        public void UpdateSoLuong(string maSp, int? soLuong)
+        {
+             context.SanPham.Find(maSp).SoLuong =context.SanPham.Find(maSp).SoLuong - soLuong;
+                context.SaveChanges();
+        }
     }
 }

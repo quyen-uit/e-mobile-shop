@@ -15,11 +15,13 @@ namespace e_mobile_shop.Models.Repository
         string connectionString = "";
         string newID = "";
         static bool a = true;
+        private readonly ClientDbContext dbContext;
         public DonHangRepository(IConfiguration configuration,
-                                    IHubContext<SignalServer> context)
+                                    IHubContext<SignalServer> context, ClientDbContext db)
         {
-            connectionString = "Data Source=UAENA;Initial Catalog=eShopDb;Integrated Security=True";
+            connectionString = "Data Source=DESKTOP-HN4A59E\\SQLEXPRESS;Initial Catalog=eShopDb;Integrated Security=True";
             _context = context;
+            dbContext = db;
         }
         public List<DonHang> GetAll()
         {
@@ -192,6 +194,71 @@ namespace e_mobile_shop.Models.Repository
             {
                 context.DonHang.Update(dh);
                 context.SaveChanges();
+            }
+        }
+
+        public List<TrangThaiDonHang> GetTrangThaiDonHangs()
+        {
+            using(var context = new ClientDbContext())
+            {
+                return context.TrangThaiDonHang.ToList();
+            }
+        }
+
+        public IQueryable<DonHang> GetDonHangsByMaKh(string maKh, string type)
+        {
+           
+                if(!String.IsNullOrEmpty(type))
+                {
+                    var result = from s in dbContext.DonHang where s.MaKh ==maKh  && s.TinhTrangDh == int.Parse(type) select s; 
+
+                    return result;
+                } else 
+                {
+                    var result = from s in dbContext.DonHang where s.MaKh ==maKh select s;
+                    return result;
+                }
+        }
+
+        public int SoDonHang()
+        {
+            using(var context = new ClientDbContext())
+            {
+                return context.DonHang.Count();
+            }
+        }
+
+        public void AddDonHang(DonHang donHang)
+        {
+            using(var context = new ClientDbContext())
+            {
+                context.DonHang.Add(donHang);
+                context.SaveChanges();
+            }
+        }
+
+        public string GetTrangThaiDonHang(string id)
+        {
+            using(var context = new ClientDbContext())
+            {
+                return context.TrangThaiDonHang.Find(int.Parse(id)).TenTrangThai;
+            }
+        }
+
+        public void AddChiTietDonHang(ChiTietDonHang chiTietDonHang)
+        {
+           using(var context = new ClientDbContext())
+           {
+               context.ChiTietDonHang.Add(chiTietDonHang);
+               context.SaveChanges();
+           }
+        }
+
+        public List<ChiTietDonHang> GetChiTiets()
+        {
+            using(var context=new ClientDbContext() )
+            {
+                return context.ChiTietDonHang.ToList();
             }
         }
     }

@@ -1,11 +1,10 @@
 ﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @model e_mobile_shop.Models.SanPham
 @using e_mobile_shop.Models.Repository.MobileShopRepository
+@inject e_mobile_shop.Models.Repository.MobileShopRepository.IMobileShopRepository MobileShopRepository
 @{
     ViewData["Title"] = "Them";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
-    var context = new ClientDbContext();
-    var dataAccess = new MobileShopRepository(context);
 
 }
 <style>
@@ -80,7 +79,7 @@
                                 Hãng sản xuất
                                 <label class="validation-summary-errors">*</label>
                             </label>
-                            <select class="form-control" asp-for="Nsx" asp-items="@(new SelectList(dataAccess.GetNSX(),"MaNsx","TenNsx"))">
+                            <select class="form-control" asp-for="Nsx" asp-items="@(new SelectList(ViewBag.NhaSanXuat as List<NhaSanXuat>,"MaNsx","TenNsx"))">
                             </select>
 
                         </div>
@@ -89,7 +88,7 @@
                                 Nhà cung cấp
                                 <label class="validation-summary-errors">*</label>
                             </label>
-                            <select class="form-control" asp-for="MaNcc" asp-items="@(new SelectList(context.NhaCungCap.ToList(),"MaNcc","TenNcc"))">
+                            <select class="form-control" asp-for="MaNcc" asp-items="@(new SelectList(ViewBag.NhaCungCap as List<NhaCungCap>,"MaNcc","TenNcc"))">
                             </select>
 
                         </div>
@@ -144,7 +143,7 @@
                         </div>*@
                     <div class="form-group">
                         <div class="row">
-                            @foreach (var item in dataAccess.ReadThongSo(ViewData["MaLoai"].ToString()))
+                            @foreach (var item in ViewBag.ThongSo as List<ThongSo>)
                             {
                                 <div class="form-group col-lg-6">
                                     <label>

@@ -10,7 +10,6 @@ using e_mobile_shop.Models.Helpers;
 using e_mobile_shop.Models.Repository;
 using e_mobile_shop.Models.Repository.MobileShopRepository;
 using e_mobile_shop.Models.Repository.SanPhamRepository;
-
 namespace e_mobile_shop.Controllers
 {
     public class AdminController : Controller
@@ -160,6 +159,7 @@ namespace e_mobile_shop.Controllers
         {
             ViewData["LoaiSP"] = id;
             var a =_shopRepo.ReadSanPham(id);
+            ViewBag.LoaiSp = _spRepository.GetLoaiSp(id);
             List<SanPham> rs = new List<SanPham>();
             if(!string.IsNullOrEmpty(status))
             {
@@ -192,7 +192,11 @@ namespace e_mobile_shop.Controllers
         }
         public IActionResult Them(string Id)
         {
+            ViewBag.NhaSanXuat = _shopRepo.GetNSX();
+            ViewBag.NhaCungCap =_shopRepo.GetNhaCungCap();
+            ViewBag.ThongSo = _spRepository.GetThongSo(Id);
             ViewData["MaLoai"] = Id;
+
             //ViewData["TenLoai"] = context.LoaiSp.Find(Id).TenLoai;
             ViewData["TenLoai"] = _shopRepo.GetLoaiSp(Id);
             return View();
