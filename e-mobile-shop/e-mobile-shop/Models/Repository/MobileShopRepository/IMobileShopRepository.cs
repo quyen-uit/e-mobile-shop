@@ -32,5 +32,11 @@ namespace e_mobile_shop.Models.Repository.MobileShopRepository
         List<LoaiSp> ReadLoaiSp();
         List<AspNetUsers> ViewSanPham();
         List<ChiTietDonHang> GetChiTietDonHang(string Id);
+        //new
+        List<AspNetUsers> GetUsers();
+        List<Voucher> GetVouchers();
+        List<Voucher> GetVouchersByStatus(string status);
+        void DeleteVoucher(string id);
+        void SaveVoucher(Voucher vc);
     }
 }

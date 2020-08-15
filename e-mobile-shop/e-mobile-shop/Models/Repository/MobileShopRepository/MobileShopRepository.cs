@@ -301,5 +301,35 @@ namespace e_mobile_shop.Models.Repository.MobileShopRepository
             }
             else return new List<ChiTietDonHang>();
         }
+
+        public List<AspNetUsers> GetUsers()
+        {
+            using(var context = new ClientDbContext())
+            {
+                return context.AspNetUsers.ToList();
+            }
+        }
+        public List<Voucher> GetVouchers()
+        {
+            using(var context = new ClientDbContext())
+            {
+                return context.Voucher.ToList();
+            }
+        }
+
+        public List<Voucher> GetVouchersByStatus(string status)
+        {
+            return context.Voucher.Where(x => x.Status == Int32.Parse(status)).ToList();
+        }
+        public void DeleteVoucher(string id)
+        {
+            context.Voucher.Find(id).Status = 0;
+            context.SaveChanges();
+        }
+        public void SaveVoucher(Voucher vc)
+        {
+            context.Voucher.Add(vc);
+            context.SaveChanges();
+        }
     }
 }

@@ -7,7 +7,9 @@ using BotDetect.Web;
 using e_mobile_shop.Data;
 using e_mobile_shop.Models;
 using e_mobile_shop.Models.Repository;
+using e_mobile_shop.Models.Repository.DataExcuteRepository;
 using e_mobile_shop.Models.Repository.MobileShopRepository;
+using e_mobile_shop.Models.Repository.SanPhamRepository;
 using e_mobile_shop.Models.Services;
 
 using Microsoft.AspNetCore.Builder;
@@ -89,6 +91,8 @@ namespace e_mobile_shop
             services.AddSignalR();
             services.AddTransient<IDonHangRepository, DonHangRepository>();
             services.AddTransient<IMobileShopRepository, MobileShopRepository>();
+            services.AddTransient<ISanPhamRepository, SanPhamRepository>();
+            services.AddTransient<IDataAccess, DataAccess>();
             services.AddRouting(options => options.LowercaseUrls = true);
         }
 

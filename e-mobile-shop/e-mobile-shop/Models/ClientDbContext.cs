@@ -48,7 +48,7 @@ namespace e_mobile_shop.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Data Source=DESKTOP-HN4A59E\\SQLEXPRESS;Initial Catalog=eShopDb;Integrated Security=True");
+                optionsBuilder.UseSqlServer("Data Source=UAENA;Initial Catalog=eShopDb;Integrated Security=True");
             }
         }
 

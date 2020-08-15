@@ -9,5 +9,12 @@ namespace e_mobile_shop.Models.Repository
     {
         List<DonHang> GetAll();
         void NotifyDonHang();
+
+        List<DonHang> GetDonHangs();
+        List<ChiTietDonHang> GetChiTietDonHangsByMaDH(string madh);
+        List<DonHang> GetDonHangsByIdStatus(string id, string status);
+        DonHang GetDonHangById(string id);
+        TrangThaiDonHang GetTTDH(string id);
+        void Update(DonHang dh);
     }
 }

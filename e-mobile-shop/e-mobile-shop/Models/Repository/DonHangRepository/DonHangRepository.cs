@@ -18,7 +18,7 @@ namespace e_mobile_shop.Models.Repository
         public DonHangRepository(IConfiguration configuration,
                                     IHubContext<SignalServer> context)
         {
-            connectionString = "Data Source=DESKTOP-HN4A59E\\SQLEXPRESS;Initial Catalog=eShopDb;Integrated Security=True";
+            connectionString = "Data Source=UAENA;Initial Catalog=eShopDb;Integrated Security=True";
             _context = context;
         }
         public List<DonHang> GetAll()
@@ -147,6 +147,52 @@ namespace e_mobile_shop.Models.Repository
             };
 
             _context.Clients.All.SendAsync("refreshDonHangs", newID, num1.ToString(), num2.ToString());
+        }
+
+        public List<DonHang> GetDonHangs()
+        {
+            using(var context = new ClientDbContext())
+            {
+                return context.DonHang.ToList();
+            }
+        }
+
+        public List<DonHang> GetDonHangsByIdStatus(string id, string status)
+        {
+            throw new NotImplementedException();
+        }
+
+        public DonHang GetDonHangById(string id)
+        {
+            using(var context = new ClientDbContext())
+            {
+                return context.DonHang.Where(x => x.MaDh == id).ToList().FirstOrDefault();
+            }
+        }
+
+        public List<ChiTietDonHang> GetChiTietDonHangsByMaDH(string madh)
+        {
+            using(var context = new ClientDbContext())
+            {
+                return context.ChiTietDonHang.Where(x => x.MaDh == madh).ToList();
+            }
+        }
+
+        public TrangThaiDonHang GetTTDH(string id)
+        {
+           using(var context = new ClientDbContext())
+            {
+                return context.TrangThaiDonHang.Find(Int32.Parse(id));
+            }
+        }
+
+        public void Update(DonHang dh)
+        {
+           using(var context = new ClientDbContext())
+            {
+                context.DonHang.Update(dh);
+                context.SaveChanges();
+            }
         }
     }
 }
