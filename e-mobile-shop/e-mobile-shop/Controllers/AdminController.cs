@@ -433,8 +433,6 @@ namespace e_mobile_shop.Controllers
         }
         public IActionResult XoaKhuyenMai(string Id)
         {
-            //context.Voucher.Find(Id).Status = 0;
-            //context.SaveChanges();
             _shopRepo.DeleteVoucher(Id);
             return RedirectToAction("QuanLyKhuyenMai", "Admin").WithSuccess("Thành công", "Bạn đã xóa khuyến mãi khỏi danh sách.");
         }
@@ -447,8 +445,6 @@ namespace e_mobile_shop.Controllers
         {
             if(ModelState.IsValid)
             {
-                //context.Voucher.Add(model);
-                //context.SaveChanges();
                 _shopRepo.SaveVoucher(model);
                 return RedirectToAction("QuanLyKhuyenMai", "Admin").WithSuccess("Thành công", "Đã thêm khuyến mãi mới. ID: "+model.VoucherId);
             }
@@ -457,6 +453,11 @@ namespace e_mobile_shop.Controllers
 
         public IActionResult ChiTiet(string id)
         {
+            ViewBag.NhaSanXuat = _shopRepo.GetNSX();
+            ViewBag.NhaCungCap =_shopRepo.GetNhaCungCap();
+            ViewBag.ThongSo = _spRepository.GetThongSo(id);
+
+           
             return View(_spRepository.GetSanPhamById(id));
         }
 

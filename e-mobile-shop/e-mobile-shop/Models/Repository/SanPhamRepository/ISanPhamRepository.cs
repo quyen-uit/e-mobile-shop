@@ -20,5 +20,7 @@ namespace e_mobile_shop.Models.Repository.SanPhamRepository
         List<ThongSo> GetThongSo(string Id);
         string GetLoaiSp(string id);
         int CountSanPham(string loaiSp);
+        AnhSanPham GetAnhSanPham(string maSp);
+       
     }
 }

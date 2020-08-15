@@ -95,5 +95,12 @@ namespace e_mobile_shop.Models.Repository.SanPhamRepository
              context.SanPham.Find(maSp).SoLuong =context.SanPham.Find(maSp).SoLuong - soLuong;
                 context.SaveChanges();
         }
+
+        public AnhSanPham GetAnhSanPham(string maSp)
+        {
+            return context.AnhSanPham.Where(x=>x.MaSp == maSp).FirstOrDefault();
+        }
+
+       
     }
 }
