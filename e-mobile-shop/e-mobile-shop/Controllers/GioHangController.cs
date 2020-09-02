@@ -324,7 +324,7 @@ namespace e_mobile_shop.Controllers
             //dh.Diachi = fc["DiaChi"];
             _repository.AddDonHang(dh);
 
-            _repository.NotifyDonHang();
+           // _repository.NotifyDonHang();
             var content = System.IO.File.ReadAllText("GioHang.html");
             content = content.Replace("{{Hoten}}", dh.HoTen);
 
