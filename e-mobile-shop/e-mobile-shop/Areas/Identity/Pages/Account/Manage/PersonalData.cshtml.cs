@@ -1,9 +1,9 @@
-﻿using System.Threading.Tasks;
-using e_mobile_shop.Areas.Identity.Data;
+﻿using e_mobile_shop.Areas.Identity.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
 
 namespace e_mobile_shop.Areas.Identity.Pages.Account.Manage
 {

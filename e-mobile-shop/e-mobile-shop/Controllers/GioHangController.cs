@@ -1,31 +1,30 @@
-﻿using System;
+﻿using e_mobile_shop.Models;
+using e_mobile_shop.Models.Helpers;
+using e_mobile_shop.Models.Repository;
+using e_mobile_shop.Models.Repository.MobileShopRepository;
+using e_mobile_shop.Models.Repository.SanPhamRepository;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-using e_mobile_shop.Models;
-using e_mobile_shop.Models.Helpers;
-using e_mobile_shop.Models.Services;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity.UI.Services;
-using e_mobile_shop.Models.Repository;
-using e_mobile_shop.Models.Repository.MobileShopRepository;
-using e_mobile_shop.Models.Repository.SanPhamRepository;
 
 namespace e_mobile_shop.Controllers
 {
     public class GioHangController : Controller
     {
-     
+
 
         private readonly IDonHangRepository _repository;
         private readonly IMobileShopRepository _shopRepo;
         private readonly ISanPhamRepository _sanPhamRepository;
-        public GioHangController( IDonHangRepository repository, IMobileShopRepository shopRepo, ISanPhamRepository sp)
+        public GioHangController(IDonHangRepository repository, IMobileShopRepository shopRepo, ISanPhamRepository sp)
 
         {
             _repository = repository;
@@ -37,7 +36,7 @@ namespace e_mobile_shop.Controllers
         {
             var giohang = HttpContext.Session.GetObjectFromJson<List<ChiTietDonHang>>("GioHang");
             if (giohang == null) giohang = new List<ChiTietDonHang>();
-          
+
             double? thanhTien = 0;
             double? giaTriDonHang = 0;
 
@@ -58,7 +57,7 @@ namespace e_mobile_shop.Controllers
             else
                 ViewBag.Vouchers = listVoucher;
 
-            var _voucher = _shopRepo.GetVoucherById(fc["voucher"].ToString()) ;
+            var _voucher = _shopRepo.GetVoucherById(fc["voucher"].ToString());
 
             if (_voucher != null)
             {
@@ -89,7 +88,7 @@ namespace e_mobile_shop.Controllers
                     thanhTien = thanhTien - item.VoucherDiscount;
                 else if (item.VoucherType.Contains("VCT002"))
                     if (item.VoucherDiscount != null)
-                        thanhTien = thanhTien - thanhTien * ((double) item.VoucherDiscount / 100);
+                        thanhTien = thanhTien - thanhTien * ((double)item.VoucherDiscount / 100);
 
 
             // string s = String.Format("{0:N0}", thanhTien.ToString());
@@ -100,11 +99,11 @@ namespace e_mobile_shop.Controllers
             giaTriDonHang = 0;
             ViewBag.GioHang = giohang;
             ViewBag.Added = 0;
-           
+
             return View();
         }
 
-    
+
         public IActionResult RemoveVoucher(string voucherCode)
         {
             var listVoucher = HttpContext.Session.GetObjectFromJson<List<Voucher>>("Vouchers");
@@ -260,13 +259,13 @@ namespace e_mobile_shop.Controllers
             var gh = HttpContext.Session.GetObjectFromJson<List<ChiTietDonHang>>("GioHang");
 
             gh[id].SoLuong = int.Parse(fc["SoLuong-" + id]);
-            if(gh[id].SoLuong==0)
+            if (gh[id].SoLuong == 0)
             {
                 return RedirectToAction("Remove", "GioHang", new { id = id });
             }
 
 
-            
+
             HttpContext.Session.SetObjectAsJson("GioHang", gh);
             HttpContext.Session.SetString("GioHangCount", gh.Count.ToString());
             return RedirectToAction("XemGioHang", "GioHang").WithSuccess("", "Chỉnh sửa thành công");
@@ -275,13 +274,13 @@ namespace e_mobile_shop.Controllers
 
         [HttpPost]
         [Route("thanh-toan")]
-        public IActionResult CheckOut(IFormCollection fc,[FromServices] IEmailSender mailSender)
+        public IActionResult CheckOut(IFormCollection fc, [FromServices] IEmailSender mailSender)
         {
             var dh = new DonHang();
 
             if (!string.IsNullOrEmpty(fc["Id"].ToString()))
             {
-                
+
                 if (_shopRepo.GetUser(fc["Id"]) != null)
                 {
                     dh.MaKh = fc["Id"];
@@ -318,13 +317,13 @@ namespace e_mobile_shop.Controllers
             dh.TinhTrangDh = 0;
             dh.Tongtien = double.Parse(fc["GiaTriDonHang"]);
             dh.GiamGia = double.Parse(fc["GiamGia"]);
-           
+
             dh.Ghichu = fc["GhiChu"];
             dh.TinhTrangDh = 1;
             //dh.Diachi = fc["DiaChi"];
             _repository.AddDonHang(dh);
 
-           // _repository.NotifyDonHang();
+            // _repository.NotifyDonHang();
             var content = System.IO.File.ReadAllText("GioHang.html");
             content = content.Replace("{{Hoten}}", dh.HoTen);
 
@@ -336,11 +335,11 @@ namespace e_mobile_shop.Controllers
                 item.MaCtdh = (_repository.GetChiTiets().Count + 1).ToString();
                 item.MaDh = dh.MaDh;
 
-                
 
-                _sanPhamRepository.UpdateSoLuong(item.MaSp,item.SoLuong);
+
+                _sanPhamRepository.UpdateSoLuong(item.MaSp, item.SoLuong);
                 _repository.AddChiTietDonHang(item);
-               
+
                 strCtdh = strCtdh + "<tr>";
                 strCtdh = strCtdh + "<td style='text-align:center'>" + ++index + "</td><td>" +
                          _sanPhamRepository.GetSanPhamById(item.MaSp).TenSp + "</td><td  style='text-align:center'>"
@@ -357,7 +356,7 @@ namespace e_mobile_shop.Controllers
                 dh.Tongtien.Value.ToString("N0"));
             content = content.Replace("{{sdt}}", dh.Dienthoai);
             content = content.Replace("{{giamgia}}", dh.GiamGia.Value.ToString("N0"));
-            content = content.Replace("{{thanhtoan}}", (- dh.GiamGia.Value + dh.Tongtien.Value).ToString("N0"));
+            content = content.Replace("{{thanhtoan}}", (-dh.GiamGia.Value + dh.Tongtien.Value).ToString("N0"));
             //var Option = new AuthMessageSenderOptions
             //{
             //    SendGridKey = context.Parameters.Find("2").Value,
@@ -371,22 +370,22 @@ namespace e_mobile_shop.Controllers
 
             HttpContext.Session.DeleteAllSession();
 
-            return RedirectToAction("ChiTietDonHang", "GioHang", new {id = dh.MaDh})
+            return RedirectToAction("ChiTietDonHang", "GioHang", new { id = dh.MaDh })
                 .WithSuccess("Đặt hàng thành công", "");
         }
 
         [Authorize]
         [Route("danh-sach-don-hang/{id}")]
-        public async Task<IActionResult> DanhSachDonHang(int? pageNumber, string id, string type )
+        public async Task<IActionResult> DanhSachDonHang(int? pageNumber, string id, string type)
         {
             //var donhangs = from d in context.DonHang where d.MaKh == id select d;
-             if(!string.IsNullOrEmpty(type))
-           {
+            if (!string.IsNullOrEmpty(type))
+            {
                 ViewData["Type"] = _repository.GetTrangThaiDonHang(type);
-           }
+            }
 
-           var donhangs = _repository.GetDonHangsByMaKh(id, type);
-          
+            var donhangs = _repository.GetDonHangsByMaKh(id, type);
+
             var pageSize = 5;
             return View(await PaginatedList<DonHang>.CreateAsync(donhangs.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
@@ -399,15 +398,15 @@ namespace e_mobile_shop.Controllers
             return RedirectToAction("Index", "Home");
         }
 
- 
-        public IActionResult HuyDonHang(string id )
+
+        public IActionResult HuyDonHang(string id)
         {
             DonHang dh = _shopRepo.GetDonHang(id);
-            if(dh.TinhTrangDh!=3)
+            if (dh.TinhTrangDh != 3)
             {
                 dh.TinhTrangDh = 0;
                 _repository.Update(dh);
-               // context.DonHang.Update(dh);
+                // context.DonHang.Update(dh);
 
                 //context.SaveChanges();
                 return RedirectToAction("ChiTietDonHang", "GioHang", new { id = id }).WithSuccess("Thành công", "Đơn hàng đã được hủy.");

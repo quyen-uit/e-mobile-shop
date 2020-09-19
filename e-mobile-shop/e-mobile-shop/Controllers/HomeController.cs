@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using e_mobile_shop.Models;
+using e_mobile_shop.Models.Helpers;
+using e_mobile_shop.Models.Repository.MobileShopRepository;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using e_mobile_shop.Models;
-
-using Microsoft.AspNetCore.Http;
-using e_mobile_shop.Models.Helpers;
-using Microsoft.EntityFrameworkCore;
-using e_mobile_shop.Models.Repository.MobileShopRepository;
 
 namespace e_mobile_shop.Controllers
 {
@@ -19,16 +17,16 @@ namespace e_mobile_shop.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly ClientDbContext _context;
-        private readonly DataAccess dataAccess ;
+        private readonly DataAccess dataAccess;
         private readonly IMobileShopRepository _shopRepo;
-        public HomeController(ClientDbContext context,IMobileShopRepository shopRepo)
+        public HomeController(ClientDbContext context, IMobileShopRepository shopRepo)
         {
             _context = context;
             dataAccess = new DataAccess();
-           _shopRepo = shopRepo;
+            _shopRepo = shopRepo;
         }
 
-       
+
 
         // [Route("trang-chu")]
         public IActionResult Index()
@@ -90,7 +88,7 @@ namespace e_mobile_shop.Controllers
                 sanphams = sanphams.Where(s => s.TenSp.ToLower().Contains(tenSp.ToLower()));
             }
 
-            sanphams = dataAccess.FilterSanPhamWithParam(sanphams, params_list, loaiSp,_context);
+            sanphams = dataAccess.FilterSanPhamWithParam(sanphams, params_list, loaiSp, _context);
 
             //filter by NSX 
             if (!String.IsNullOrEmpty(hangSx))
@@ -121,7 +119,7 @@ namespace e_mobile_shop.Controllers
             {
                 ViewData["LoaiSp"] = loaiSp;
 
-                    sanphams = sanphams.Where(x => x.LoaiSp == loaiSp);
+                sanphams = sanphams.Where(x => x.LoaiSp == loaiSp);
             }
             switch (sortOrder)
             {
@@ -148,7 +146,7 @@ namespace e_mobile_shop.Controllers
         [HttpGet]
         public IActionResult TestPage()
         {
-            
+
             return View();
         }
         [HttpPost]
@@ -183,7 +181,7 @@ namespace e_mobile_shop.Controllers
 
             if (!String.IsNullOrEmpty(params_list) && !String.IsNullOrEmpty(loaiSp))
             {
-                sanphams = dataAccess.FilterSanPhamWithParam(sanphams, params_list, loaiSp,_context);
+                sanphams = dataAccess.FilterSanPhamWithParam(sanphams, params_list, loaiSp, _context);
 
             }
             //Do something with paramslist
@@ -194,7 +192,7 @@ namespace e_mobile_shop.Controllers
         [HttpPost]
         public JsonResult CheckVoucher(string voucher)
         {
-            if(String.IsNullOrEmpty(voucher) || String.IsNullOrWhiteSpace(voucher))
+            if (String.IsNullOrEmpty(voucher) || String.IsNullOrWhiteSpace(voucher))
             {
                 return Json(true);
             }

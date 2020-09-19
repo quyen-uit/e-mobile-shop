@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.AspNetCore.Mvc;
-using e_mobile_shop.Models;
-using Microsoft.AspNetCore.Hosting;
-using System.IO;
-using Microsoft.AspNetCore.Http;
+﻿using e_mobile_shop.Models;
 using e_mobile_shop.Models.Helpers;
 using e_mobile_shop.Models.Repository;
 using e_mobile_shop.Models.Repository.MobileShopRepository;
 using e_mobile_shop.Models.Repository.SanPhamRepository;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 namespace e_mobile_shop.Controllers
 {
     public class AdminController : Controller
@@ -21,14 +21,14 @@ namespace e_mobile_shop.Controllers
         private readonly IMobileShopRepository _shopRepo;
         private readonly ISanPhamRepository _spRepository;
 
-      
+
         public AdminController(IWebHostEnvironment hostEnvironment, ClientDbContext _context, IDonHangRepository repository, IMobileShopRepository shopRepo, ISanPhamRepository spRepo)
         {
-           webHostEnvironment = hostEnvironment;
-           context = _context;
-           dataAccess = new DataAccess();
-           _repository = repository;
-           _shopRepo = shopRepo;
+            webHostEnvironment = hostEnvironment;
+            context = _context;
+            dataAccess = new DataAccess();
+            _repository = repository;
+            _shopRepo = shopRepo;
             _spRepository = spRepo;
         }
         // public AdminController(IWebHostEnvironment hostEnvironment, ClientDbContext _context)
@@ -49,17 +49,17 @@ namespace e_mobile_shop.Controllers
             int sum = 0;
             int preMonth = DateTime.Now.AddMonths(-1).Month;
             List<DonHang> dhs = _repository.GetDonHangs();
-            foreach(var item in dhs)
+            foreach (var item in dhs)
             {
-               
-              if (item.NgayDatMua.Value.Month == preMonth)
+
+                if (item.NgayDatMua.Value.Month == preMonth)
                 {
-                    foreach(var i in _repository.GetChiTietDonHangsByMaDH(item.MaDh) /*context.ChiTietDonHang.Where(x=>x.MaDh == item.MaDh)*/)
+                    foreach (var i in _repository.GetChiTietDonHangsByMaDH(item.MaDh) /*context.ChiTietDonHang.Where(x=>x.MaDh == item.MaDh)*/)
                     {
                         sumPre = sumPre + i.SoLuong.Value;
                     }
                 }
-              else if (item.NgayDatMua.Value.Month == DateTime.Now.Month)
+                else if (item.NgayDatMua.Value.Month == DateTime.Now.Month)
                 {
                     foreach (var i in _repository.GetChiTietDonHangsByMaDH(item.MaDh))
                     {
@@ -93,7 +93,7 @@ namespace e_mobile_shop.Controllers
             }
             return View(list);
         }
-       
+
         public IActionResult QuanLyDonHang(string searchValue, string status)
         {
             // List<DonHang> list = context.DonHang.ToList();
@@ -106,7 +106,7 @@ namespace e_mobile_shop.Controllers
 
             // List<DonHang> rs = new List<DonHang>();
             List<DonHang> rs = _repository.GetDonHangs();
-            foreach(var i in list)
+            foreach (var i in list)
             {
                 i.Ghichu = i.NgayDatMua.Value.ToString("HH:mm, dd/MM/yyyy");
             }
@@ -124,7 +124,7 @@ namespace e_mobile_shop.Controllers
                 }
                 return View(rs).WithSuccess("Tìm kiếm: ", searchValue);
             }
-            if(!string.IsNullOrEmpty(status))
+            if (!string.IsNullOrEmpty(status))
             {
                 return View(list).WithSuccess("Trạng thái đơn hàng: ", _repository.GetTTDH(status).TenTrangThai /*context.TrangThaiDonHang.Find(Int32.Parse(status)).TenTrangThai*/);
             }
@@ -146,7 +146,7 @@ namespace e_mobile_shop.Controllers
         }
 
         [HttpPost]
-        public IActionResult ChinhSuaDonHang( DonHang model, IFormCollection fc)
+        public IActionResult ChinhSuaDonHang(DonHang model, IFormCollection fc)
         {
             DonHang dh = _shopRepo.GetDonHang(fc["MaDh"]);
             dh.TinhTrangDh = model.TinhTrangDh;
@@ -155,13 +155,13 @@ namespace e_mobile_shop.Controllers
             _repository.Update(dh);
             return RedirectToAction("QuanLyDonHang", "Admin").WithSuccess("Thành công", "Đơn hàng đã được sửa. ID: " + model.MaDh);
         }
-        public IActionResult QuanLy(string id, string searchValue,string status)
+        public IActionResult QuanLy(string id, string searchValue, string status)
         {
             ViewData["LoaiSP"] = id;
-            var a =_shopRepo.ReadSanPham(id);
+            var a = _shopRepo.ReadSanPham(id);
             ViewBag.LoaiSp = _spRepository.GetLoaiSp(id);
             List<SanPham> rs = new List<SanPham>();
-            if(!string.IsNullOrEmpty(status))
+            if (!string.IsNullOrEmpty(status))
             {
                 // a = context.SanPham.Where(x=>x.LoaiSp == id && x.Status == Int32.Parse(status)).ToList();
                 a = _spRepository.GetSanPhamsByIdStatus(id, status);
@@ -178,9 +178,9 @@ namespace e_mobile_shop.Controllers
             }
 
             if (!string.IsNullOrEmpty(status))
-                return View(a).WithSuccess("Trạng thái sản phẩm: ", status=="1"?"Kinh doanh":"Ngừng kinh doanh");
-            else 
-            return View(a);
+                return View(a).WithSuccess("Trạng thái sản phẩm: ", status == "1" ? "Kinh doanh" : "Ngừng kinh doanh");
+            else
+                return View(a);
         }
         //public IActionResult QuanLy(string maloai, string search)
         //{
@@ -193,7 +193,7 @@ namespace e_mobile_shop.Controllers
         public IActionResult Them(string Id)
         {
             ViewBag.NhaSanXuat = _shopRepo.GetNSX();
-            ViewBag.NhaCungCap =_shopRepo.GetNhaCungCap();
+            ViewBag.NhaCungCap = _shopRepo.GetNhaCungCap();
             ViewBag.ThongSo = _spRepository.GetThongSo(Id);
             ViewData["MaLoai"] = Id;
 
@@ -225,7 +225,7 @@ namespace e_mobile_shop.Controllers
             IFormFile productImages2,
             IFormFile productImages3)
         {
-           
+
             model.MaSp = fc["MaSp"];
             //SanPham a = context.SanPham.Find(fc["MaSp"]);
             SanPham a = _spRepository.GetSanPhamById(fc["MaSp"]);
@@ -242,10 +242,10 @@ namespace e_mobile_shop.Controllers
             {
                 model.Ishot = Convert.ToBoolean(fc["isHot"].ToString().Split(',')[0]);
                 model.Isnew = Convert.ToBoolean(fc["isNew"].ToString().Split(',')[0]);
-                model.Status = fc["status"].ToString().Contains("on")  ? 1:0;
+                model.Status = fc["status"].ToString().Contains("on") ? 1 : 0;
                 //context.Entry(a).CurrentValues.SetValues(model);
                 //context.SaveChanges();
-                _spRepository.Update(model,fc["MaSp"]);
+                _spRepository.Update(model, fc["MaSp"]);
                 //AnhSanPham pic = context.AnhSanPham.Where(x => x.MaSp == model.MaSp).FirstOrDefault();
                 AnhSanPham pic = _shopRepo.GetAnhSanPham(model.MaSp);
                 if (productImages1 != null)
@@ -285,7 +285,7 @@ namespace e_mobile_shop.Controllers
                 //    temp = null;
 
                 //}
-                return RedirectToAction("QuanLy", "Admin", new { id = model.LoaiSp }).WithSuccess("Thành công", "Sản phẩm đã được sửa. ID: "+ model.MaSp);
+                return RedirectToAction("QuanLy", "Admin", new { id = model.LoaiSp }).WithSuccess("Thành công", "Sản phẩm đã được sửa. ID: " + model.MaSp);
             }
             else
             {
@@ -303,7 +303,7 @@ namespace e_mobile_shop.Controllers
             IFormFile productImages3
             )
         {
-           // string message = "";
+            // string message = "";
 
             if (ModelState.IsValid)
             {
@@ -312,7 +312,7 @@ namespace e_mobile_shop.Controllers
 
                 model.AnhDaiDien = UploadedFile(AnhDaiDien, "ProductAvatar");
                 model.SoLuotXemSp = 0;
-                model.Ishot =   Convert.ToBoolean(fc["isHot"].ToString().Split(',')[0]);
+                model.Ishot = Convert.ToBoolean(fc["isHot"].ToString().Split(',')[0]);
                 model.Isnew = Convert.ToBoolean(fc["isNew"].ToString().Split(',')[0]);
                 //context.SanPham.Add(model);
                 //context.SaveChanges();
@@ -321,7 +321,7 @@ namespace e_mobile_shop.Controllers
                 {
 
                     MaSp = model.MaSp,
-                    Anh1 = productImages1 != null ?  UploadedFile(productImages1, "ProductImages"): null,
+                    Anh1 = productImages1 != null ? UploadedFile(productImages1, "ProductImages") : null,
                     Anh2 = productImages2 != null ? UploadedFile(productImages2, "ProductImages") : null,
                     Anh3 = productImages3 != null ? UploadedFile(productImages3, "ProductImages") : null,
                 };
@@ -407,7 +407,7 @@ namespace e_mobile_shop.Controllers
             //List<Voucher> list = context.Voucher.ToList();
             List<Voucher> list = _shopRepo.GetVouchers();
             List<Voucher> rs = new List<Voucher>();
-            if(!string.IsNullOrEmpty(status))
+            if (!string.IsNullOrEmpty(status))
             {
                 //list = context.Voucher.Where(x => x.Status == Int32.Parse(status)).ToList();
                 list = _shopRepo.GetVouchersByStatus(status);
@@ -427,8 +427,8 @@ namespace e_mobile_shop.Controllers
                 return View(rs).WithSuccess("Tìm kiếm", searchValue);
             }
             if (!string.IsNullOrEmpty(status))
-                return View(list).WithSuccess("Trạng thái khuyến mãi: " , status=="1"?"Hoạt động":"Hết hạn");
-            else 
+                return View(list).WithSuccess("Trạng thái khuyến mãi: ", status == "1" ? "Hoạt động" : "Hết hạn");
+            else
                 return View(list);
         }
         public IActionResult XoaKhuyenMai(string Id)
@@ -436,17 +436,17 @@ namespace e_mobile_shop.Controllers
             _shopRepo.DeleteVoucher(Id);
             return RedirectToAction("QuanLyKhuyenMai", "Admin").WithSuccess("Thành công", "Bạn đã xóa khuyến mãi khỏi danh sách.");
         }
-        public IActionResult ThemKhuyenMai( )
+        public IActionResult ThemKhuyenMai()
         {
             return View();
         }
         [HttpPost]
         public IActionResult ThemKhuyenMai(Voucher model)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 _shopRepo.SaveVoucher(model);
-                return RedirectToAction("QuanLyKhuyenMai", "Admin").WithSuccess("Thành công", "Đã thêm khuyến mãi mới. ID: "+model.VoucherId);
+                return RedirectToAction("QuanLyKhuyenMai", "Admin").WithSuccess("Thành công", "Đã thêm khuyến mãi mới. ID: " + model.VoucherId);
             }
             return View(model);
         }
@@ -454,10 +454,10 @@ namespace e_mobile_shop.Controllers
         public IActionResult ChiTiet(string id)
         {
             ViewBag.NhaSanXuat = _shopRepo.GetNSX();
-            ViewBag.NhaCungCap =_shopRepo.GetNhaCungCap();
+            ViewBag.NhaCungCap = _shopRepo.GetNhaCungCap();
             ViewBag.ThongSo = _spRepository.GetThongSo(id);
 
-           
+
             return View(_spRepository.GetSanPhamById(id));
         }
 

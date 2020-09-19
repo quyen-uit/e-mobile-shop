@@ -1,24 +1,20 @@
-﻿using e_mobile_shop.Models;
-using e_mobile_shop.Models.Repository.MobileShopRepository;
+﻿using e_mobile_shop.Models.Repository.MobileShopRepository;
+using e_mobile_shop.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace e_mobile_shop.Controllers.Components
 {
-    public class BinhLuanViewComponent:ViewComponent
+    public class BinhLuanViewComponent : ViewComponent
     {
-        private readonly IMobileShopRepository context;
-        public BinhLuanViewComponent(IMobileShopRepository _context)
+        private readonly IBinhLuanService _binhLuanService;
+        public BinhLuanViewComponent( IBinhLuanService binhLuanService)
         {
-            context = _context;
+            _binhLuanService = binhLuanService;
         }
         public async Task<IViewComponentResult> InvokeAsync(string Id)
         {
-            return View(await context.GetBinhLuans(Id));  
+            return View(await _binhLuanService.GetBinhLuans(Id));
         }
     }
 }

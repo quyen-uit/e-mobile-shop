@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace e_mobile_shop.Models.Repository.SanPhamRepository
 {
@@ -21,6 +18,6 @@ namespace e_mobile_shop.Models.Repository.SanPhamRepository
         string GetLoaiSp(string id);
         int CountSanPham(string loaiSp);
         AnhSanPham GetAnhSanPham(string maSp);
-       
+
     }
 }

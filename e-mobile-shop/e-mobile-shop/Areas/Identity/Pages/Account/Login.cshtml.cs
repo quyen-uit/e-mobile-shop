@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text.Encodings.Web;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using e_mobile_shop.Areas.Identity.Data;
+﻿using e_mobile_shop.Areas.Identity.Data;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using e_mobile_shop.Models.Helpers;
-using e_mobile_shop.Models;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace e_mobile_shop.Areas.Identity.Pages.Account
 {
@@ -24,7 +19,7 @@ namespace e_mobile_shop.Areas.Identity.Pages.Account
         private readonly SignInManager<AppUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
 
-        public LoginModel(SignInManager<AppUser> signInManager, 
+        public LoginModel(SignInManager<AppUser> signInManager,
             ILogger<LoginModel> logger,
             UserManager<AppUser> userManager)
         {
@@ -75,7 +70,7 @@ namespace e_mobile_shop.Areas.Identity.Pages.Account
             // Clear the existing external cookie to ensure a clean login process
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
-           
+
 
             ReturnUrl = returnUrl;
         }
@@ -100,7 +95,7 @@ namespace e_mobile_shop.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User logged in.");
 
-                 
+
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
@@ -115,12 +110,12 @@ namespace e_mobile_shop.Areas.Identity.Pages.Account
                 else
                 {
                     ModelState.AddModelError(string.Empty, "Sai thông tin đăng nhập.");
-                    if(ExternalLogins ==null)
+                    if (ExternalLogins == null)
                     {
                         ExternalLogins = new List<AuthenticationScheme>();
                         ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
                     }
-                   
+
                     return Page();
                 }
             }

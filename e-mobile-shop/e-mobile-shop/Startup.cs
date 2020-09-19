@@ -1,27 +1,24 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using BotDetect.Web;
+using AutoMapper;
+using e_mobile_shop.Core.Models;
 using e_mobile_shop.Data;
+using e_mobile_shop.Mapper;
 using e_mobile_shop.Models;
 using e_mobile_shop.Models.Repository;
 using e_mobile_shop.Models.Repository.DataExcuteRepository;
 using e_mobile_shop.Models.Repository.MobileShopRepository;
 using e_mobile_shop.Models.Repository.SanPhamRepository;
 using e_mobile_shop.Models.Services;
-
+using e_mobile_shop.ServicesExtensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Net;
 
 namespace e_mobile_shop
 {
@@ -42,12 +39,19 @@ namespace e_mobile_shop
 
             services.AddDbContext<eShopDbContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("eShopDbContextConnection")), ServiceLifetime.Transient);
-           
+
             services.AddDbContext<ClientDbContext>(options =>
                    options.UseSqlServer(Configuration.GetConnectionString("eShopDbContextConnection")), ServiceLifetime.Transient);
 
+            services.AddDbContext<ApplicationDbContext>(options =>
+                   options.UseSqlServer(Configuration.GetConnectionString("eShopDbContextConnection")), ServiceLifetime.Transient);
+
+            services.ConfigureRepository();
+
+            services.CustomServices();
+
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
-            services.AddControllersWithViews().AddNewtonsoftJson(options =>  options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+            services.AddControllersWithViews().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddSession();
             services.Configure<IdentityOptions>(options =>
             {
@@ -79,7 +83,16 @@ namespace e_mobile_shop
                 facebookOptions.AppSecret = new ClientDbContext().Parameters.Find("5").Value;
             });
 
+            var mapperConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new MappingProfile());
+            });
+
+            IMapper mapper = mapperConfig.CreateMapper();
+            services.AddSingleton(mapper);
+
             services.AddTransient<IEmailSender, EmailSender>();
+
 
             services.Configure<AuthMessageSenderOptions>(option =>
             {
@@ -87,7 +100,10 @@ namespace e_mobile_shop
                 option.SendGridKey = new ClientDbContext().Parameters.Find("2").Value;
             });
 
-
+            services.Configure<ForwardedHeadersOptions>(options =>
+            {
+                options.KnownProxies.Add(IPAddress.Parse("10.0.0.100"));
+            });
             services.AddSignalR();
             services.AddTransient<IDonHangRepository, DonHangRepository>();
             services.AddTransient<IMobileShopRepository, MobileShopRepository>();
@@ -99,6 +115,11 @@ namespace e_mobile_shop
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

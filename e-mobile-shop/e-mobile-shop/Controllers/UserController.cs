@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using e_mobile_shop.Models;
+﻿using e_mobile_shop.Models;
 using e_mobile_shop.Models.Helpers;
 using e_mobile_shop.Models.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Linq;
 
 namespace e_mobile_shop.Controllers
 {
@@ -18,7 +16,7 @@ namespace e_mobile_shop.Controllers
         public UserController(ClientDbContext _context)
         {
             context = _context;
-           
+
         }
         public IActionResult Index()
         {
@@ -33,7 +31,7 @@ namespace e_mobile_shop.Controllers
         {
 
             AspNetUsers user = context.AspNetUsers.Find(model.Id);
-            
+
             AspNetUsers newModel = user;
             newModel.HoTen = model.HoTen;
             newModel.Cmnd = model.Cmnd;
@@ -44,13 +42,14 @@ namespace e_mobile_shop.Controllers
 
 
 
-            
-            if(ModelState.IsValid)
+
+            if (ModelState.IsValid)
             {
                 context.Entry(user).CurrentValues.SetValues(newModel);
                 context.SaveChanges();
                 return View(model).WithSuccess("", "Chỉnh sửa thành công");
-            }else
+            }
+            else
             {
                 return View(model);
 
@@ -59,9 +58,9 @@ namespace e_mobile_shop.Controllers
 
         [HttpPost]
         [Authorize]
-        public IActionResult ReplyComment(string userId, string maBl,string maSp, IFormCollection fc )
+        public IActionResult ReplyComment(string userId, string maBl, string maSp, IFormCollection fc)
         {
-            if(!string.IsNullOrEmpty(fc["ReplyComment"].ToString()))
+            if (!string.IsNullOrEmpty(fc["ReplyComment"].ToString()))
             {
                 TraLoi tl = new TraLoi()
                 {
@@ -87,9 +86,9 @@ namespace e_mobile_shop.Controllers
 
         [HttpPost]
         [Authorize]
-        public IActionResult Comment(string userId,  string maSp, IFormCollection fc)
+        public IActionResult Comment(string userId, string maSp, IFormCollection fc)
         {
-            if(!String.IsNullOrEmpty(fc["Comment"].ToString()))
+            if (!String.IsNullOrEmpty(fc["Comment"].ToString()))
             {
                 BinhLuan tl = new BinhLuan()
                 {
@@ -113,7 +112,7 @@ namespace e_mobile_shop.Controllers
         }
 
         [HttpPost]
-        public IActionResult EmailContact( string userId, IFormCollection fc)
+        public IActionResult EmailContact(string userId, IFormCollection fc)
         {
             var Option = new AuthMessageSenderOptions
             {
@@ -126,7 +125,7 @@ namespace e_mobile_shop.Controllers
 
             mailSender.SendEmailAsync("thanglequoc1912@gmail.com", fc["TieuDe"].ToString(), fc["NoiDung"]);
 
-            return RedirectToAction("Contact","Home").WithSuccess("","Gửi email thành công, chúng tôi sẽ phản hồi sớm nhất");
+            return RedirectToAction("Contact", "Home").WithSuccess("", "Gửi email thành công, chúng tôi sẽ phản hồi sớm nhất");
         }
     }
 }
