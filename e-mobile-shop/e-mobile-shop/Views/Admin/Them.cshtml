@@ -1,7 +1,9 @@
-﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-@model e_mobile_shop.Models.SanPham
-@using e_mobile_shop.Models.Repository.MobileShopRepository
-@inject e_mobile_shop.Models.Repository.MobileShopRepository.IMobileShopRepository MobileShopRepository
+﻿@*@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+    @model e_mobile_shop.Models.SanPham
+    @using e_mobile_shop.Models.Repository.MobileShopRepository
+    @inject e_mobile_shop.Models.Repository.MobileShopRepository.IMobileShopRepository MobileShopRepository*@
+@using e_mobile_shop.ViewModels;
+@model SanPhamViewModel
 @{
     ViewData["Title"] = "Them";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
@@ -68,7 +70,7 @@
                                 Số lượng
                                 <label class="validation-summary-errors">*</label>
                             </label>
-                            <input type="number" min="1" max="1000" value="1"  asp-for="SoLuong" class="form-control">
+                            <input type="number" min="1" max="1000" value="1" asp-for="SoLuong" class="form-control">
                             <span asp-validation-for="SoLuong"></span>
                         </div>
 
@@ -79,7 +81,7 @@
                                 Hãng sản xuất
                                 <label class="validation-summary-errors">*</label>
                             </label>
-                            <select class="form-control" asp-for="Nsx" asp-items="@(new SelectList(ViewBag.NhaSanXuat as List<NhaSanXuat>,"MaNsx","TenNsx"))">
+                            <select class="form-control" asp-for="Nsx" asp-items="@(new SelectList(ViewBag.NhaSanXuat as List<NhaSanXuatViewModel>,"MaNsx","TenNsx"))">
                             </select>
 
                         </div>
@@ -88,7 +90,7 @@
                                 Nhà cung cấp
                                 <label class="validation-summary-errors">*</label>
                             </label>
-                            <select class="form-control" asp-for="MaNcc" asp-items="@(new SelectList(ViewBag.NhaCungCap as List<NhaCungCap>,"MaNcc","TenNcc"))">
+                            <select class="form-control" asp-for="MaNcc" asp-items="@(new SelectList(ViewBag.NhaCungCap as List<NhaCungCapViewModel>,"MaNcc","TenNcc"))">
                             </select>
 
                         </div>
@@ -102,7 +104,7 @@
                                 Giá gốc
                                 <label class="validation-summary-errors">*</label>
                             </label>
-                            <input type="text" onkeypress="return isNumber(event)"  asp-for="GiaGoc" class="form-control input-giagoc">
+                            <input type="text" onkeypress="return isNumber(event)" asp-for="GiaGoc" class="form-control input-giagoc">
                             <span>VNĐ</span>
                             <span asp-validation-for="GiaGoc"></span>
                         </div>
@@ -111,7 +113,7 @@
                                 Giá bán
                                 <label class="validation-summary-errors">*</label>
                             </label>
-                            <input type="text" onkeypress="return isNumber(event)"  asp-for="GiaTien" class="form-control input-giaban">
+                            <input type="text" onkeypress="return isNumber(event)" asp-for="GiaTien" class="form-control input-giaban">
                             <span>VNĐ</span>
                             <span asp-validation-for="GiaTien"></span>
                         </div>
@@ -143,7 +145,7 @@
                         </div>*@
                     <div class="form-group">
                         <div class="row">
-                            @foreach (var item in ViewBag.ThongSo as List<ThongSo>)
+                            @foreach (var item in ViewBag.ThongSo as List<ThongSoViewModel>)
                             {
                                 <div class="form-group col-lg-6">
                                     <label>
@@ -263,7 +265,7 @@
                 numeralThousandsGroupStyle: 'thousand'
 
             });
-         
+
         });
     </script>
 </body>

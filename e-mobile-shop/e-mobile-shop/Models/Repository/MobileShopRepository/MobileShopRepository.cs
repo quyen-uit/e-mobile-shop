@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 
 namespace e_mobile_shop.Models.Repository.MobileShopRepository
 {
@@ -37,7 +37,7 @@ namespace e_mobile_shop.Models.Repository.MobileShopRepository
             return result;
         }
 
-      
+
 
         public IQueryable<SanPham> GetPaginatedListSanPham(string Id)
         {
@@ -89,10 +89,10 @@ namespace e_mobile_shop.Models.Repository.MobileShopRepository
 
         public Task<List<TraLoi>> GetTraLoiBinhLuan(string Id)
         {
-            var result = context.TraLoi.Where(x => x.MaBinhLuan == Id && x.TrangThai!=0 ).ToListAsync();
+            var result = context.TraLoi.Where(x => x.MaBinhLuan == Id && x.TrangThai != 0).ToListAsync();
             return result;
         }
-    
+
         public List<AspNetUsers> ViewSanPham()
         {
             using (var context = new ClientDbContext())
@@ -216,7 +216,8 @@ namespace e_mobile_shop.Models.Repository.MobileShopRepository
                 {
                     return context.SanPham.Find(Id);
 
-                } catch(Exception)
+                }
+                catch (Exception)
                 {
                     return new SanPham();
                 }
@@ -263,7 +264,8 @@ namespace e_mobile_shop.Models.Repository.MobileShopRepository
                 {
                     return context.AnhSanPham.SingleOrDefault(x => x.MaSp == maSp);
 
-                } catch(Exception)
+                }
+                catch (Exception)
                 {
                     return new AnhSanPham();
                 }
@@ -304,14 +306,14 @@ namespace e_mobile_shop.Models.Repository.MobileShopRepository
 
         public List<AspNetUsers> GetUsers()
         {
-            using(var context = new ClientDbContext())
+            using (var context = new ClientDbContext())
             {
                 return context.AspNetUsers.ToList();
             }
         }
         public List<Voucher> GetVouchers()
         {
-            using(var context = new ClientDbContext())
+            using (var context = new ClientDbContext())
             {
                 return context.Voucher.ToList();
             }
@@ -340,7 +342,7 @@ namespace e_mobile_shop.Models.Repository.MobileShopRepository
 
         public Voucher GetVoucherById(string id)
         {
-            return context.Voucher.Where(x=>x.VoucherCode==id).FirstOrDefault();
+            return context.Voucher.Where(x => x.VoucherCode == id).FirstOrDefault();
         }
     }
 }

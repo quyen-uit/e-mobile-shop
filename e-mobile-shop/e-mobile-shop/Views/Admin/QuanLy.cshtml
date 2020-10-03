@@ -1,10 +1,11 @@
-﻿@model List<SanPham>
-@using e_mobile_shop.Models.Repository.MobileShopRepository
+﻿@using e_mobile_shop.ViewModels;
+@model List<SanPhamViewModel>
+@*@using e_mobile_shop.Models.Repository.MobileShopRepository*@
 @{
     ViewData["Title"] = "QuanLySanPham";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
-    var context = new ClientDbContext();
-    var dataAccess = new MobileShopRepository(context);
+    //var context = new ClientDbContext();
+    //var dataAccess = new MobileShopRepository(context);
 }
 
 <body>
@@ -70,155 +71,156 @@
                                 foreach (var item in Model)
                                 
                                 {
-                                    <tr>
-                                        <td style="vertical-align:middle">@item.MaSp</td>
+                                                        <tr>
+                                                            <td style="vertical-align:middle">@item.MaSp</td>
 
-                                        <td style="vertical-align:middle">@item.TenSp</td>
-                                        <td align="center">
-                                            <img src=@Url.Content("~/ProductAvatar/" + item.AnhDaiDien) width="50" height="50" />
-                                        </td>
-                                        <td style="vertical-align:middle">@item.SoLuong</td>
-                                        
-                                        <td style="vertical-align:middle">@item.SoLuotXemSp</td>
-                                        <td style="vertical-align:middle">@context.NhaSanXuat.Find(item.Nsx).TenNsx</td>
-                                        <td style="vertical-align:middle">@item.GiaGoc.Value.ToString("N0") VNĐ</td>
-                                        @*    <td style="vertical-align:middle">
-                        <button type="button" data-toggle="modal" data-target="#exampleModal1" class="btn btn-primary">Sửa </button>
+                                                            <td style="vertical-align:middle">@item.TenSp</td>
+                                                            <td align="center">
+                                                                <img src=@Url.Content("~/ProductAvatar/" + item.AnhDaiDien) width="50" height="50" />
+                                                            </td>
+                                                            <td style="vertical-align:middle">@item.SoLuong</td>
 
-                        <!-- Modal confirm edit-->
-                        <div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Chỉnh sửa thông tin sản phẩm </h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="col-lg-12">
-                                            <div class="panel panel-default">
+                                                            <td style="vertical-align:middle">@item.SoLuotXemSp</td>
+                                                            @*<td style="vertical-align:middle">@context.NhaSanXuat.Find(item.Nsx).TenNsx</td>*@
+                                                            <td style="vertical-align:middle">@item.Nsx</td>
+                                                            <td style="vertical-align:middle">@item.GiaGoc.Value.ToString("N0") VNĐ</td>
+                                                            @*    <td style="vertical-align:middle">
+            <button type="button" data-toggle="modal" data-target="#exampleModal1" class="btn btn-primary">Sửa </button>
 
-                                                <div class="panel-body">
-                                                    <form enctype="multipart/form-data" role="form" asp-action="ChinhSua" asp-controller="Admin" method="post">
-                                                        <div class="form-group">
-                                                            <label asp-for="@item.TenSp">Tên sản phẩm</label>
-                                                            <input class="form-control" asp-for="@item.TenSp" name="TenSp">
-                                                            <input type="hidden" name="Id" value="@item.MaSp" />
-                                                            <span asp-validation-for="@item.TenSp"></span>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label asp-for="@item.LoaiSp"> Loại sản phẩm </label>
+            <!-- Modal confirm edit-->
+            <div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Chỉnh sửa thông tin sản phẩm </h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="col-lg-12">
+                                <div class="panel panel-default">
 
-                                                            <input disabled class="form-control" asp-for="@item.LoaiSp" type="text" id="textType" />
-
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label asp-for="@item.Nsx">Hãng sản xuất</label>
-                                                            <input asp-for="@item.Nsx" class="form-control" maxlength="5">
-                                                            <span asp-validation-for="@item.Nsx"></span>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label asp-for="@item.XuatXu">Xuất xứ</label>
-                                                            <input class="form-control" asp-for="@item.XuatXu">
-                                                            <span asp-validation-for="@item.XuatXu"></span>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label asp-for="@item.SoLuong">Số lượng</label>
-                                                            <input asp-for="@item.SoLuong" class="form-control">
-                                                            <span asp-validation-for="@item.SoLuong"></span>
-                                                        </div>
-
-                                                        <div class="form-group">
-                                                            <label asp-for="@item.GiaGoc">Giá gốc</label>
-                                                            <input type="number" asp-for="@item.GiaGoc" class="form-control">
-                                                            <span asp-validation-for="@item.GiaGoc"></span>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label asp-for="@item.GiaTien">Giá bán</label>
-                                                            <input type="number" asp-for="@item.GiaTien" class="form-control">
-                                                            <span asp-validation-for="@item.GiaTien"></span>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label asp-for="@item.AnhDaiDien">Ảnh đại diện</label>
-                                                            <input onchange="loadFile(event)" type="file" asp-for="@item.AnhDaiDien" class="form-control">
-
-                                                        </div>
-                                                        <img id="output" />
-
-                                                        <div class="form-group">
-                                                            <label asp-for="@item.AnhKhac">Ảnh khác</label>
-                                                            <input type="file" asp-for="@item.AnhKhac" class="form-control">
-
-                                                        </div>
-
-                                                        <div class="form-group">
-                                                            <label>Mô tả</label>
-                                                            <textarea class="form-control" rows="3" asp-for="@item.MoTa"></textarea>
-                                                            <script>
-                                                                CKEDITOR.replace('MoTa');
-                                                            </script>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            @foreach (var item1 in DataAccess.ReadThongSo(item.LoaiSp))
-                                                            {
-                                                                <div class="form-group">
-                                                                    <label>@item1.TenThongSo</label>
-                                                                    <input name="@item1.MaThongSo" type="text" class="form-control">
-                                                                </div>
-                                                            }
-                                                        </div>
-                                                        <button type="submit" name="submit" class="btn btn-default">Submit Button</button>
-                                                        <button type="reset" class="btn btn-default">Reset Button</button>
-                                                    </form>
-                                                </div>
+                                    <div class="panel-body">
+                                        <form enctype="multipart/form-data" role="form" asp-action="ChinhSua" asp-controller="Admin" method="post">
+                                            <div class="form-group">
+                                                <label asp-for="@item.TenSp">Tên sản phẩm</label>
+                                                <input class="form-control" asp-for="@item.TenSp" name="TenSp">
+                                                <input type="hidden" name="Id" value="@item.MaSp" />
+                                                <span asp-validation-for="@item.TenSp"></span>
                                             </div>
-                                        </div>
+                                            <div class="form-group">
+                                                <label asp-for="@item.LoaiSp"> Loại sản phẩm </label>
 
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                                        <a type="button" class="btn btn-primary" asp-controller="Admin" asp-action="XoaSanPham" asp-route-id="@item.MaSp"> Xóa </a>
+                                                <input disabled class="form-control" asp-for="@item.LoaiSp" type="text" id="textType" />
+
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="@item.Nsx">Hãng sản xuất</label>
+                                                <input asp-for="@item.Nsx" class="form-control" maxlength="5">
+                                                <span asp-validation-for="@item.Nsx"></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="@item.XuatXu">Xuất xứ</label>
+                                                <input class="form-control" asp-for="@item.XuatXu">
+                                                <span asp-validation-for="@item.XuatXu"></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="@item.SoLuong">Số lượng</label>
+                                                <input asp-for="@item.SoLuong" class="form-control">
+                                                <span asp-validation-for="@item.SoLuong"></span>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label asp-for="@item.GiaGoc">Giá gốc</label>
+                                                <input type="number" asp-for="@item.GiaGoc" class="form-control">
+                                                <span asp-validation-for="@item.GiaGoc"></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="@item.GiaTien">Giá bán</label>
+                                                <input type="number" asp-for="@item.GiaTien" class="form-control">
+                                                <span asp-validation-for="@item.GiaTien"></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="@item.AnhDaiDien">Ảnh đại diện</label>
+                                                <input onchange="loadFile(event)" type="file" asp-for="@item.AnhDaiDien" class="form-control">
+
+                                            </div>
+                                            <img id="output" />
+
+                                            <div class="form-group">
+                                                <label asp-for="@item.AnhKhac">Ảnh khác</label>
+                                                <input type="file" asp-for="@item.AnhKhac" class="form-control">
+
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label>Mô tả</label>
+                                                <textarea class="form-control" rows="3" asp-for="@item.MoTa"></textarea>
+                                                <script>
+                                                    CKEDITOR.replace('MoTa');
+                                                </script>
+                                            </div>
+                                            <div class="form-group">
+                                                @foreach (var item1 in DataAccess.ReadThongSo(item.LoaiSp))
+                                                {
+                                                    <div class="form-group">
+                                                        <label>@item1.TenThongSo</label>
+                                                        <input name="@item1.MaThongSo" type="text" class="form-control">
+                                                    </div>
+                                                }
+                                            </div>
+                                            <button type="submit" name="submit" class="btn btn-default">Submit Button</button>
+                                            <button type="reset" class="btn btn-default">Reset Button</button>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
+
                         </div>
-                    </td> *@
-                                        <td style="vertical-align:middle">
-                                            <button type="button" class="btn btn-primary">
-                                                <a style="color: white" asp-action="ChinhSua" asp-controller="Admin" asp-route-id="@item.MaSp">Sửa</a>
-                                            </button>
-                                        </td>
-                                        <td style="vertical-align:middle">
-                                            <button type="button" data-toggle="modal" data-target="#modal-@item.MaSp" class="btn btn-primary">Xóa</button>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                            <a type="button" class="btn btn-primary" asp-controller="Admin" asp-action="XoaSanPham" asp-route-id="@item.MaSp"> Xóa </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </td> *@
+                                                            <td style="vertical-align:middle">
+                                                                <button type="button" class="btn btn-primary">
+                                                                    <a style="color: white" asp-action="ChinhSua" asp-controller="Admin" asp-route-id="@item.MaSp">Sửa</a>
+                                                                </button>
+                                                            </td>
+                                                            <td style="vertical-align:middle">
+                                                                <button type="button" data-toggle="modal" data-target="#modal-@item.MaSp" class="btn btn-primary">Xóa</button>
 
 
-                                            <!-- Modal confirm delete  -->
-                                            <div class="modal fade" id="modal-@item.MaSp" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="exampleModalLabel">Xác nhận xóa </h5>
-                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                <span aria-hidden="true">&times;</span>
-                                                            </button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            Bạn có muốn <span style="color:red; font-weight:bold;">xóa</span> sản phẩm <span style="color:red; font-weight:bold"> @item.TenSp</span>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                                                            <a type="button" class="btn btn-primary" asp-controller="Admin" asp-action="XoaSanPham" asp-route-id="@item.MaSp"> Xóa </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                                                <!-- Modal confirm delete  -->
+                                                                <div class="modal fade" id="modal-@item.MaSp" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                                    <div class="modal-dialog" role="document">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header">
+                                                                                <h5 class="modal-title" id="exampleModalLabel">Xác nhận xóa </h5>
+                                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                    <span aria-hidden="true">&times;</span>
+                                                                                </button>
+                                                                            </div>
+                                                                            <div class="modal-body">
+                                                                                Bạn có muốn <span style="color:red; font-weight:bold;">xóa</span> sản phẩm <span style="color:red; font-weight:bold"> @item.TenSp</span>
+                                                                            </div>
+                                                                            <div class="modal-footer">
+                                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                                                                                <a type="button" class="btn btn-primary" asp-controller="Admin" asp-action="XoaSanPham" asp-route-id="@item.MaSp"> Xóa </a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
 
-                                        </td>
-                                        <td style="vertical-align:middle">
-                                            <a class="btn btn-primary" asp-action="ChiTiet" asp-controller="Admin" asp-route-id="@item.MaSp"> Chi tiết </a>
-                                        </td>
-                                    </tr>
+                                                            </td>
+                                                            <td style="vertical-align:middle">
+                                                                <a class="btn btn-primary" asp-action="ChiTiet" asp-controller="Admin" asp-route-id="@item.MaSp"> Chi tiết </a>
+                                                            </td>
+                                                        </tr>
 
                                 }
                             }

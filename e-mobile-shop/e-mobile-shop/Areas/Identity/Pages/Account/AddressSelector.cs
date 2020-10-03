@@ -1,13 +1,10 @@
 ﻿using e_mobile_shop.Models;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace e_mobile_shop.Areas.Identity.Pages.Account
 {
-    public class AddressSelector:Controller
+    public class AddressSelector : Controller
     {
         private readonly ClientDbContext _context;
         public AddressSelector(ClientDbContext context)
@@ -16,7 +13,7 @@ namespace e_mobile_shop.Areas.Identity.Pages.Account
         }
         public IActionResult Ward_Bind(int districtId)
         {
-            var listWard =_context.Ward.Where(x => x.DistrictId == districtId).ToList();
+            var listWard = _context.Ward.Where(x => x.DistrictId == districtId).ToList();
             return new JsonResult(listWard);
         }
 

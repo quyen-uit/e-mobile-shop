@@ -1,11 +1,13 @@
-﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-@model e_mobile_shop.Models.SanPham
-@using e_mobile_shop.Models.Repository.MobileShopRepository
+﻿@*@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+    @model e_mobile_shop.Models.SanPham
+    @using e_mobile_shop.Models.Repository.MobileShopRepository*@
+@using e_mobile_shop.ViewModels;
+@model SanPhamViewModel
 @{
     ViewData["Title"] = "ChinhSua";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
-    var dataAccess = new MobileShopRepository(new ClientDbContext());
-    
+    //var dataAccess = new MobileShopRepository(new ClientDbContext());
+
 }
 
 <style>
@@ -87,7 +89,7 @@
                         <div class="form-group col-lg-6">
                             <label asp-for="Nsx">Hãng sản xuất</label>
                             <label class="validation-summary-errors">*</label>
-                            <select class="form-control" asp-for="Nsx" asp-items="@(new SelectList(dataAccess.GetNSX(),"MaNsx","TenNsx"))">
+                            <select class="form-control" asp-for="Nsx" asp-items="@(new SelectList(ViewBag.NhaSanXuat as List<NhaSanXuatViewModel>,"MaNsx","TenNsx"))">
                             </select>
 
                         </div>
@@ -95,7 +97,7 @@
                         <div class="form-group col-lg-6">
                             <label asp-for="MaNcc">Nhà cung cấp</label>
                             <label class="validation-summary-errors">*</label>
-                            <select class="form-control" asp-for="MaNcc" asp-items="@(new SelectList(new ClientDbContext().NhaCungCap.ToList(),"MaNcc","TenNcc"))">
+                            <select class="form-control" asp-for="MaNcc" asp-items="@(new SelectList(ViewBag.NhaCungCap as List<NhaCungCapViewModel>,"MaNcc","TenNcc"))">
                             </select>
 
                         </div>
@@ -110,7 +112,7 @@
                         <div class="form-group col-lg-6">
                             <label asp-for="GiaTien">Giá bán</label>
                             <label class="validation-summary-errors">*</label>
-                            <input  asp-for="GiaTien" class="form-control input-giaban">
+                            <input asp-for="GiaTien" class="form-control input-giaban">
                             <span asp-validation-for="GiaTien"></span>
                         </div>
                     </div>
@@ -147,12 +149,12 @@
                         </div>*@
                     <div class="form-group">
                         <div class="row">
-                            @foreach (var item in dataAccess.ReadThongSo(Model.LoaiSp))
+                            @foreach (var item in ViewBag.ThongSo)
                             {
                                 <div class="form-group col-lg-6">
                                     <label>@item.TenThongSo</label>
                                     @*<label class="validation-summary-errors">*</label>*@
-                                    <input name="@item.MaThongSo" type="text" class="form-control" value="@dataAccess.GetTenTSKT(Model.MaSp,item.MaThongSo)">
+                              @*??*@      <input name="@item.MaThongSo" type="text" class="form-control" value="@item.MaLoai"> @*??*@
                                 </div>
                             }
                         </div>
@@ -171,15 +173,15 @@
                     <div class="row">
                         <div class="col-lg-4 ">
                             <input onchange="loadFile1(event)" type="file" accept="image/*" placeholder="Chọn file" name="productImages1">
-                            <img id="output1" style="width: 150px; height:150px;" src="~/ProductImages/@dataAccess.GetAnhSanPham(Model.MaSp).Anh1" />
+                            <img id="output1" style="width: 150px; height:150px;" src="~/ProductImages/@ViewBag.AnhSP.Anh1" />
                         </div>
                         <div class="col-lg-4">
                             <input onchange="loadFile2(event)" type="file" accept="image/*" name="productImages2">
-                            <img id="output2" style="width: 150px; height:150px;" src="~/ProductImages/@dataAccess.GetAnhSanPham(Model.MaSp).Anh2" />
+                            <img id="output2" style="width: 150px; height:150px;" src="~/ProductImages/@ViewBag.AnhSP.Anh2" />
                         </div>
                         <div class="col-lg-4">
                             <input onchange="loadFile3(event)" type="file" accept="image/*" name="productImages3">
-                            <img id="output3" style="width: 150px; height:150px;" src="~/ProductImages/@dataAccess.GetAnhSanPham(Model.MaSp).Anh3" />
+                            <img id="output3" style="width: 150px; height:150px;" src="~/ProductImages/@ViewBag.AnhSP.Anh3" />
                         </div>
                     </div>
                     <br />

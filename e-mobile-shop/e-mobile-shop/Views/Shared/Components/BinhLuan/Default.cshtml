@@ -1,8 +1,10 @@
-﻿@model List<BinhLuan>
+﻿@model List<BinhLuanViewModel>
 @using e_mobile_shop.Areas.Identity.Data
 @using Microsoft.AspNetCore.Identity
+@using e_mobile_shop.ViewModels;
 @inject UserManager<AppUser> UserManager
 @inject SignInManager<AppUser> SignInManager
+
 @{
     var context = new ClientDbContext();
     var dataAccess = new DataAccess();

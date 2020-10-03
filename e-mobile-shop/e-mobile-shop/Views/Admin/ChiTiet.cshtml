@@ -1,12 +1,14 @@
-﻿@model e_mobile_shop.Models.SanPham
-@using e_mobile_shop.Models.Repository.MobileShopRepository
-@inject IMobileShopRepository _eShopRepo
-@inject e_mobile_shop.Models.Repository.SanPhamRepository.ISanPhamRepository SanPhamRepository
+﻿@*@model e_mobile_shop.Models.SanPham
+    @using e_mobile_shop.Models.Repository.MobileShopRepository
+    @inject IMobileShopRepository _eShopRepo
+    @inject e_mobile_shop.Models.Repository.SanPhamRepository.ISanPhamRepository SanPhamRepository*@
+@using e_mobile_shop.ViewModels;
+@model SanPhamViewModel
 @{
     ViewData["Title"] = "ChiTiet";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
-    var context = new ClientDbContext();
-    var dataAccess = new MobileShopRepository(context);
+    //var context = new ClientDbContext();
+    //var dataAccess = new MobileShopRepository(context);
 }
 <style>
     input {
@@ -88,7 +90,7 @@
                         <div class="form-group col-lg-6">
                             <label asp-for="Nsx">Hãng sản xuất</label>
 
-                            <select disabled class="form-control" asp-for="Nsx" asp-items="@(new SelectList(ViewBag.NhaSanXuat as List<NhaSanXuat>,"MaNsx","TenNsx"))">
+                            <select disabled class="form-control" asp-for="Nsx" asp-items="@(new SelectList(ViewBag.NhaSanXuat as List<NhaSanXuatViewModel>,"MaNsx","TenNsx"))">
                             </select>
 
                         </div>
@@ -96,7 +98,7 @@
                         <div class="form-group col-lg-6">
                             <label asp-for="MaNcc">Nhà cung cấp</label>
 
-                            <select disabled class="form-control" asp-for="MaNcc" asp-items="@(new SelectList(ViewBag.NhaCungCap as List<NhaCungCap>,"MaNcc","TenNcc"))">
+                            <select disabled class="form-control" asp-for="MaNcc" asp-items="@(new SelectList(ViewBag.NhaCungCap as List<NhaCungCapViewModel>,"MaNcc","TenNcc"))">
                             </select>
 
                         </div>
@@ -105,13 +107,13 @@
                         <div class="form-group col-lg-6">
                             <label asp-for="GiaGoc">Giá gốc</label>
 
-                            <input disabled  value="@Model.GiaGoc.Value.ToString("N0") VNĐ" asp-for="GiaGoc" class="form-control">
+                            <input disabled value="@Model.GiaGoc.Value.ToString("N0") VNĐ" asp-for="GiaGoc" class="form-control">
                             <span asp-validation-for="GiaGoc"></span>
                         </div>
                         <div class="form-group col-lg-6">
                             <label asp-for="GiaTien">Giá bán</label>
 
-                            <input disabled  asp-for="GiaTien" value="@Model.GiaTien.Value.ToString("N0") VNĐ" class="form-control">
+                            <input disabled asp-for="GiaTien" value="@Model.GiaTien.Value.ToString("N0") VNĐ" class="form-control">
                             <span asp-validation-for="GiaTien"></span>
                         </div>
                     </div>
@@ -127,33 +129,33 @@
 
                     <div class="form-group">
                         <label>Mô tả</label>
-                      
+
                         <textarea disabled class="form-control" rows="3" asp-for="MoTa">@Model.MoTa</textarea>
                         <script>
                             CKEDITOR.replace('MoTa');
                         </script>
                     </div>
                     @*<div class="form-group">
-                <label>Thông số kĩ thuật  </label>
+                            <label>Thông số kĩ thuật  </label>
 
-                <div id="czContainer">
-                    <div id="first">
-                        <div class="recordset">
-                            <input placeholder="Tên thuộc tính" class="form-group ml-2" type="text" id="attribute_1_name" name="attribute_1_name">
+                            <div id="czContainer">
+                                <div id="first">
+                                    <div class="recordset">
+                                        <input placeholder="Tên thuộc tính" class="form-group ml-2" type="text" id="attribute_1_name" name="attribute_1_name">
 
-                            <input placeholder="Giá trị" class="form-group" type="text" id="attribute_1_value" name="attribute_1_value">
-                        </div>
-                    </div>
-                </div>
-            </div>*@
+                                        <input placeholder="Giá trị" class="form-group" type="text" id="attribute_1_value" name="attribute_1_value">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>*@
                     <div class="form-group">
                         <div class="row">
-                            @foreach (var item in ViewBag.ThongSo as List<ThongSo>)
+                            @foreach (var item in ViewBag.ThongSo as List<ThongSoViewModel>)
                             {
                                 <div class="form-group col-lg-6">
                                     <label>@item.TenThongSo</label>
                                     @*<label class="validation-summary-errors">*</label>*@
-                                    <input disabled name="@item.MaThongSo" type="text" class="form-control" value="@_eShopRepo.GetTenTSKT(Model.MaSp,item.MaThongSo)">
+                                    <input disabled name="@item.MaThongSo" type="text" class="form-control" value="@item.MaLoai">
                                 </div>
                             }
                         </div>
@@ -162,7 +164,7 @@
                         <label asp-for="AnhDaiDien">Ảnh đại diện</label>
                         @*<label class="validation-summary-errors">*</label>*@
                         @*<input  onchange="loadFile(event)" type="file" asp-for="AnhDaiDien" accept="image/*" class="form-control">
-                <input type="hidden" asp-for="AnhDaiDien" class="form-control">*@
+                            <input type="hidden" asp-for="AnhDaiDien" class="form-control">*@
                     </div>
                     <img id="output" style="width: 150px; height:150px;" src="~/ProductAvatar/@Model.AnhDaiDien" />
 
@@ -172,33 +174,33 @@
                     <div class="row">
                         <div class="col-lg-4 ">
                             @*<input onchange="loadFile1(event)" type="file" accept="image/*" placeholder="Chọn file" name="productImages1">*@
-                            <img id="output1" style="width: 150px; height:150px;" src="~/ProductImages/@SanPhamRepository.GetAnhSanPham(Model.MaSp).Anh1" />
+                            <img id="output1" style="width: 150px; height:150px;" src="~/ProductImages/@ViewBag.AnhSP.Anh1" />
                         </div>
                         <div class="col-lg-4">
                             @*<input onchange="loadFile2(event)" type="file" accept="image/*" name="productImages2">*@
-                            <img id="output2" style="width: 150px; height:150px;" src="~/ProductImages/@SanPhamRepository.GetAnhSanPham(Model.MaSp).Anh2" />
+                            <img id="output2" style="width: 150px; height:150px;" src="~/ProductImages/@ViewBag.AnhSP.Anh2" />
                         </div>
                         <div class="col-lg-4">
                             @*<input onchange="loadFile3(event)" type="file" accept="image/*" name="productImages3">*@
-                            <img id="output3" style="width: 150px; height:150px;" src="~/ProductImages/@SanPhamRepository.GetAnhSanPham(Model.MaSp).Anh3" />
+                            <img id="output3" style="width: 150px; height:150px;" src="~/ProductImages/@ViewBag.AnhSP.Anh3" />
                         </div>
                     </div>
                     <br />
-                    
+
                 </form>
                 <div class="row">
                     <div class="col-lg-6">
-                        <button onclick="location.href='@Url.Action("QuanLy", "Admin", new { id = Model.LoaiSp })';return false;"  type="button" class="btn btn-primary  btn-block p-2">Quay lại danh sách
+                        <button onclick="location.href='@Url.Action("QuanLy", "Admin", new { id = Model.LoaiSp })';return false;" type="button" class="btn btn-primary  btn-block p-2">Quay lại danh sách
                     </div>
                     <div class="col-lg-6">
-                        
-                          <button onclick="location.href='@Url.Action( "ChinhSua","Admin", new {  id = Model.MaSp })';return false;"  type="button" class="btn btn-success  btn-block p-2">Chỉnh sửa
-                        
+
+                        <button onclick="location.href='@Url.Action( "ChinhSua","Admin", new {  id = Model.MaSp })';return false;" type="button" class="btn btn-success  btn-block p-2">Chỉnh sửa
+
                     </div>
 
-                </div>           
+                </div>
+            </div>
         </div>
-           </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>

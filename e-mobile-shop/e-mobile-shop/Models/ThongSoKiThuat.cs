@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace e_mobile_shop.Models
+﻿namespace e_mobile_shop.Models
 {
     public partial class ThongSoKiThuat
     {

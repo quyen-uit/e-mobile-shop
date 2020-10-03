@@ -1,27 +1,28 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using BotDetect.Web;
+using AutoMapper;
+using e_mobile_shop.Core.Models;
 using e_mobile_shop.Data;
+using e_mobile_shop.Mapper;
 using e_mobile_shop.Models;
-using e_mobile_shop.Models.Repository;
-using e_mobile_shop.Models.Repository.DataExcuteRepository;
-using e_mobile_shop.Models.Repository.MobileShopRepository;
-using e_mobile_shop.Models.Repository.SanPhamRepository;
+using e_mobile_shop.Core.Repository;
+//using e_mobile_shop.Models.Repository;
+//using e_mobile_shop.Models.Repository.DataExcuteRepository;
+//using e_mobile_shop.Models.Repository.MobileShopRepository;
+//using e_mobile_shop.Models.Repository.SanPhamRepository;
 using e_mobile_shop.Models.Services;
-
+using e_mobile_shop.ServicesExtensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Net;
+using e_mobile_shop.Services;
+using e_mobile_shop.Services.SanPhamService;
+using e_mobile_shop.Services.ThongSoKiThuatService;
 
 namespace e_mobile_shop
 {
@@ -42,12 +43,47 @@ namespace e_mobile_shop
 
             services.AddDbContext<eShopDbContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("eShopDbContextConnection")), ServiceLifetime.Transient);
-           
+
             services.AddDbContext<ClientDbContext>(options =>
                    options.UseSqlServer(Configuration.GetConnectionString("eShopDbContextConnection")), ServiceLifetime.Transient);
 
+            services.AddDbContext<ApplicationDbContext>(options =>
+                   options.UseSqlServer(Configuration.GetConnectionString("eShopDbContextConnection")), ServiceLifetime.Transient);
+
+            //services.ConfigureRepository();
+
+            //services.CustomServices();
+            services.AddTransient<IDonHangService, DonHangService>();
+
+            services.AddTransient<ISanPhamService, SanPhamService>();
+
+            services.AddTransient<IAnhSanPhamService, AnhSanPhamService>();
+            //services.AddTransient<ILoaiSpRepository, LoaiSpRepository>();
+            services.AddTransient<IThongSoKiThuatService , ThongSoKiThuatService>();
+          
+            services.AddTransient<IThongSoService, ThongSoService>();
+            services.AddTransient<INhaCungCapService, NhaCungCapService>();
+
+            services.AddTransient<INhaSanXuatService, NhaSanXuatService>();
+            services.AddTransient<IThongSoKiThuatService, ThongSoKiThuatService>();
+
+            services.AddTransient<IThongSoRepository, ThongSoRepository>();
+
+            services.AddTransient<IDonHangRepository, DonHangRepository>();
+
+            services.AddTransient<ISanPhamRepository, SanPhamRepository>();
+
+            services.AddTransient<IAnhSanPhamRepository, AnhSanPhamRepository>();
+            //services.AddTransient<ILoaiSpRepository, LoaiSpRepository>();
+
+            services.AddTransient<INhaCungCapRepository, NhaCungCapRepository>();
+
+            services.AddTransient<INhaSanXuatRepository, NhaSanXuatRepository>();
+            services.AddTransient<IThongSoKiThuatRepository, ThongSoKiThuatRepository>();
+           services.AddTransient<IChiTietDonHangRepository, ChiTietDonHangRepository>();
+            services.AddTransient<IThongSoRepository, ThongSoRepository>();
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
-            services.AddControllersWithViews().AddNewtonsoftJson(options =>  options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+            services.AddControllersWithViews().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddSession();
             services.Configure<IdentityOptions>(options =>
             {
@@ -68,37 +104,53 @@ namespace e_mobile_shop
 
                 //options.ClientId = googleAuthNSection["ClientId"];
                 //options.ClientSecret = googleAuthNSection["ClientSecret"];
-                options.ClientId = new ClientDbContext().Parameters.Find("4").Value;
-                options.ClientSecret = new ClientDbContext().Parameters.Find("3").Value;
+                options.ClientId = new ApplicationDbContext().Parameters.Find("4").Value;
+                options.ClientSecret = new ApplicationDbContext().Parameters.Find("3").Value;
             });
             services.AddAuthentication().AddFacebook(facebookOptions =>
             {
                 //facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
                 //facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
-                facebookOptions.AppId = new ClientDbContext().Parameters.Find("6").Value;
-                facebookOptions.AppSecret = new ClientDbContext().Parameters.Find("5").Value;
+                facebookOptions.AppId = new ApplicationDbContext().Parameters.Find("6").Value;
+                facebookOptions.AppSecret = new ApplicationDbContext().Parameters.Find("5").Value;
             });
 
+            var mapperConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new MappingProfile());
+            });
+
+            IMapper mapper = mapperConfig.CreateMapper();
+            services.AddSingleton(mapper);
+            //service
             services.AddTransient<IEmailSender, EmailSender>();
 
             services.Configure<AuthMessageSenderOptions>(option =>
             {
-                option.SendGridUser = new ClientDbContext().Parameters.Find("1").Value;
-                option.SendGridKey = new ClientDbContext().Parameters.Find("2").Value;
+                option.SendGridUser = new ApplicationDbContext().Parameters.Find("1").Value;
+                option.SendGridKey = new ApplicationDbContext().Parameters.Find("2").Value;
             });
 
-
+            services.Configure<ForwardedHeadersOptions>(options =>
+            {
+                options.KnownProxies.Add(IPAddress.Parse("10.0.0.100"));
+            });
             services.AddSignalR();
-            services.AddTransient<IDonHangRepository, DonHangRepository>();
-            services.AddTransient<IMobileShopRepository, MobileShopRepository>();
-            services.AddTransient<ISanPhamRepository, SanPhamRepository>();
-            services.AddTransient<IDataAccess, DataAccess>();
+            //services.AddTransient<IDonHangRepository, DonHangRepository>();
+            //services.AddTransient<IMobileShopRepository, MobileShopRepository>();
+            //services.AddTransient<ISanPhamRepository, SanPhamRepository>();
+            //services.AddTransient<IDataAccess, DataAccess>();
             services.AddRouting(options => options.LowercaseUrls = true);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
