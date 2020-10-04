@@ -10,6 +10,12 @@ namespace e_mobile_shop.Core.Repository
 {
     public interface IThongSoKiThuatRepository : IBaseRepository<ThongSoKiThuat>
     {
+<<<<<<< HEAD
        
+=======
+        void AddTSKT(ThongSoKiThuat tskt);
+        void UpdateTSKT(ThongSoKiThuat tskt);
+        ThongSoKiThuat GetTSKT(string masp, string mats);
+>>>>>>> origin/refactor-code-quyen
     }
 }

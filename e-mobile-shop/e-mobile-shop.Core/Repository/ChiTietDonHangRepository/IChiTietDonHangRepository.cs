@@ -8,5 +8,9 @@ namespace e_mobile_shop.Core.Repository
 {
     public interface IChiTietDonHangRepository:IBaseRepository<ChiTietDonHang>
     {
+<<<<<<< HEAD
+=======
+        public List<ChiTietDonHang> GetAllByIdDonHang(string id);
+>>>>>>> origin/refactor-code-quyen
     }
 }

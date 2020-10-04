@@ -13,5 +13,12 @@ namespace e_mobile_shop.Core.Repository
         {
 
         }
+<<<<<<< HEAD
+=======
+        public List<ThongSo> GetThongSo(string Id)
+        {
+            return DbContext.ThongSo.Where(x => x.MaLoai == Id).ToList();
+        }
+>>>>>>> origin/refactor-code-quyen
     }
 }

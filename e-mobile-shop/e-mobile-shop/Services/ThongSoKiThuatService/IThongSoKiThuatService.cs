@@ -6,5 +6,12 @@ namespace e_mobile_shop.Services.ThongSoKiThuatService
     public interface IThongSoKiThuatService
     {
         public List<ThongSoKiThuatViewModel> GetThongSoKiThuat(string maSp);
+<<<<<<< HEAD
+=======
+        public void UpdateTSKT(ThongSoKiThuatViewModel tskt);
+        public void AddTSKT(ThongSoKiThuatViewModel tskt);
+        public string GetTen(string masp, string mats);
+        public void SaveChange();
+>>>>>>> origin/refactor-code-quyen
     }
 }

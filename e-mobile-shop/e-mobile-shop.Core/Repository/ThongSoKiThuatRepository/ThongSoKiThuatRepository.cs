@@ -13,5 +13,23 @@ namespace e_mobile_shop.Core.Repository
         {
 
         }
+<<<<<<< HEAD
+=======
+        public void AddTSKT(ThongSoKiThuat tskt)
+        {
+            DbContext.ThongSoKiThuat.Add(tskt);
+        }
+
+        public ThongSoKiThuat GetTSKT(string masp, string mats)
+        {
+            return DbContext.ThongSoKiThuat.FirstOrDefault(x => x.MaSp == masp && x.ThongSo == mats);
+        }
+
+        public void UpdateTSKT(ThongSoKiThuat tskt)
+        {
+            DbContext.Update(tskt);
+
+        }
+>>>>>>> origin/refactor-code-quyen
     }
 }

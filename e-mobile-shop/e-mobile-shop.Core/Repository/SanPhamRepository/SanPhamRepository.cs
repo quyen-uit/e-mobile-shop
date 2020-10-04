@@ -445,5 +445,105 @@ namespace e_mobile_shop.Core.Repository
 
         }
 
+<<<<<<< HEAD
+=======
+        public SanPham GetSanPhamById(string id)
+        {
+
+                return DbContext.SanPham.Find(id);
+
+        }
+
+
+        public List<SanPham> GetSanPhamsByIdStatus(string id, string status)
+        {
+
+                try
+                {
+                    return DbContext.SanPham.Where(x => x.LoaiSp == id && x.Status == Int32.Parse(status)).ToList();
+                }
+                catch
+                {
+                    return DbContext.SanPham.ToList();
+                }
+
+        }
+
+        public void Save(SanPham sp)
+        {
+            DbContext.SanPham.Add(sp);
+            DbContext.SaveChanges();
+        }
+
+        //public void SaveAnhSP(AnhSanPham anh)
+        //{
+        //    DbContext.AnhSanPham.Add(anh);
+        //    DbContext.SaveChanges();
+        //}
+        //public void UpdateAnhSP(AnhSanPham anh)
+        //{
+        //    DbContext.AnhSanPham.Update(anh);
+        //    DbContext.SaveChanges();
+        //}
+        //public void SaveTSKT(ThongSoKiThuat tskt)
+        //{
+        //    DbContext.ThongSoKiThuat.AddAsync(tskt);
+        //    DbContext.SaveChanges();
+        //}
+        //public void UpdateTSKT(ThongSoKiThuat tskt)
+        //{
+        //    context.Update(tskt);
+        //    context.SaveChanges();
+        //}
+        public override void Delete(string id)
+        {
+            DbContext.SanPham.Find(id).Status = 0;
+           // context.SaveChanges();
+        }
+        public void Update(SanPham sp, string masp)
+        {
+            SanPham a = DbContext.SanPham.Find(masp);
+            DbContext.Entry(a).CurrentValues.SetValues(sp);
+            //DbContext.SaveChanges();
+        }
+
+        //public List<ThongSo> GetThongSo(string Id)
+        //{
+        //    return DbContext.ThongSo.Where(x => x.MaLoai == Id).ToList();
+        //}
+
+        public string GetLoaiSp(string id)
+        {
+            return DbContext.LoaiSp.Find(id).TenLoai;
+        }
+
+        public int CountSanPham(string loaiSp)
+        {
+            return DbContext.SanPham.Where(x => x.LoaiSp == loaiSp).ToList().Count;
+        }
+
+        public void UpdateSoLuong(string maSp, int? soLuong)
+        {
+            DbContext.SanPham.Find(maSp).SoLuong = DbContext.SanPham.Find(maSp).SoLuong - soLuong;
+            //context.SaveChanges();
+        }
+
+        public List<SanPham> ReadSanPham(string loaiSp)
+        {
+            try
+            {
+                return DbContext.SanPham.Where(x => x.LoaiSp == loaiSp).ToList();
+            }
+            catch (Exception)
+            {
+                return new List<SanPham>();
+            }
+        }
+
+        //public AnhSanPham GetAnhSanPham(string maSp)
+        //{
+        //    return DbContext.AnhSanPham.Where(x => x.MaSp == maSp).FirstOrDefault();
+        //}
+>>>>>>> origin/refactor-code-quyen
     }
 }

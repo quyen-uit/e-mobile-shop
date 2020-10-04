@@ -8,5 +8,11 @@ namespace e_mobile_shop.Core.Repository
 {
     public interface IAnhSanPhamRepository : IBaseRepository<AnhSanPham>
     {
+<<<<<<< HEAD
+=======
+        void SaveAnhSP(AnhSanPham anh);
+        void UpdateAnhSP(AnhSanPham anh);
+        AnhSanPham GetAnhSanPham(string maSp);
+>>>>>>> origin/refactor-code-quyen
     }
 }

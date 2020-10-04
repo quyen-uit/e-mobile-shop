@@ -2,11 +2,39 @@
 using e_mobile_shop.Core.Models;
 using System;
 using System.Collections.Generic;
+<<<<<<< HEAD
+=======
+using System.Linq;
+>>>>>>> origin/refactor-code-quyen
 using System.Text;
 
 namespace e_mobile_shop.Core.Repository
 {
     public interface IDonHangRepository : IBaseRepository<DonHang>
     {
+<<<<<<< HEAD
+=======
+        List<DonHang> GetAllToNotify();
+        void NotifyDonHang();
+        List<DonHang> GetDonHangs();
+        IQueryable<DonHang> GetDonHangsByMaKh(string maKh, string type);
+        List<DonHang> GetDonHangsByIdStatus(string id, string status);
+        DonHang GetDonHangById(string id);
+        string GetTrangThaiDonHang(string id);
+        int SoDonHang();
+        void AddDonHang(DonHang donHang);
+
+        //
+
+        TrangThaiDonHang GetTTDH(string id);
+        //void Update(DonHang dh);
+        List<TrangThaiDonHang> GetTrangThaiDonHangs();
+        // chi tiet don hang
+
+        List<ChiTietDonHang> GetChiTiets();
+        List<ChiTietDonHang> GetChiTietDonHangsByMaDH(string madh);
+        void AddChiTietDonHang(ChiTietDonHang chiTietDonHang);
+
+>>>>>>> origin/refactor-code-quyen
     }
 }

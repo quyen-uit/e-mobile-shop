@@ -24,8 +24,13 @@ namespace e_mobile_shop.ViewModels
         public string AnhNen { get; set; }
         public string AnhKhac { get; set; }
         public int? SoLuong { get; set; }
+<<<<<<< HEAD
         public bool? Isnew { get; set; }
         public bool? Ishot { get; set; }
+=======
+        public bool Isnew { get; set; }
+        public bool Ishot { get; set; }
+>>>>>>> origin/refactor-code-quyen
         public int? Status { get; set; }
         public int? IsOnline { get; set; }
         public string MaNcc { get; set; }

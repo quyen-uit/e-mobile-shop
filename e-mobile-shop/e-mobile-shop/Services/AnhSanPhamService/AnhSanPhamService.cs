@@ -1,7 +1,13 @@
 ﻿
 
 using AutoMapper;
+<<<<<<< HEAD
 using e_mobile_shop.Core.Repository;
+=======
+using e_mobile_shop.Core.Models;
+using e_mobile_shop.Core.Repository;
+using e_mobile_shop.ViewModels;
+>>>>>>> origin/refactor-code-quyen
 
 namespace e_mobile_shop.Services
 {
@@ -15,5 +21,28 @@ namespace e_mobile_shop.Services
             _anhSanPhamRepository = anhSanPhamRepository;
             _mapper = mapper;
         }
+<<<<<<< HEAD
+=======
+
+        public void Add(AnhSanPhamViewModel asp)
+        {
+            _anhSanPhamRepository.Add(_mapper.Map<AnhSanPham>(asp));
+        }
+
+        public AnhSanPhamViewModel GetByIdSp(string id)
+        {
+            return _mapper.Map<AnhSanPhamViewModel>(_anhSanPhamRepository.GetAnhSanPham(id));
+        }
+
+        public void SaveChange()
+        {
+            _anhSanPhamRepository.SaveChanges();
+        }
+
+        public void UpdateAnhSP(AnhSanPhamViewModel asp)
+        {
+            _anhSanPhamRepository.UpdateAnhSP(_mapper.Map<AnhSanPham>(asp));
+        }
+>>>>>>> origin/refactor-code-quyen
     }
 }
