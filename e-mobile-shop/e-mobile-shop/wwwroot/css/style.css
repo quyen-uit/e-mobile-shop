@@ -3142,3 +3142,16 @@ div#testimonials h4.m-title {
 }
 
 /*--//responsive--*/
+
+.ten-loai-sp{
+    color:black;
+
+}
+.ten-loai-sp:hover{
+    color:blue;
+    font-weight:bold;
+}
+
+.radius-0{
+    border-radius:0!important;
+}

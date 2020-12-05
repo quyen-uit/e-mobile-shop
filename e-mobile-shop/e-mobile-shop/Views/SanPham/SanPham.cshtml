@@ -2,61 +2,78 @@
 @{
     ViewData["Title"] = "SanPham";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var context = new ClientDbContext();
+    var dataAccess = new DataAccess();
+
 }
 
-@model SanPham
+@using e_mobile_shop.Areas.Identity.Data
+@using Microsoft.AspNetCore.Identity
+@using e_mobile_shop.ViewModels
 
+@inject UserManager<AppUser> UserManager
+@inject SignInManager<AppUser> SignInManager
+@model SanPhamViewModel
+<style>
+    td {
+        padding: 5px;
+    }
 
+    .flex-control-thumbs li img {
+        max-height: 120px;
+    }
+    .mota  ul{
+        padding-top: 30px;
+    }
+</style>
 
 <!-- Single Page -->
 <div class="banner-bootom-w3-agileits py-5">
+    @Html.Partial("_StatusMessages")
     <div class="container py-xl-4 py-lg-2 border">
         <!-- tittle heading -->
-        <h3 class="tittle-w3l  mb-lg-5 mb-sm-4 mb-3">
+        <h3 class="tittle-w3l text-center  mb-lg-5 mb-sm-4 mb-3">
             Chi tiết sản phẩm
         </h3>
         <!-- //tittle heading -->
         <div class="row">
             <div class="col-lg-5 col-md-8 single-right-left ">
-                <div class="grid images_3_of_2">
-                    <div class="flexslider">
-                        <ul class="slides">
-
-                            <li data-thumb="../../ProductImages/@DataAccess.GetAnhSanPham(Model.MaSp).Anh1">
-                                <div class="thumb-image">
-                                    <img src="~/ProductImages/@DataAccess.GetAnhSanPham(Model.MaSp).Anh1" id="" data-imagezoom="true" class="img-fluid w-100" alt="2">
-                                </div>
-                            </li>
-
-                            <li data-thumb="../../ProductImages/@DataAccess.GetAnhSanPham(Model.MaSp).Anh2">
-                                <div class="thumb-image">
-                                    <img src="~/ProductImages/@DataAccess.GetAnhSanPham(Model.MaSp).Anh2" id="" data-imagezoom="true" class="img-fluid w-100" alt="2">
-                                </div>
-                            </li>
 
 
-                            <li data-thumb="../../ProductImages/@DataAccess.GetAnhSanPham(Model.MaSp).Anh3">
-                                <div class="thumb-image">
-                                    <img src="~/ProductImages/@DataAccess.GetAnhSanPham(Model.MaSp).Anh3" id="" data-imagezoom="true" class="img-fluid w-100" alt="2">
-                                </div>
-                            </li>
-                        </ul>
+                <div class="slider slider-for">
+                    <img src="~/ProductImages/@context.AnhSanPham.SingleOrDefault(x=>x.MaSp==Model.MaSp).Anh1" />
+                    <img src="~/ProductImages/@context.AnhSanPham.SingleOrDefault(x=>x.MaSp==Model.MaSp).Anh2" />
+                    <img src="~/ProductImages/@context.AnhSanPham.SingleOrDefault(x=>x.MaSp==Model.MaSp).Anh3" />
 
-                        <div class="clearfix"></div>
-                    </div>
                 </div>
+                <div class="slider slider-nav border mt-3 align-content-center">
+                    <img src="~/ProductImages/@context.AnhSanPham.SingleOrDefault(x=>x.MaSp==Model.MaSp).Anh1" />
+                    <img src="~/ProductImages/@context.AnhSanPham.SingleOrDefault(x=>x.MaSp==Model.MaSp).Anh2" />
+                    <img src="~/ProductImages/@context.AnhSanPham.SingleOrDefault(x=>x.MaSp==Model.MaSp).Anh3" />
+
+                </div>
+
+
             </div>
 
             <div class="col-lg-7 single-right-left simpleCart_shelfItem">
                 <h3 class="mb-3">@Model.TenSp</h3>
                 <p class="mb-3">
-                    <span class="item_price">@Model.GiaGoc<sup>đ</sup></span>
-                    <del class="mx-2 font-weight-light">@Model.GiaTien<sup>đ</sup></del>
+                    @if (Model.GiaGoc.Value != Model.GiaTien.Value)
+                    {
+                        <span class="item_price">@Model.GiaGoc.Value.ToString("N0")<sup>đ</sup></span>
+                        <del class="mx-2 font-weight-light">@Model.GiaTien.Value.ToString("N0")<sup>đ</sup></del>
+                    }
+                    else
+                    {
+                        <span class="item_price">@Model.GiaGoc.Value.ToString("N0")<sup>đ</sup></span>
+                    }
+
                 </p>
                 <div class="single-infoagile">
                     <ul>
                         <li class="mb-3">
-                            <span style="text-transform: uppercase">Hãng sản xuất: @Model.HangSx </span>
+                            <span style="text-transform: uppercase">Hãng sản xuất: @context.NhaSanXuat.Find(Model.Nsx).TenNsx </span>
                         </li>
                         <li class="mb-3">
                             Còn
@@ -67,173 +84,192 @@
                             Đã có
                             <span class="item_price">@Model.SoLuotXemSp</span> lượt xem sản phẩm
                         </li>
+                        <li class="mb-3">
+                            <form style="font-size: 14px; " asp-action="AddToCartSession" asp-route-maSp="@Model.MaSp" asp-controller="GioHang" class="form-inline  " method="post">
+                                <label>Số lượng</label>
+                                <input type="number" style="width: 60px;" name="SoLuong" id="SoLuong" value="1" min="1" max="10" class=" form-control ml-1" />
+                                <button class="btn btn-primary radius-0 ml-1" type="submit"> Thêm vào giỏ hàng </button>
+                            </form>
+
+                        </li>
                     </ul>
                 </div>
                 <br />
 
                 <div class="product-single-w3l">
                     <br />
-
                     <ul>
-                        @foreach (var item in DataAccess.GetThongSoKiThuat(Model.MaSp))
+                        @foreach (var item in (ViewBag.ListThongSoKiThuat as List<ThongSoKiThuatViewModel>).Take(10))
                         {
-                            <li class="mb-1">
-
-                                <span style="text-transform:uppercase">@item.ThuocTinh</span>  : <span style="text-transform:uppercase">@item.GiaTri</span>
-                            </li>
+                            if (item.GiaTri.Length <= 50 && item.GiaTri.Length>0)
+                            {
+                                <li class="mb-1">
+                                    <span style="text-transform:uppercase">@context.ThongSo.Find(item.ThongSo).TenThongSo</span>  : <span style="text-transform:uppercase">@item.GiaTri</span>
+                                </li>
+                            }
                         }
-
-
                     </ul>
-                    <p class="my-sm-4 my-3">
-                        <i class="fas fa-retweet mr-3"></i>Net banking & Credit/ Debit/ ATM card
-                    </p>
-                </div>
-                <div class="occasion-cart">
-                    <div class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out">
-                        <form asp-action="AddToCartSession" asp-controller="GioHang" method="post">
-                            <fieldset>
-                                <div>
-                                    Số lượng
-                                    <div class="input-group">
-                                        <span class="input-group-btn">
-                                            <button type="button" class="btn btn-default btn-number" disabled="disabled" data-type="minus" data-field="quant[1]">
-                                                <i class="fas fa-minus"></i>
-                                            </button>
-                                        </span>
-                                        <input type="text" size="1" name="quant[1]" id="up_down" class="form-control input-number" value="1" min="1" max="10">
-
-
-                                        <span class="input-group-btn">
-                                            <button type="button" class="btn btn-default btn-number" data-type="plus" data-field="quant[1]">
-                                                <i class="fas fa-plus"></i>
-                                            </button>
-                                        </span>
-                                    </div>
+                    <!-- Button trigger modal -->
+                    <div class="d-flex justify-content-center">
+                        <button type="button" class="btn btn-primary radius-0" style="color: black; background-color: aliceblue; border: 1px dashed gray " data-toggle="modal" data-target="#exampleModal">
+                            <i class="fas fa-plus"></i> Xem cấu hình chi tiết
+                        </button>
+                    </div>
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title " id="exampleModalLabel" style="color:black !important">Cấu hình chi tiết </h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
                                 </div>
-                                <div><input type="hidden" name="SanPham" value="@Model.MaSp" /></div>
-                                <input type="hidden" name="SoLuong" id="SoLuong" value="1" />
-                                <input type="submit" name="submit" value="Thêm vào giỏ hàng" class="button" />
-                            </fieldset>
-                        </form>
+                                <div class="modal-body">
+                                    <table style="width:100% ">
+                                        @{
+                                            var lst = (ViewBag.ListThongSoKiThuat as List<ThongSoKiThuatViewModel>).Where(x=>x.GiaTri.Length>0).ToList();
+                                            for (int i = 0; i < lst.Count(); i++)
+                                            {
+                                                if (i % 2 == 0)
+                                                {
+                                                    <tr class="mb-1 border-bottom">
+                                                        <td style="text-transform:uppercase; width: 40%">@context.ThongSo.Find(lst[i].ThongSo).TenThongSo</td>
+                                                        <td style="text-transform:uppercase">@lst[i].GiaTri</td>
+                                                    </tr>
+                                                }
+                                                else
+                                                {
+                                                    <tr class="mb-1 border-bottom" style="background-color:aliceblue">
+                                                        <td style="text-transform:uppercase; width: 40%">@context.ThongSo.Find(lst[i].ThongSo).TenThongSo</td>
+                                                        <td style="text-transform:uppercase">@lst[i].GiaTri</td>
+                                                    </tr>
+                                                }
+                                            }
+                                        }
+
+
+                                    </table>
+
+                                </div>
+
+                            </div>
+                        </div>
                     </div>
 
+
                 </div>
-                @*<a class="btn btn-primary" asp-controller="GioHang" asp-action="AddToCartSession" asp-route-id="@Model.MaSp"> Thêm vô giỏ  </a>*@
 
             </div>
+        </div>
+        <h3 class="tittle-w3l   mt-5">
+            Mô tả 
+        </h3>
+        <div class="row p-5 mota">
+            @Html.Raw(Model.MoTa)
         </div>
 
         <h3 class="tittle-w3l  mb-lg-5 mb-sm-4 mb-3">
             Bình luận
         </h3>
-        <ul class="comment-section border " style="width: 100%">
-
-            <li class="comment user-comment">
-
-                <div class="info">
-                    <a href="#">Anie Silverston</a>
-                    <span>4 hours ago</span>
-                </div>
-
-                <a class="avatar" href="#">
-                    <img src="~/images/avatar_user_1.jpg" width="35" alt="Profile Avatar" title="Anie Silverston" />
-                </a>
-
-                <p>Suspendisse gravida sem?</p>
-
-            </li>
-            <li class="comment user-comment">
-
-                <div class="info">
-                    <a href="#">Anie Silverston</a>
-                    <span>4 hours ago</span>
-                </div>
-
-                <a class="avatar" href="#">
-                    <img src="~/images/avatar_user_1.jpg" width="35" alt="Profile Avatar" title="Anie Silverston" />
-                </a>
-
-                <p>Suspendisse gravida sem?</p>
-
-            </li>
-            <li class="comment user-comment">
-
-                <div class="info">
-                    <a href="#">Anie Silverston</a>
-                    <span>4 hours ago</span>
-                </div>
-
-                <a class="avatar" href="#">
-                    <img src="~/images/avatar_user_1.jpg" width="35" alt="Profile Avatar" title="Anie Silverston" />
-                </a>
-
-                <p>Suspendisse gravida sem?</p>
-
-            </li>
-
-            <li class="comment author-comment">
-
-                <div class="info">
-                    <a href="#">Jack Smith</a>
-                    <span>3 hours ago</span>
-                </div>
-
-                <a class="avatar" href="#">
-                    <img src="~/images/avatar_author.jpg" width="35" alt="Profile Avatar" title="Jack Smith" />
-                </a>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse gravida sem sit amet molestie portitor.</p>
-
-            </li>
-
-            <li class="comment user-comment">
-
-                <div class="info">
-                    <a href="#">Bradley Jones</a>
-                    <span>1 hour ago</span>
-                </div>
-
-                <a class="avatar" href="#">
-                    <img src="~/images/avatar_user_2.jpg" width="35" alt="Profile Avatar" title="Bradley Jones" />
-                </a>
-
-                <p>Suspendisse gravida sem sit amet molestie portitor?</p>
-
-            </li>
-
-            <li class="comment author-comment">
-
-                <div class="info">
-                    <a href="#">Jack Smith</a>
-                    <span>1 hour ago</span>
-                </div>
-
-                <a class="avatar" href="#">
-                    <img src="~/images/avatar_author.jpg" width="35" alt="Profile Avatar" title="Jack Smith" />
-                </a>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisee gravida sem sit amet molestie porttitor.</p>
-
-            </li>
-
-            <li class="write-new">
-
-                <form action="#" method="post">
-
-                    <textarea placeholder="Write your comment here" name="comment"></textarea>
-
-                    <div>
-                        <img src="~/images/avatar_user_2.jpg" width="35" alt="Profile of Bradley Jones" title="Bradley Jones" />
-                        <button type="submit">Submit</button>
-                    </div>
+        <div style="">
+            @await Component.InvokeAsync("BinhLuan", new { Id = Model.MaSp })
+        </div>
+        <div class="mb-2 p-lg-3 p-1" id="">
+            @if (UserManager.GetUserId(User) == null)
+            {
+                <p style=" font-size: 15px;"><a asp-area="Identity" asp-page="/Account/Login"> Đăng nhập</a> để bình luận</p>
+            }
+            else
+            {
+                <div> <strong style="font-size: 16px;">Thêm bình luận</strong> </div>
+                <form class="form-inline " asp-action="Comment" asp-route-maSp="@Model.MaSp" asp-controller="User" asp-route-userId="@UserManager.GetUserId(User)">
+                    <textarea type="text" name="Comment" class="form-control w-100" rows="5"></textarea>
+                    <button class="btn btn-primary radius-0 mt-2 pl-4 pr-4" style="font-size: 14px;" type="submit"> <strong>Gửi</strong></button>
 
                 </form>
-
-            </li>
-
-        </ul>
+            }
+        </div>
 
     </div>
 </div>
 <!-- //Single Page -->
+
+<script>
+    function ReplyComment(mabl) {
+        var x = document.getElementById(mabl.toString());
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    };
+    function CancelReply(mabl) {
+        var x = document.getElementById(mabl.toString());
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    };
+   
+</script>
+
+<script>
+    function GetNumberProduct() {
+
+    }
+    function ShowOff() {
+        var result = "&f";
+        $('#rams input:checked').each(function () {
+            result = result + $(this).attr('name') + "-"
+            //selected.push($(this).attr('name'));
+        });
+        result = result + "&j";
+        $('#cpus input:checked').each(function () {
+            result = result + $(this).attr('name') + "-"
+            //selected.push($(this).attr('name'));
+        });
+        result = result + "&w";
+        $('#nhucaus input:checked').each(function () {
+            result = result + $(this).attr('name') + "-"
+        });
+        result = result + "&z";
+
+        $('#specials input:checked').each(function () {
+            result = result + $(this).attr('name') + "-"
+        });
+
+        document.getElementById("input_param").value = result;
+
+        paramslist = $("#input_param").val() + "%" + $("#id_loai_sp").val();
+
+
+
+        $.ajax(
+            {
+                beforeSend: function () {
+                    $('#progress').css('position', 'absolute');
+                    $('#progress').show();
+                },
+                type: 'POST',
+                url: '/Home/GetNumberProduct',
+                data: { paramslist: paramslist },
+                success: function (response) {
+                    var but = $("#btn_submit_param");
+                    but.html("Có " + response + " sản phẩm phù hợp");
+                    but.addClass("text-ajax");
+                    $('#progress').hide(); //hide progress bar
+                    if (response == "0") {
+                        but.prop('disabled', 'true');
+                    } else {
+                        but.removeAttr('disabled');
+                    }
+                },
+                error: function (response) {
+                    alert("ajax fail");
+                }
+            })
+
+    }
+</script>

@@ -4,21 +4,120 @@
 @{
     ViewData["Title"] = "Đăng nhập";
 }
+<style>
+    body {
+        padding: 2em;
+    }
+
+
+    /* Shared */
+    .loginBtn {
+        box-sizing: border-box;
+        position: relative;
+        /* width: 13em;  - apply for fixed size */
+        margin: 0.2em;
+        padding: 0 15px 0 46px;
+        border: none;
+        text-align: left;
+        line-height: 34px;
+        white-space: nowrap;
+        border-radius: 0.2em;
+        font-size: 16px;
+        color: #FFF;
+    }
+
+        .loginBtn:before {
+            content: "";
+            box-sizing: border-box;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 34px;
+            height: 100%;
+        }
+
+        .loginBtn:focus {
+            outline: none;
+        }
+
+        .loginBtn:active {
+            box-shadow: inset 0 0 0 32px rgba(0,0,0,0.1);
+        }
+
+
+    /* Facebook */
+    .loginBtn--facebook {
+        background-color: #4C69BA;
+        background-image: linear-gradient(#4C69BA, #3B55A0);
+        /*font-family: "Helvetica neue", Helvetica Neue, Helvetica, Arial, sans-serif;*/
+        text-align: center;
+        font-size: 25px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        cursor: pointer;
+        text-shadow: 0 -1px 0 #354C8C;
+    }
+
+        .loginBtn--facebook:before {
+            border-right: #364e92 1px solid;
+            background: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/14082/icon_facebook.png') 7px 15px no-repeat;
+        }
+
+        .loginBtn--facebook:hover,
+        .loginBtn--facebook:focus {
+            background-color: #5B7BD5;
+            background-image: linear-gradient(#5B7BD5, #4864B1);
+        }
+
+
+    /* Google */
+    .loginBtn--google {
+        /*font-family: "Roboto", Roboto, arial, sans-serif;*/
+        background: #DD4B39;
+        text-align: center;
+        font-size: 25px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        cursor: pointer;
+    }
+
+        .loginBtn--google:before {
+            border-right: #BB3F30 1px solid;
+            background: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/14082/icon_google.png') 7px 15px no-repeat;
+        }
+
+        .loginBtn--google:hover,
+        .loginBtn--google:focus {
+            background: #E74B37;
+        }
+
+    .form-group p a {
+        color: black !important;
+    }
+</style>
+
+
 
 <h1>@ViewData["Title"]</h1>
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-7">
         <section>
             <form id="account" method="post">
                 <hr />
                 <div asp-validation-summary="All" class="text-danger"></div>
                 <div class="form-group">
-                    <label > Nhập Email </label>
+                    <label> Nhập Username </label>
                     <input asp-for="Input.Email" class="form-control" />
                     <span asp-validation-for="Input.Email" class="text-danger"></span>
                 </div>
+
+                @*<div class="form-group">
+                    <label> Nhập Username </label>
+                    <input asp-for="Input.Username" class="form-control" />
+                    <span asp-validation-for="Input.Username" class="text-danger"></span>
+                </div>*@
                 <div class="form-group">
-                    <label > Nhập mật khẩu </label>
+                    <label> Nhập mật khẩu </label>
                     <input asp-for="Input.Password" class="form-control" />
                     <span asp-validation-for="Input.Password" class="text-danger"></span>
                 </div>
@@ -26,7 +125,7 @@
                     <div class="checkbox">
                         <label>
                             <input asp-for="Input.RememberMe" />
-                            Ghi nhớ tài khoản 
+                            Ghi nhớ tài khoản
                         </label>
                     </div>
                 </div>
@@ -44,18 +143,15 @@
             </form>
         </section>
     </div>
-    <div class="col-md-6 col-md-offset-2">
-        <section>
-            <h4>Use another service to log in.</h4>
+    <div class="col-md-5 col-md-offset-2 ">
+        <section class="pl-3 pr-3">
+            <h4>Hoặc đăng nhập bằng </h4>
             <hr />
             @{
                 if ((Model.ExternalLogins?.Count ?? 0) == 0)
                 {
                     <div>
-                        <p>
-                            There are no external authentication services configured. See <a href="https://go.microsoft.com/fwlink/?LinkID=532715">this article</a>
-                            for details on setting up this ASP.NET application to support logging in via external services.
-                        </p>
+                       
                     </div>
                 }
                 else
@@ -63,10 +159,10 @@
                     <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
                         <div>
                             <p>
-                                @foreach (var provider in Model.ExternalLogins)
-                                {
-                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
-                                }
+
+                                <button type="submit" class="btn-block loginBtn loginBtn--google" name="provider" value="@Model.ExternalLogins[0].Name" title="Log in using your @Model.ExternalLogins[0].DisplayName account">@Model.ExternalLogins[0].DisplayName</button>
+                                <button type="submit" class="btn-block loginBtn loginBtn--facebook" name="provider" value="@Model.ExternalLogins[1].Name" title="Log in using your @Model.ExternalLogins[1].DisplayName account">@Model.ExternalLogins[1].DisplayName</button>
+
                             </p>
                         </div>
                     </form>
@@ -79,3 +175,8 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
+
+<script>//How this line work???
+    if (window.history.replaceState) {
+        window.history.replaceState(null, null, window.location.href);
+    }</script>

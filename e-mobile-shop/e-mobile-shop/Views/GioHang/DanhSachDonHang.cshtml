@@ -1,82 +1,161 @@
-﻿@model IEnumerable<e_mobile_shop.Models.DonHang>
+﻿@using e_mobile_shop.Models.Helpers;
+@model PaginatedList<e_mobile_shop.Models.DonHang>
 
 @{
     ViewData["Title"] = "DanhSachDonHang";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<h1>DanhSachDonHang</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.MaDh)
-            </th>
-
-            <th>
-                @Html.DisplayNameFor(model => model.PhiVanChuyen)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PtgiaoDich)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NgayDatMua)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TinhTrangDh)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Tongtien)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Ghichu)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Diachi)
-            </th>
-
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.MaDh)
-            </td>
-
-            <td>
-                @Html.DisplayFor(modelItem => item.PhiVanChuyen)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PtgiaoDich)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NgayDatMua)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TinhTrangDh)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Tongtien)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Ghichu)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Diachi)
-            </td>
-
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                <a asp-controller="GioHang" asp-action="ChiTietDonHang" asp-route-id="@item.MaDh">Chi tiết </a>
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
 }
-    </tbody>
-</table>
+
+<style>
+    td, th {
+        text-align: center;
+    }
+
+    .s {
+        font-size: 20px;
+        padding: 5px;
+    }
+
+    .tooltip {
+        position: relative;
+        display: inline-block;
+        border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+    }
+        /* Tooltip text */
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 120px;
+            background-color: black;
+            color: #fff;
+            text-align: center;
+            padding: 5px 0;
+            border-radius: 6px;
+            /* Position the tooltip text - see examples below! */
+            position: absolute;
+            z-index: 1;
+        }
+        /* Show the tooltip text when you mouse over the tooltip container */
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+        }
+</style>
+
+<div>
+    <h3 class="tittle-w3l text-center mb-lg-5 mb-sm-4 mb-2 mt-2">
+        <span>D</span>anh sách đơn hàng
+    </h3>
+    <div class="container">
+        <div class="d-flex pb-2">
+            <div class="pr-2 dropdown show">
+                <a class="btn btn-outline-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Chọn loại đơn hàng
+                </a>
+
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    @foreach (var m in new ClientDbContext().TrangThaiDonHang.ToList())
+                    {
+                        <a class="dropdown-item" asp-action="DanhSachDonHang" asp-controller="GioHang" asp-route-type="@m.Id">@m.TenTrangThai</a>
+                    }
+                    <a class="dropdown-item" asp-action="DanhSachDonHang" asp-controller="GioHang" asp-route-type="">Tất cả </a>
+                </div>
+            </div>
+            <div style="line-height: 20px; border-left: 1px solid gray" class="pl-2">
+                @if (ViewData["Type"] != null)
+                {
+                    <h3> @ViewData["Type"].ToString()</h3>
+                }
+                else
+                {
+                    <h3> Tất cả đơn hàng</h3>
+                }
+            </div>
+           
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Mã đơn hàng
+                    </th>
+
+                    <th>
+                        Giá trị đơn hàng
+                    </th>
+
+                    <th>
+                        Tình trạng đơn hàng
+                    </th>
+                    <th>
+                        Ngày đặt hàng
+                    </th>
+
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.MaDh)
+                        </td>
+                        <td>
+                            @((item.PhiVanChuyen + item.Tongtien - item.GiamGia).Value.ToString("N0")) VNĐ
+
+                        <td>
+                            @( new ClientDbContext().TrangThaiDonHang.Find(item.TinhTrangDh).TenTrangThai)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NgayDatMua)
+                        </td>
+                        <td>
+                            <a data-toggle="tooltip" data-placement="left" title="Chi tiết " asp-controller="GioHang" asp-action="ChiTietDonHang" asp-route-id="@item.MaDh">
+                                <i class="s fas fa-info-circle"></i>
+                            </a>
+                           
+                            <button  data-placement="top" title="Hủy " type="button" id="link-update-@item.MaDh"  data-toggle="modal" data-target="@("#modalDelete"+item.MaDh.ToString())">
+                                <i class=" s fas fa-trash-alt"></i>
+                            </button>
+
+                            <div class="modal fade" id="@("modalDelete"+item.MaDh.ToString())" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Xác nhận hủy đơn hàng  </h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+
+                                        <div class="modal-footer">
+                                            <a class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Hủy " asp-action="HuyDonHang" asp-controller="GioHang" asp-route-id="@item.MaDh"> Xác nhận </a>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div class="d-flex">
+            <a asp-action="DanhSachDonHang"
+               asp-route-pageNumber="@(Model.PageIndex - 1)"
+               class="btn btn-outline-primary m-1 @prevDisabled" style="width:50%;border-radius:0px">
+                <i class="fas fa-backward"></i>  Trang trước
+            </a>
+            <a asp-action="DanhSachDonHang"
+               asp-route-pageNumber="@(Model.PageIndex + 1)"
+               class="btn btn-outline-primary m-1 @nextDisabled" style="width:50%; border-radius:0px;">
+                Trang sau <i class="fas fa-forward"></i>
+            </a>
+        </div>
+    </div>
+</div>

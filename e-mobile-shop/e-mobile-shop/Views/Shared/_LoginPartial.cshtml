@@ -7,12 +7,15 @@
 @if (SignInManager.IsSignedIn(User))
 {
     <li class="text-center border-right text-white">
-        <a id="manage" class="text-white" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@UserManager.GetUserName(User).ToString().Substring(0,15)</a>
+        <a id="manage" class="text-white" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@UserManager.GetUserName(User)</a>
     </li>
     <li class="text-center  text-white">
         <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
             <button id="logout" type="submit" class=" btn btn-link text-white">Logout</button>
         </form>
+    </li>
+    <li class="text-center border-left text-white">
+        <a class="text-white" asp-action="DanhSachDonHang" asp-controller="GioHang" asp-route-id="@UserManager.GetUserId(User)"> <i class="fas fa-truck mr-2"></i> Danh sách đơn hàng </a>
     </li>
 }
 else
@@ -23,4 +26,5 @@ else
     <li class="text-center  text-white">
         <a class="nav-link text-white" id="login" asp-area="Identity" asp-page="/Account/Login">Đăng nhập</a>
     </li>
+   
 }

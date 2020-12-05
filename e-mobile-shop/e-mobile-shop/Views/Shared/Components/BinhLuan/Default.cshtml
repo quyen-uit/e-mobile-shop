@@ -1,0 +1,186 @@
+﻿@model List<BinhLuanViewModel>
+@using e_mobile_shop.Areas.Identity.Data
+@using Microsoft.AspNetCore.Identity
+@using e_mobile_shop.ViewModels;
+@inject UserManager<AppUser> UserManager
+@inject SignInManager<AppUser> SignInManager
+
+@{
+    var context = new ClientDbContext();
+    var dataAccess = new DataAccess();
+}
+<style>
+    .info {
+        text-align: left !important;
+    }
+
+    .comment.author-comment {
+        color: #60686d;
+        justify-content: flex-start;
+    }
+
+    .user-comment p:after {
+        display: none !important;
+    }
+
+    .comment p {
+        line-height: 1;
+        padding: 2px 10px;
+        width: 50%;
+        position: relative;
+        word-wrap: break-word;
+    }
+
+    .comment .info a {
+        display: contents !important;
+        text-decoration: none;
+        color: #656c71;
+        font-weight: bold;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        padding: 10px 0 3px 0;
+    }
+
+
+    #more {
+        display: none;
+    }
+</style>
+@if (Model.Count > 0)
+{
+    <div class="media pt-4" id="first-cmt">
+        <img class="mr-3" src="https://via.placeholder.com/64" alt="Generic placeholder image">
+        <div class="media-body">
+            <h5 class="mt-0">
+                <strong href="#">
+                    @context.AspNetUsers.SingleOrDefault(x => x.Id == Model[0].MaKh).HoTen
+                    @if (dataAccess.GetRoleName(Model[0].MaKh) == "Quản trị viên")
+                    {
+                        <i class="fas fa-user-cog pl-1"></i>
+                    }
+                    <p style="font-weight:100; font-size: 12px;"> 3 giờ trước </p>
+                </strong>
+            </h5>
+            @Model[0].NoiDung
+            <div>
+                @if (UserManager.GetUserId(User) == null)
+                {
+                    <p style=" font-size: 12px;"><a asp-area="Identity" asp-page="/Account/Login"> Đăng nhập</a> để bình luận</p>
+
+                }
+                else
+                {
+                    <a style="text-decoration:underline; color: blue; cursor:pointer" onclick="ReplyComment('@Model[0].MaBl')" class=" p-0 m-0 ml-2"> Trả lời  </a>
+                    @if (UserManager.GetUserId(User) == Model[0].MaKh || dataAccess.GetRoleName(UserManager.GetUserId(User)) == "Quản trị viên")
+                    {
+                        <a style="text-decoration:underline; color: blue; cursor:pointer" class="ml-2"
+                           asp-action="DeleteComment"
+                           asp-controller="User"
+                           asp-route-maSp="@Model[0].MaSp"
+                           asp-route-id="@Model[0].MaBl"> Xóa </a>
+                    }
+                }
+            </div>
+            <hr />
+            <div class="pl-2">
+                @await Component.InvokeAsync("TraLoiBinhLuan", new { Id = Model[0].MaBl })
+            </div>
+            <div style="padding-left:3rem; display:none" class="mb-2 pt-2 border p-lg-4 p-2 m-1" id="@Model[0].MaBl">
+
+                <form class="form-inline" asp-action="ReplyComment" asp-controller="User" asp-route-userId="@UserManager.GetUserId(User)" asp-route-maSp="@Model[0].MaSp" asp-route-maBl="@Model[0].MaBl">
+                    <input type="text" name="ReplyComment" placeholder="Trả lời bình luận" rows="1" class="form-control" style="width:85%" />
+
+                    <button class="btn btn-primary radius-0" type="submit" style="width:15%">  Gửi</button>
+
+                </form>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+}
+<span id="dots"></span>
+
+<div id="more">
+    @foreach (var binhluan in Model)
+    {
+
+        <div class="media pt-4">
+            <img class="mr-3" src="https://via.placeholder.com/64" alt="Generic placeholder image">
+            <div class="media-body">
+                <h5 class="mt-0">
+                    <strong href="#">
+                        @context.AspNetUsers.SingleOrDefault(x => x.Id == binhluan.MaKh).HoTen
+                        @if (dataAccess.GetRoleName(binhluan.MaKh) == "Quản trị viên")
+                        {
+                            <i class="fas fa-user-cog pl-1"></i>
+                        }
+                        <p style="font-weight:100; font-size: 12px;"> 3 giờ trước </p>
+                    </strong>
+                </h5>
+                @binhluan.NoiDung
+                <div>
+                    @if (UserManager.GetUserId(User) == null)
+                    {
+                        <p style=" font-size: 12px;"><a asp-area="Identity" asp-page="/Account/Login"> Đăng nhập</a> để bình luận</p>
+
+                    }
+                    else
+                    {
+                        <a style="text-decoration:underline; color: blue; cursor:pointer" onclick="ReplyComment('@binhluan.MaBl')" class=" p-0 m-0 ml-2"> Trả lời  </a>
+                        @if (UserManager.GetUserId(User) == binhluan.MaKh || dataAccess.GetRoleName(UserManager.GetUserId(User)) == "Quản trị viên")
+                        {
+                            <a style="text-decoration:underline; color: blue; cursor:pointer" class="ml-2"
+                               asp-action="DeleteComment"
+                               asp-controller="User"
+                               asp-route-maSp="@binhluan.MaSp"
+                               asp-route-id="@binhluan.MaBl"> Xóa </a>
+                        }
+                    }
+                </div>
+                <hr />
+                @await Component.InvokeAsync("TraLoiBinhLuan", new { Id = binhluan.MaBl })
+
+                <div style="padding-left:3rem; display:none" class="mb-2 pt-2 border p-lg-4 p-2 m-1" id="@binhluan.MaBl">
+
+                    <form class="form-inline" asp-action="ReplyComment" asp-controller="User" asp-route-userId="@UserManager.GetUserId(User)" asp-route-maSp="@binhluan.MaSp" asp-route-maBl="@binhluan.MaBl">
+                        <input type="text" name="ReplyComment" placeholder="Trả lời bình luận" rows="1" class="form-control" style="width:85%" />
+
+                        <button class="btn btn-primary radius-0" type="submit" style="width:15%">  Gửi</button>
+
+                    </form>
+
+                </div>
+
+
+
+            </div>
+        </div>
+    }
+
+</div>
+<button onclick="myFunction()" class="btn btn-outline-info p-lg-2 mt-lg-3" id="myBtn">Xem tất cả bình luận <i class="fas fa-angle-double-right"></i> </button>
+
+<script>
+    function myFunction() {
+        var dots = document.getElementById("dots");
+        var moreText = document.getElementById("more");
+        var btnText = document.getElementById("myBtn");
+
+        if (dots.style.display === "none") {
+            dots.style.display = "inline";
+            btnText.innerHTML = "Xem tất cả bình luận";
+            moreText.style.display = "none";
+            document.getElementById("first-cmt").style.display = "block";
+        } else {
+            document.getElementById("first-cmt").style.display = "none";
+            dots.style.display = "none";
+            btnText.innerHTML = "<i class='fas fa-angle-double-left'></i> Thu gọn bình luận ";
+            moreText.style.display = "inline";
+        }
+    }
+</script>

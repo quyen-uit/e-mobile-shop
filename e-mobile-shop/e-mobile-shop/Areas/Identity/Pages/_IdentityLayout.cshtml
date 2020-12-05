@@ -1,4 +1,12 @@
-﻿<!DOCTYPE html>
+﻿@using e_mobile_shop.Models;
+@using e_mobile_shop.Models.Repository.MobileShopRepository;
+
+@{
+    var context = new ClientDbContext();
+    var dataAccess = new DataAccess();
+    var dataExcute = new MobileShopRepository(context);
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -23,6 +31,7 @@
     <link rel="stylesheet" href="~/css/fontawesome-all.css">
     <!-- Font-Awesome-Icons-CSS -->
     <link href="~/css/popuo-box.css" rel="stylesheet" type="text/css" media="all" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css" />
     <!-- pop-up-box -->
     <link href="~/css/menu.css" rel="stylesheet" type="text/css" media="all" />
     <!-- menu style -->
@@ -34,7 +43,7 @@
     <!-- //web fonts -->
 
 </head>
-<body>
+<body class="p-0">
     <header>
         <!-- Template navbar-->
         <!-- top-header -->
@@ -50,16 +59,17 @@
                         <!-- header lists -->
                         <ul>
 
-                            <li class="text-center border-right text-white">
-                                <a href="#" data-toggle="modal" data-target="#exampleModal" class="text-white">
-                                    <i class="fas fa-truck mr-2"></i>Track Order
-                                </a>
-                            </li>
+
                             <li class="text-center border-right text-white">
                                 <i class="fas fa-phone mr-2"></i> 0988776599
                             </li>
+                            <li class="text-center border-right text-white">
+                                <a class="text-white" asp-action="Index" asp-controller="Admin"> <i class="fas fa-user-cog"></i> Admin </a>
+                            </li>
 
                             <partial name="_LoginPartial" />
+
+
                         </ul>
                         <!-- //header lists -->
                     </div>
@@ -78,7 +88,7 @@
                     <div class="col-md-3 logo_agile">
                         <h1 class="text-center">
                             <a href=@Url.Action("Index", "Home") class="font-weight-bold font-italic">
-                                <img src="~/images/logo2.png" alt=" " class="img-fluid">thegioicongnghe
+                                <img src="~/images/logo2.png" alt=" " class="img-fluid p-3">thegioicongnghe
                             </a>
                         </h1>
                     </div>
@@ -88,23 +98,19 @@
                         <div class="row">
                             <!-- search -->
                             <div class="col-10 agileits_search">
-                                <form class="form-inline" action="#" method="post">
-                                    <input class="form-control mr-sm-2" type="search" placeholder="Bạn muốn tìm gì" aria-label="Search" required>
-                                    <button class="btn my-2 my-sm-0" type="submit">Tìm kiếm</button>
+                                <form class="form-inline" asp-action="Filter" asp-controller="Home" method="get">
+                                    <input name="tenSp" class="form-control mr-sm-2" type="search" placeholder="Bạn muốn tìm gì" aria-label="Search" required>
+                                    <button class="btn my-2 my-sm-0" type="submit">Tìm</button>
                                 </form>
                             </div>
                             <!-- //search -->
                             <!-- cart details -->
                             <div class="col-2 top_nav_right text-center mt-sm-0 mt-2">
-                                <div class="wthreecartaits wthreecartaits2 cart cart box_1">
-                                    <form action="#" method="post" class="last">
-                                        <input type="hidden" name="cmd" value="_cart">
-                                        <input type="hidden" name="display" value="1">
-                                        <button class="btn w3view-cart" type="submit" name="submit" value="">
-                                            <i class="fas fa-cart-arrow-down"></i>
-                                        </button>
-                                    </form>
-                                </div>
+                                <a class="btn w3view-cart" asp-controller="GioHang" asp-action="XemGioHang" name="submit" value="">
+
+                                    <i style="font-size: 30px" class="fas fa-cart-arrow-down"></i>
+                                </a>
+
                             </div>
                             <!-- //cart details -->
                         </div>
@@ -120,18 +126,22 @@
                 <nav class="navbar navbar-expand-lg navbar-light bg-light">
                     <div class="agileits-navi_search">
                         <form action="#" method="post">
-                            <select id="agileinfo-nav_search" name="agileinfo_search" class="border" required="">
-                                <option value="">Danh mục Sản phẩm</option>
-                                <option value="Televisions">Televisions</option>
-                                <option value="Headphones">Headphones</option>
-                                <option value="Computers">Computers</option>
-                                <option value="Appliances">Appliances</option>
-                                <option value="Mobiles">Mobiles</option>
-                                <option value="Fruits &amp; Vegetables">Tv &amp; Video</option>
-                                <option value="iPad & Tablets">iPad & Tablets</option>
-                                <option value="Cameras & Camcorders">Cameras & Camcorders</option>
-                                <option value="Home Audio & Theater">Home Audio & Theater</option>
-                            </select>
+                            <div id="agileinfo-nav_search" name="agileinfo_search" class="border dropdown p-1" required="">
+                                <button style="font-size:15px;" class="btn dropdown-toggle" type="button" data-toggle="dropdown" id="drmn" value="">Danh mục Sản phẩm</button>
+                                <div class="dropdown-menu" style="width:100%; border-radius:0px; background-color:#F8F9FA" aria-labeledby="drmn">
+                                    @foreach (var item in dataExcute.ReadLoaiSp())
+                                    {
+                                        <a type="button" style="text-align:left; border-radius:0px;" class="btn btn-block p-0 " asp-action="DanhSach" asp-controller="SanPham" asp-route-id="@item.MaLoai">
+                                            <p style="color:black" class="p-2">@item.TenLoai</p>
+                                        </a>
+
+                                    }
+                                    <a type="button" style="text-align:left; border-radius:0px;" class="btn btn-block p-0 " asp-action="Filter" asp-controller="Home">
+                                        <p style="color:black;" class="p-2">Tất cả sản phẩm</p>
+                                    </a>
+                                </div>
+
+                            </div>
                         </form>
                     </div>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -141,28 +151,28 @@
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav ml-auto text-center mr-xl-5">
                             <li class="nav-item active mr-lg-2 mb-lg-0 mb-2">
-                                <a class="nav-link" href="index.html">
+                                <a class="nav-link" href="@Url.Action("Index","Home")">
                                     Trang chủ
                                     <span class="sr-only">(current)</span>
                                 </a>
                             </li>
                             <li class="nav-item mr-lg-2 mb-lg-0 mb-2">
-                                <a class="nav-link " href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                <a class="nav-link " asp-controller="SanPham" asp-action="DanhSach" asp-route-id="LSP0002" role="button" aria-haspopup="true" aria-expanded="false">
                                     Điện thoại
                                 </a>
 
                             </li>
                             <li class="nav-item  mr-lg-2 mb-lg-0 mb-2">
-                                <a class="nav-link " href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                <a class="nav-link " asp-controller="SanPham" asp-action="DanhSach" asp-route-id="LSP0007" role="button" aria-haspopup="true" aria-expanded="false">
                                     Máy tính bảng
                                 </a>
 
                             </li>
                             <li class="nav-item mr-lg-2 mb-lg-0 mb-2">
-                                <a class="nav-link" href="about.html">Laptop</a>
+                                <a class="nav-link" asp-controller="SanPham" asp-action="DanhSach" asp-route-id="LSP0008">Laptop</a>
                             </li>
                             <li class="nav-item mr-lg-2 mb-lg-0 mb-2">
-                                <a class="nav-link" href="product.html">Phụ kiện</a>
+                                <a class="nav-link" asp-controller="SanPham" asp-action="DanhSach" asp-route-id="LSP0001">Phụ kiện</a>
                             </li>
                             <li class="nav-item mr-lg-2 mb-lg-0 mb-2">
                                 <a class="nav-link " href="#" role="button" aria-haspopup="true" aria-expanded="false">
@@ -171,8 +181,9 @@
 
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="contact.html">Về chúng tôi </a>
+                                <a class="nav-link" href="contact.html">Hỗ trợ  </a>
                             </li>
+
                         </ul>
                     </div>
                 </nav>
@@ -181,10 +192,10 @@
         <!-- //navigation -->
         <!-- End template navbar-->
     </header>
-    <br />
-    <div class="container">
+    <div class="container pt-2">
         @RenderBody()
     </div>
+
 
     <!-- footer -->
     <footer>
@@ -260,7 +271,9 @@
                             <li class="mb-3">
                                 <a href="product.html">Tin tức</a>
                             </li>
-
+                            <li class="mb-3">
+                                <a href="product.html">Tin tức</a>
+                            </li>
                         </ul>
                     </div>
                     <!-- //footer categories -->

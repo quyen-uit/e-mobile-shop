@@ -1,0 +1,250 @@
+﻿@using e_mobile_shop.ViewModels;
+@model List<SanPhamViewModel>
+@*@using e_mobile_shop.Models.Repository.MobileShopRepository*@
+@{
+    ViewData["Title"] = "QuanLySanPham";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    //var context = new ClientDbContext();
+    //var dataAccess = new MobileShopRepository(context);
+}
+
+<body>
+    @Html.Partial("_StatusMessages")
+
+    <div class="col-lg-12">
+        <div class="panel panel-success">
+
+            <div class=" panel-heading ">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <h4>Quản lý @ViewBag.LoaiSp</h4>
+
+                    </div>
+                  
+                    <div class="col-lg-8">
+                        <form asp-action="QuanLy" method="get" asp-controller="Admin">
+
+                            <div class="col-lg-4">
+                                <select id="filter" name="status" class="form-control">
+                                    <option value="">Trạng thái</option>
+                                    <option value="1">Kinh doanh</option>
+                                    <option value="0">Ngừng kinh doanh</option>
+                                </select>
+                            </div>
+                            <div class="input-group custom-search-form col-lg-8">
+                                <input name="searchValue" type="text" class="form-control" placeholder="Tìm tên hoặc mã ...">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="submit">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </span>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+
+                        <thead>
+                            <tr>
+                                
+                                <th>ID</th>
+                                <th>Tên</th>
+                                <th>Ảnh</th>
+                                <th>Số lượng</th>
+                                
+                                <th>Lượt xem</th>
+                                <th>Hãng</th>
+                                <th>Giá gốc</th>
+                                <th>Sửa</th>
+                                <th>Xóa</th>
+                                <th>Chi Tiết</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            @{                                
+                                foreach (var item in Model)
+                                
+                                {
+                                                        <tr>
+                                                            <td style="vertical-align:middle">@item.MaSp</td>
+
+                                                            <td style="vertical-align:middle">@item.TenSp</td>
+                                                            <td align="center">
+                                                                <img src=@Url.Content("~/ProductAvatar/" + item.AnhDaiDien) width="50" height="50" />
+                                                            </td>
+                                                            <td style="vertical-align:middle">@item.SoLuong</td>
+
+                                                            <td style="vertical-align:middle">@item.SoLuotXemSp</td>
+                                                            @*<td style="vertical-align:middle">@context.NhaSanXuat.Find(item.Nsx).TenNsx</td>*@
+                                                            <td style="vertical-align:middle">@item.Nsx</td>
+                                                            <td style="vertical-align:middle">@item.GiaGoc.Value.ToString("N0") VNĐ</td>
+                                                            @*    <td style="vertical-align:middle">
+            <button type="button" data-toggle="modal" data-target="#exampleModal1" class="btn btn-primary">Sửa </button>
+
+            <!-- Modal confirm edit-->
+            <div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Chỉnh sửa thông tin sản phẩm </h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="col-lg-12">
+                                <div class="panel panel-default">
+
+                                    <div class="panel-body">
+                                        <form enctype="multipart/form-data" role="form" asp-action="ChinhSua" asp-controller="Admin" method="post">
+                                            <div class="form-group">
+                                                <label asp-for="@item.TenSp">Tên sản phẩm</label>
+                                                <input class="form-control" asp-for="@item.TenSp" name="TenSp">
+                                                <input type="hidden" name="Id" value="@item.MaSp" />
+                                                <span asp-validation-for="@item.TenSp"></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="@item.LoaiSp"> Loại sản phẩm </label>
+
+                                                <input disabled class="form-control" asp-for="@item.LoaiSp" type="text" id="textType" />
+
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="@item.Nsx">Hãng sản xuất</label>
+                                                <input asp-for="@item.Nsx" class="form-control" maxlength="5">
+                                                <span asp-validation-for="@item.Nsx"></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="@item.XuatXu">Xuất xứ</label>
+                                                <input class="form-control" asp-for="@item.XuatXu">
+                                                <span asp-validation-for="@item.XuatXu"></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="@item.SoLuong">Số lượng</label>
+                                                <input asp-for="@item.SoLuong" class="form-control">
+                                                <span asp-validation-for="@item.SoLuong"></span>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label asp-for="@item.GiaGoc">Giá gốc</label>
+                                                <input type="number" asp-for="@item.GiaGoc" class="form-control">
+                                                <span asp-validation-for="@item.GiaGoc"></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="@item.GiaTien">Giá bán</label>
+                                                <input type="number" asp-for="@item.GiaTien" class="form-control">
+                                                <span asp-validation-for="@item.GiaTien"></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="@item.AnhDaiDien">Ảnh đại diện</label>
+                                                <input onchange="loadFile(event)" type="file" asp-for="@item.AnhDaiDien" class="form-control">
+
+                                            </div>
+                                            <img id="output" />
+
+                                            <div class="form-group">
+                                                <label asp-for="@item.AnhKhac">Ảnh khác</label>
+                                                <input type="file" asp-for="@item.AnhKhac" class="form-control">
+
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label>Mô tả</label>
+                                                <textarea class="form-control" rows="3" asp-for="@item.MoTa"></textarea>
+                                                <script>
+                                                    CKEDITOR.replace('MoTa');
+                                                </script>
+                                            </div>
+                                            <div class="form-group">
+                                                @foreach (var item1 in DataAccess.ReadThongSo(item.LoaiSp))
+                                                {
+                                                    <div class="form-group">
+                                                        <label>@item1.TenThongSo</label>
+                                                        <input name="@item1.MaThongSo" type="text" class="form-control">
+                                                    </div>
+                                                }
+                                            </div>
+                                            <button type="submit" name="submit" class="btn btn-default">Submit Button</button>
+                                            <button type="reset" class="btn btn-default">Reset Button</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                            <a type="button" class="btn btn-primary" asp-controller="Admin" asp-action="XoaSanPham" asp-route-id="@item.MaSp"> Xóa </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </td> *@
+                                                            <td style="vertical-align:middle">
+                                                                <button type="button" class="btn btn-primary">
+                                                                    <a style="color: white" asp-action="ChinhSua" asp-controller="Admin" asp-route-id="@item.MaSp">Sửa</a>
+                                                                </button>
+                                                            </td>
+                                                            <td style="vertical-align:middle">
+                                                                <button type="button" data-toggle="modal" data-target="#modal-@item.MaSp" class="btn btn-primary">Xóa</button>
+
+
+                                                                <!-- Modal confirm delete  -->
+                                                                <div class="modal fade" id="modal-@item.MaSp" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                                    <div class="modal-dialog" role="document">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header">
+                                                                                <h5 class="modal-title" id="exampleModalLabel">Xác nhận xóa </h5>
+                                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                    <span aria-hidden="true">&times;</span>
+                                                                                </button>
+                                                                            </div>
+                                                                            <div class="modal-body">
+                                                                                Bạn có muốn <span style="color:red; font-weight:bold;">xóa</span> sản phẩm <span style="color:red; font-weight:bold"> @item.TenSp</span>
+                                                                            </div>
+                                                                            <div class="modal-footer">
+                                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                                                                                <a type="button" class="btn btn-primary" asp-controller="Admin" asp-action="XoaSanPham" asp-route-id="@item.MaSp"> Xóa </a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                            </td>
+                                                            <td style="vertical-align:middle">
+                                                                <a class="btn btn-primary" asp-action="ChiTiet" asp-controller="Admin" asp-route-id="@item.MaSp"> Chi tiết </a>
+                                                            </td>
+                                                        </tr>
+
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+
+
+
+
+<script>
+    var loadFile = function (event) {
+        var image = document.getElementById('output');
+        image.src = URL.createObjectURL(event.target.files[0]);
+        image.style.width = 300;
+        image.style.height = 150;
+    };
+    function changeType() {
+        document.getElementById("textType").value = document.getElementById("typeSelection").value;
+    }
+</script>

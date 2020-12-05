@@ -9,10 +9,17 @@
 
     <title>TGCN Admin Manager </title>
 
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/css/toastr.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
     <!-- Core CSS - Include with every page -->
     <link href="~/Admin/css/bootstrap.min.css" rel="stylesheet">
     <link href="~/Admin/font-awesome/css/font-awesome.css" rel="stylesheet">
 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="~/js/jquery.czMore-latest.js"></script>
     <!-- Page-Level Plugin CSS - Dashboard -->
     <link href="~/Admin/css/plugins/morris/morris-0.4.3.min.css" rel="stylesheet">
     <link href="~/Admin/css/plugins/timeline/timeline.css" rel="stylesheet">
@@ -25,8 +32,22 @@
 </head>
 
 <body>
+    <style>
+
+        ul{
+            
+            list-style-type: none;
+        }
+
+        li {
+            padding-top: 0.5px;
+            padding-bottom: 0.5px;
+        }
+
+    </style>
 
     <div id="wrapper">
+
 
         <nav class="navbar navbar-default navbar-fixed-top" role="navigation" style="margin-bottom: 0">
             <div class="navbar-header">
@@ -36,281 +57,129 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand">TGCN Admin</a>
+                <a class="navbar-brand" asp-action="Index" asp-controller="Admin">TGCN Admin</a>
             </div>
             <!-- /.navbar-header -->
 
-            <ul class="nav navbar-top-links navbar-right">
-                <li class="dropdown">
-                    <button class="dropdown-toggle" data-toggle="dropdown" href="#" disabled hidden>
-                        <i class="fa fa-envelope fa-fw"></i>  <i class="fa fa-caret-down"></i>
-                    </button>
-                    <ul class="dropdown-menu dropdown-messages">
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <strong>John Smith</strong>
-                                    <span class="pull-right text-muted">
-                                        <em>Yesterday</em>
-                                    </span>
-                                </div>
-                                <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...</div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <strong>John Smith</strong>
-                                    <span class="pull-right text-muted">
-                                        <em>Yesterday</em>
-                                    </span>
-                                </div>
-                                <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...</div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <strong>John Smith</strong>
-                                    <span class="pull-right text-muted">
-                                        <em>Yesterday</em>
-                                    </span>
-                                </div>
-                                <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...</div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a class="text-center" href="#">
-                                <strong>Read All Messages</strong>
-                                <i class="fa fa-angle-right"></i>
-                            </a>
-                        </li>
-                    </ul>
-                    <!-- /.dropdown-messages -->
-                </li>
-                <!-- /.dropdown -->
-                <li class="dropdown">
-                    <button class="dropdown-toggle" data-toggle="dropdown" href="#" hidden>
-                        <i class="fa fa-tasks fa-fw"></i>  <i class="fa fa-caret-down"></i>
-                    </button>
-                    <ul class="dropdown-menu dropdown-tasks">
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <p>
-                                        <strong>Task 1</strong>
-                                        <span class="pull-right text-muted">40% Complete</span>
-                                    </p>
-                                    <div class="progress progress-striped active">
-                                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
-                                            <span class="sr-only">40% Complete (success)</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <p>
-                                        <strong>Task 2</strong>
-                                        <span class="pull-right text-muted">20% Complete</span>
-                                    </p>
-                                    <div class="progress progress-striped active">
-                                        <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%">
-                                            <span class="sr-only">20% Complete</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <p>
-                                        <strong>Task 3</strong>
-                                        <span class="pull-right text-muted">60% Complete</span>
-                                    </p>
-                                    <div class="progress progress-striped active">
-                                        <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%">
-                                            <span class="sr-only">60% Complete (warning)</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <p>
-                                        <strong>Task 4</strong>
-                                        <span class="pull-right text-muted">80% Complete</span>
-                                    </p>
-                                    <div class="progress progress-striped active">
-                                        <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%">
-                                            <span class="sr-only">80% Complete (danger)</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a class="text-center" href="#">
-                                <strong>See All Tasks</strong>
-                                <i class="fa fa-angle-right"></i>
-                            </a>
-                        </li>
-                    </ul>
-                    <!-- /.dropdown-tasks -->
-                </li>
-                <!-- /.dropdown -->
-                <li class="dropdown">
-                    <button class="dropdown-toggle" data-toggle="dropdown" href="#" hidden>
-                        <i class="fa fa-bell fa-fw"></i>  <i class="fa fa-caret-down"></i>
-                    </button>
-                    <ul class="dropdown-menu dropdown-alerts">
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <i class="fa fa-comment fa-fw"></i> New Comment
-                                    <span class="pull-right text-muted small">4 minutes ago</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <i class="fa fa-twitter fa-fw"></i> 3 New Followers
-                                    <span class="pull-right text-muted small">12 minutes ago</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <i class="fa fa-envelope fa-fw"></i> Message Sent
-                                    <span class="pull-right text-muted small">4 minutes ago</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <i class="fa fa-tasks fa-fw"></i> New Task
-                                    <span class="pull-right text-muted small">4 minutes ago</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <i class="fa fa-upload fa-fw"></i> Server Rebooted
-                                    <span class="pull-right text-muted small">4 minutes ago</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a class="text-center" href="#">
-                                <strong>See All Alerts</strong>
-                                <i class="fa fa-angle-right"></i>
-                            </a>
-                        </li>
-                    </ul>
-                    <!-- /.dropdown-alerts -->
-                </li>
-                <!-- /.dropdown -->
-                <li class="dropdown">
-                    <button class="dropdown-toggle" data-toggle="dropdown" href="#" hidden>
-                        <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
-                    </button>
-                    <ul class="dropdown-menu dropdown-user">
-                        <li>
-                            <a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="login.html"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
-                        </li>
-                    </ul>
-                    <!-- /.dropdown-user -->
-                </li>
-                <!-- /.dropdown -->
-            </ul>
+       
             <!-- /.navbar-top-links -->
+            <style>
+                .sidebar {
+                    overflow-y: scroll;
+                    position: fixed;
+                    width: inherit;    
+                    
+                }
+                /* Hide scrollbar for Chrome, Safari and Opera */
+                .sidebar::-webkit-scrollbar {
+                    display: none;
+                }
 
-            <div class="navbar-default navbar-static-side" role="navigation">
-                <div class="sidebar-collapse">
+                /* Hide scrollbar for IE, Edge and Firefox */
+                .sidebar {
+                    -ms-overflow-style: none; /* IE and Edge */
+                    scrollbar-width: none; /* Firefox */
+                }
+            </style>
+            <div class="navbar-default navbar-static-side" role="navigation" style=" position: fixed;">
+                <div class="sidebar sidebar-collapse">
                     <ul class="nav" id="side-menu">
-                        <li class="sidebar-search">
-                            <div class="input-group custom-search-form">
-                                <input type="text" class="form-control" placeholder="Search...">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button">
-                                        <i class="fa fa-search"></i>
-                                    </button>
-                                </span>
-                            </div>
-                            <!-- /input-group -->
-                        </li>
-
+                        @*<li class="sidebar-search">
+                                <div class="input-group custom-search-form">
+                                    <input type="text" class="form-control" placeholder="Search...">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default" type="button">
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                                 /input-group
+                            </li>*@
                         <li>
-                            <a href="#"><i class="fa fa-wrench fa-fw"></i>Quản lý<span class="fa arrow"></span></a>
+                            <a asp-action="Index" asp-controller="Admin" style="color:white; background-color: #27ae60;" ><i class="fa fa-dashboard fa-fw"></i><strong> Dashboard</strong></a>
+                        </li>
+                        <li>
+                            <a asp-action="QuanLyDonHang" asp-controller="Admin" style="color:white; background-color: #27ae60;"><i class="fa fa-shopping-cart fa-fw"></i><strong> Quản lý đơn hàng</strong></a>
+                        </li>
+                        <li>
+                            <a asp-action="QuanLyUser" asp-controller="Admin" style="color:white; background-color: #27ae60;"><i class="fa fa-user fa-fw"></i><strong> Quản lý người dùng </strong></a>
+                        </li>
+                        <li>
+                            <a asp-action="QuanLyKhuyenMai" asp-controller="Admin" style="color:white; background-color: #27ae60;"><i class="fa fa-plus-circle fa-fw"></i><strong> Quản lý khuyến mãi</strong> </a>
+                        </li>
+                        <li>
+                            <a style="color:white; background-color: #27ae60;" href="#"><i class="fa fa-wrench fa-fw"></i><strong> Quản lý sản phẩm</strong><span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level collapse" style="height: auto;">
                                 <li>
-                                    <a href="@Url.Action("QuanLyDienThoai","Admin")">Điện thoại</a>
+                                    <a asp-action="QuanLy" asp-controller="Admin" asp-route-id="LSP0002" style="background-color:#2980b9; color: white"><i class="fa fa-mobile-phone fa-fw"></i><strong> Điện thoại</strong></a>
                                 </li>
                                 <li>
-                                    <a href="#">Laptop</a>
+                                    <a asp-action="QuanLy" asp-controller="Admin" asp-route-id="LSP0008" style="background-color:#2980b9; color: white"><i class="fa fa-laptop fa-fw"></i><strong> Laptop</strong></a>
+                                </li>
+                                <li>
+                                    <a asp-action="QuanLy" asp-controller="Admin" asp-route-id="LSP0007" style="background-color:#2980b9; color: white"><i class="fa fa-tablet fa-fw"></i><strong> Máy tính bảng</strong></a>
                                 </li>
 
                                 <li>
-                                    <a href="#">Tablet</a>
-                                </li>
-                                <li>
-                                    <a href="#">Tin tức, khuyến mãi</a>
+                                    <a  style="background-color:#2980b9; color: white" href="#"><i class="fa fa-wrench fa-fw"></i><strong> Phụ kiện</strong><span class="fa arrow"></span></a>
+                                    <ul class="nav nav-third-level collapse" style="height: auto;">
+                                        <li>
+                                            <a asp-action="QuanLy" asp-controller="Admin" asp-route-id="LSP0001" style="background-color:#1abc9c; color:white"><i class="fa fa-headphones fa-fw"></i><strong> Tai nghe</strong></a>
+                                        </li>
+                                        <li>
+                                            <a asp-action="QuanLy" asp-controller="Admin" asp-route-id="LSP0004" style="background-color:#1abc9c; color:white"><i class="fa fa-pinterest fa-fw"></i><strong> Cáp sạc</strong></a>
+                                        </li>
+                                        <li>
+                                            <a asp-action="QuanLy" asp-controller="Admin" asp-route-id="LSP0003" style="background-color:#1abc9c; color:white"><i class="fa fa-plus-square fa-fw"></i><strong> Thẻ nhớ</strong></a>
+                                        </li>
+                                        <li>
+                                            <a asp-action="QuanLy" asp-controller="Admin" asp-route-id="LSP0005" style="background-color:#1abc9c; color:white"><i class="fa fa-mobile fa-fw"></i><strong> Ốp lưng</strong></a>
+                                        </li>
+
+                                    </ul>
                                 </li>
                             </ul>
 
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-wrench fa-fw"></i>Thêm mới<span class="fa arrow"></span></a>
+                            <a style="color:white; background-color: #27ae60;" href="#"><i class="fa fa-plus fa-fw"></i><strong> Thêm mới</strong><span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level collapse" style="height: auto;">
                                 <li>
-                                    <a href="@Url.Action("ThemDienThoai","Admin")">Điện thoại</a>
+                                    <a style="background-color:#2980b9; color: white" asp-action="ThemKhuyenMai" asp-controller="Admin"><i class="fa fa-mobile-phone fa-fw"></i><strong> Khuyến mãi</strong></a>
                                 </li>
                                 <li>
-                                    <a href="#">Laptop</a>
+                                    <a  style="background-color:#2980b9; color: white" asp-action="Them" asp-controller="Admin" asp-route-id="LSP0002"><i class="fa fa-mobile-phone fa-fw"></i><strong> Điện thoại</strong></a>
+                                </li>
+                                <li>
+                                    <a style="background-color:#2980b9; color: white" asp-action="Them" asp-controller="Admin" asp-route-id="LSP0007"><i class="fa fa-tablet fa-fw"></i><strong> Máy tính bảng</strong></a>
                                 </li>
 
                                 <li>
-                                    <a href="#">Tablet</a>
+                                    <a style="background-color:#2980b9; color: white" asp-action="Them" asp-controller="Admin" asp-route-id="LSP0008"><i class="fa fa-laptop fa-fw"></i><strong> Laptop</strong></a>
                                 </li>
                                 <li>
-                                    <a href="#">Tin tức, khuyến mãi</a>
+                                    <a style="background-color:#2980b9; color: white" href="#"><i class="fa fa-wrench fa-fw"></i><strong> Phụ kiện</strong><span class="fa arrow"></span></a>
+                                    <ul class="nav nav-third-level collapse" style="height: auto;">
+                                        <li>
+                                            <a style="background-color:#1abc9c; color:white" asp-action="Them" asp-controller="Admin" asp-route-id="LSP0001"><i class="fa fa-headphones fa-fw"></i><strong> Tai nghe</strong></a>
+                                        </li>
+                                        <li>
+                                            <a style="background-color:#1abc9c; color:white" asp-action="Them" asp-controller="Admin" asp-route-id="LSP0004"><i class="fa fa-pinterest fa-fw"></i><strong> Cáp sạc</strong></a>
+                                        </li>
+                                        <li>
+                                            <a style="background-color:#1abc9c; color:white" asp-action="Them" asp-controller="Admin" asp-route-id="LSP0003"><i class="fa fa-plus-square fa-fw"></i><strong> Thẻ nhớ</strong></a>
+                                        </li>
+                                        <li>
+                                            <a style="background-color:#1abc9c; color:white" asp-action="Them" asp-controller="Admin" asp-route-id="LSP0005"><i class="fa fa-mobile fa-fw"></i><strong> Ốp lưng</strong></a>
+                                        </li>
+
+                                    </ul>
                                 </li>
+
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
-                        <li>
-                            <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Thêm <span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                            </ul>
-                        </li>
+
                     </ul>
                     <!-- /#side-menu -->
                 </div>
@@ -319,13 +188,19 @@
             <!-- /.navbar-static-side -->
         </nav>
 
-        <div id="page-wrapper">
+        <div id="page-wrapper" style="padding-top: 15px">
+            <style>
+                .dataTables_filter {
+                    display: none;
+                }
+            </style>
             @RenderBody()
         </div>
         <!-- /#page-wrapper -->
 
     </div>
     <script src="~/Admin/js/jquery-1.10.2.js"></script>
+    <script src="~/js/jquery-2.2.3.min.js"></script>
     <script src="~/Admin/js/bootstrap.min.js"></script>
     <script src="~/Admin/js/plugins/metisMenu/jquery.metisMenu.js"></script>
     <!-- SB Admin Scripts - Include with every page -->
@@ -334,10 +209,10 @@
 
 
 
-    <script src="~/Admin/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    @*<script src="~/Admin/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>*@
 
 
-        <!-- Page level plugins -->
+    <!-- Page level plugins -->
     <script src="~/Admin/js/plugins/dataTables/jquery.dataTables.js"></script>
     <script src="~/Admin/js/plugins/dataTables/dataTables.bootstrap.js"></script>
 
@@ -347,9 +222,19 @@
 
     <!-- Page level custom scripts -->
     <script src="~/Admin/js/demo/datatables-demo.js"></script>
+    <script src="~/js/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/test.js"></script>
+    <script>
+        var topNavBar = 50;
+        var footer = 1;
+        var height = $(window).height();
+        $('.sidebar').css('height', (height - (topNavBar + footer)));
 
-
-
+        $(window).resize(function () {
+            var height = $(window).height();
+            $('.sidebar').css('height', (height - (topNavBar + footer)));
+        });
+    </script>
 </body>
 
 </html>

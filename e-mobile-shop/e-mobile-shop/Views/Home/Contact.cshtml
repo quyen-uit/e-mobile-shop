@@ -1,0 +1,60 @@
+﻿
+@{
+    ViewData["Title"] = "Contact";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var context = new ClientDbContext();
+    var dataAccess = new DataAccess();
+}
+@using e_mobile_shop.Areas.Identity.Data
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<AppUser> UserManager
+@inject SignInManager<AppUser> SignInManager
+<style>
+    .form-control {
+    }
+
+    .border-50 {
+        margin: 10px;
+        font-size: 17px;
+        border-radius: 50px;
+    }
+
+    .text-title {
+        font-size: 35px;
+        font-weight: 600;
+        color: #F45C5D;
+        font-style: italic;
+        line-height: 1.5
+    }
+</style>
+<div class=" container border mt-3">
+    @Html.Partial("_StatusMessages")
+    <div class="row pt-3">
+        <div class="col-md-4 col-12 d-flex justify-content-center">
+
+            <img class="img-fluid p-3" src="~/img-01.png" />
+        </div>
+        <div class="col-md-8 col-12">
+            <h2 class="text-center text-title"> Liên hệ với chúng tôi </h2>
+            @if (UserManager.GetUserId(User) != null)
+            {
+                <form class="p-lg-5 " method="post" asp-action="EmailContact" asp-controller="User" asp-route-userId="@UserManager.GetUserId(User)">
+                    <input type="text" class="form-control border-50" value="@context.AspNetUsers.Find(UserManager.GetUserId(User)).HoTen" placeholder="Họ và tên " />
+                    <input type="email" class="form-control border-50" value="@context.AspNetUsers.Find(UserManager.GetUserId(User)).Email" placeholder="Email" />
+                    <input type="text" class="form-control border-50" name="TieuDe" placeholder="Tiêu đề" />
+                    <textarea rows="8" style="font-size:17px;" name="NoiDung" placeholder="Nội dung " class="form-control ml-3"></textarea>
+                    <div class="d-flex justify-content-center">
+                        <button type="submit" style="font-size: 17px;" class="btn btn-primary pl-5 pr-5 border-50"> Gửi phản hồi </button>
+                    </div>
+                </form>
+            }
+            else
+            {
+                <p style=" font-size: 17px;"><a asp-area="Identity" asp-page="/Account/Login"> Đăng nhập</a> để liên lạc với chúng tôi</p>
+
+            }
+
+
+        </div>
+    </div>
+</div>

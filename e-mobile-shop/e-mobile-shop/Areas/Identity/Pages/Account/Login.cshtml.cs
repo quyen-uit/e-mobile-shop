@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text.Encodings.Web;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using e_mobile_shop.Areas.Identity.Data;
+﻿using e_mobile_shop.Areas.Identity.Data;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace e_mobile_shop.Areas.Identity.Pages.Account
 {
@@ -22,7 +19,7 @@ namespace e_mobile_shop.Areas.Identity.Pages.Account
         private readonly SignInManager<AppUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
 
-        public LoginModel(SignInManager<AppUser> signInManager, 
+        public LoginModel(SignInManager<AppUser> signInManager,
             ILogger<LoginModel> logger,
             UserManager<AppUser> userManager)
         {
@@ -44,8 +41,12 @@ namespace e_mobile_shop.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Required]
-            [EmailAddress]
             public string Email { get; set; }
+
+            //[Required]
+            //public string Username { get; set; }
+
+
 
             [Required]
             [DataType(DataType.Password)]
@@ -62,12 +63,14 @@ namespace e_mobile_shop.Areas.Identity.Pages.Account
                 ModelState.AddModelError(string.Empty, ErrorMessage);
             }
 
+
+            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             returnUrl = returnUrl ?? Url.Content("~/");
 
             // Clear the existing external cookie to ensure a clean login process
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
-            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
 
             ReturnUrl = returnUrl;
         }
@@ -81,9 +84,18 @@ namespace e_mobile_shop.Areas.Identity.Pages.Account
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+
+
+                //var s = DataAccess.context.AspNetUsers.Where(x=>x.UserName==Input.Username).SingleOrDefault().Email;
+
+                //var result = await _signInManager.PasswordSignInAsync(s, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+
+
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
+
+
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
@@ -97,7 +109,13 @@ namespace e_mobile_shop.Areas.Identity.Pages.Account
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ModelState.AddModelError(string.Empty, "Sai thông tin đăng nhập.");
+                    if (ExternalLogins == null)
+                    {
+                        ExternalLogins = new List<AuthenticationScheme>();
+                        ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+                    }
+
                     return Page();
                 }
             }

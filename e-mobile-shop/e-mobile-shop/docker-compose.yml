@@ -1,0 +1,20 @@
+# Please refer https://aka.ms/HTTPSinContainer on how to setup an https developer certificate for your ASP .NET Core service.
+version: '3.4'
+
+services:
+  emobileshop:
+    image: emobileshop
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:80"
+    depends_on: 
+      - db
+  db:
+    image: "lqt1912/emobileshop"
+    environment:
+        SA_PASSWORD: "Password789"
+        ACCEPT_EULA: "Y"
+    ports: 
+      - "1433:1433"
